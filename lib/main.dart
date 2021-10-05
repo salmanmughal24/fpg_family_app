@@ -1,9 +1,13 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpg_family_app/home_page_screen.dart';
 import 'package:fpg_family_app/listner/bloc/listen_bloc.dart';
 
-void main() {
+import 'audio/audio_player_handler.dart';
+
+Future<void> main() async {
+
   runApp(const MyApp());
 }
 
@@ -13,6 +17,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'FPG Family',
       theme: ThemeData(

@@ -1,4 +1,7 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/audio/audio_player_handler.dart';
+import 'package:fpg_family_app/audio_player.dart';
 import 'package:fpg_family_app/helper/colors.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:webfeed/domain/rss_feed.dart';
@@ -20,9 +23,11 @@ class _ListenSectionState extends State<ListenSection>
 
   _ListenSectionState(this.feedsRepository);
 
+  late AudioPlayerHandler _audioHandler= AudioPlayerHandler();
   @override
   void initState() {
     feedsRepository.getChannelDetails();
+    oit();
     super.initState();
   }
 
@@ -48,8 +53,10 @@ class _ListenSectionState extends State<ListenSection>
                 var generator = items[index].generator ?? "";
                 return InkWell(
                   onTap: () {
-                    Navigator.of(context)
-                        .push(ChannelDetails.route(items[index]));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyAudioPlayer(feedsItem:  items[index],handler:_audioHandler)));
+
+                    /* Navigator.of(context)
+                        .push(ChannelDetails.route(items[index]));*/
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -118,4 +125,15 @@ class _ListenSectionState extends State<ListenSection>
 
   @override
   bool get wantKeepAlive => true;
+
+  Future<void> oit() async {
+    _audioHandler = await AudioService.init(
+      builder: () => AudioPlayerHandler(),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'com.ryanheise.myapp.channel.audio',
+        androidNotificationChannelName: 'Audio playback',
+        androidNotificationOngoing: true,
+      ),
+    );
+  }
 }

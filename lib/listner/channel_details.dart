@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/audio_player.dart';
 import 'package:fpg_family_app/helper/colors.dart';
 import 'package:fpg_family_app/helper/utils.dart';
 import 'package:webfeed/domain/rss_feed.dart';
@@ -34,6 +35,7 @@ class _ChannelDetailsState extends State<ChannelDetails> {
         "https://fpgfamily.com/wp-content/uploads/2021/09/cropped-FPG-Family-Circle-black-and-white-1-256x256.png";
     var author = widget.feedsItem.author ?? "";
     var items = widget.feedsItem.items ?? [];
+   // widget.feedsItem.
     return Scaffold(
       appBar: AppBar(
         backgroundColor: clr_black,
@@ -98,6 +100,7 @@ class _ChannelDetailsState extends State<ChannelDetails> {
                 : Expanded(
                     child: ListView.separated(
                         itemBuilder: (context, index) {
+                          print(items.first.enclosure!.url);
                           return Container(
                             margin: EdgeInsets.only(top: 4, bottom: 4),
                             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -128,6 +131,7 @@ class _ChannelDetailsState extends State<ChannelDetails> {
                                     IconButton(
                                       onPressed: () {
 
+                                      //  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyAudioPlayer(feed:items.elementAt(index),feedsItem:  widget.feedsItem)));
                                       },
                                       icon: Icon(
                                         Icons.play_arrow,
