@@ -1,9 +1,24 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpg_family_app/home_page_screen.dart';
 import 'package:fpg_family_app/listner/bloc/listen_bloc.dart';
+import 'package:fpg_family_app/page_manager.dart';
+import 'package:fpg_family_app/repositories/feed_repository.dart';
+import 'package:fpg_family_app/repositories/podcast_repository.dart';
+import 'package:fpg_family_app/services/service_locator.dart';
 
-void main() {
+import 'audio/audio_player_handler.dart';
+
+Future<void> main() async {
+
+  await setupServiceLocator();
+
+  FeedsRepository feedsRepository = FeedsRepository();
+  PodcastRepository podcastsRepository = PodcastRepository();
+  await podcastsRepository.getChannelDetails();
+
+  getIt<PageManager>().init(podcastsRepository.feeds);
   runApp(const MyApp());
 }
 
@@ -13,10 +28,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'FPG Family',
       theme: ThemeData(
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
             bodyText1: TextStyle(color: Colors.white, fontSize: 13),
             bodyText2: TextStyle(color: Colors.white, fontSize: 13),
             subtitle2: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),

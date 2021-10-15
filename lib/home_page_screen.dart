@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/layouts/my_scaffold.dart';
 import 'package:fpg_family_app/read_section.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/watch_section.dart';
@@ -18,11 +19,7 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
-  FeedsRepository feedsRepository = FeedsRepository();
-  PodcastRepository podcastsRepository;
 
-  _HomePageScreenState()
-      : podcastsRepository = PodcastRepository() {}
 
   int _currentIndex = 0;
   PageController _pageController = PageController(
@@ -34,6 +31,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     super.initState();
   }
 
+  FeedsRepository feedsRepository = FeedsRepository();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +47,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
           IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],
       ),
-      body: PageView.builder(
+      body: MainBody(body: PageView.builder(
         controller: _pageController,
         itemBuilder: (context, index) {
           if (index == 1) {
-            return ListenSection(podcastsRepository);
+            return ListenSection();
           }
           if (index == 2) {
             return ReadSection(feedsRepository);
@@ -66,6 +64,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
           });
         },
         itemCount: 4,
+      ),
+
       ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: true,
