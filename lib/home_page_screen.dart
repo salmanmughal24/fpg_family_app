@@ -50,12 +50,18 @@ class _HomePageScreenState extends State<HomePageScreen> {
       body: MainBody(body: PageView.builder(
         controller: _pageController,
         itemBuilder: (context, index) {
+          if (index == 0) {
+            return WatchSection();
+          }
           if (index == 1) {
             return ListenSection();
           }
           if (index == 2) {
             return ReadSection(feedsRepository);
           }
+          /*if (index == 3) {
+            return ReadSection(feedsRepository);
+          }*/
           return WatchSection();
         },
         onPageChanged: (value) {

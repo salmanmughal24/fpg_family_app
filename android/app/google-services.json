@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "82220753168",
+    "project_id": "podcast-9893a",
+    "storage_bucket": "podcast-9893a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82220753168:android:5dae5dfe598e9f72674595",
+        "android_client_info": {
+          "package_name": "com.thejadav.fpg_family_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "82220753168-9dccf43gs6lt7f7g4ailbnubc3br68bf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thejadav.fpg_family_app",
+            "certificate_hash": "a2b22c6ad76ee336a7e3c3e6739c3c1e54e88354"
+          }
+        },
+        {
+          "client_id": "82220753168-5c7updl9tgmanguc6di045mtfnfogbq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWLAZ4esQEY4v0opWea7NHdoibX0ZVgGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "82220753168-5c7updl9tgmanguc6di045mtfnfogbq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
