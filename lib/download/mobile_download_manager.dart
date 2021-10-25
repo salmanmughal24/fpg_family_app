@@ -27,7 +27,7 @@ class MobileDownloaderManager implements DownloadManager {
   Future _init() async {
    // log.fine('Initialising download manager');
 
-    await FlutterDownloader.initialize();
+    await FlutterDownloader.initialize(debug: true);
     IsolateNameServer.removePortNameMapping('downloader_send_port');
 
     IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');

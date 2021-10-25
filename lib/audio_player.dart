@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:fpg_family_app/layouts/my_scaffold.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -20,7 +23,8 @@ class MyAudioPlayer extends StatefulWidget {
   int index;
   List<RssFeed> items;
 
-  MyAudioPlayer({Key? key, required this.index,required this.items}) : super(key: key);
+  MyAudioPlayer({Key? key, required this.index, required this.items})
+      : super(key: key);
 
   @override
   _MyAudioPlayerState createState() => _MyAudioPlayerState();
@@ -29,315 +33,376 @@ class MyAudioPlayer extends StatefulWidget {
 class _MyAudioPlayerState extends State<MyAudioPlayer>
     with WidgetsBindingObserver {
 //  late RssItem nowPlaying = widget.feedsItem.items!.first;
+  int progress = 0;
+  late DownloadTaskStatus status;
+  late String id;
+  ReceivePort _receivePort = ReceivePort();
+  late String downloadSongUrl = "";
 
   @override
   void initState() {
-
     getIt<PageManager>().playPlaylist(widget.index);
     super.initState();
- //   print(" iam here  ${widget.feedsItem.title}");
+    receiverPortData();
+    _createFolder();
+    print("init call");
+    _inFutureList();
+    //   print(" iam here  ${widget.feedsItem.title}");
+  }
+
+  receiverPortData() async {
+    IsolateNameServer.registerPortWithName(
+        _receivePort.sendPort, "downloading");
+    _receivePort.listen((dynamic data) {
+      DownloadTaskStatus status = data[1];
+      print("progress + ${data[2]}");
+      setState(() {
+        progress = data[2];
+      });
+      if (status == DownloadTaskStatus.complete) {
+        filesList.add(downloadSongUrl);
+        downloadSongUrl = "";
+        print("new song added successfulyy + progress ${data[2]}");
+        setState(() {});
+      }
+    });
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  List<String> filesList = <String>[];
+
+  Future<void> _inFutureList() async {
+    String baseDir = Platform.isAndroid
+        ? "/storage/emulated/0/Download/"
+        : (await getDownloadsDirectory())!.path;
+    final path = Directory("${baseDir}fpg/");
+    filesList = (await path.list().toList())
+        .map((e) => e.path.split('/').last)
+        .toList();
+    setState(() {});
+    // await new Future.delayed(new Duration(milliseconds: 500));
+    print("filesList $filesList");
+  }
+
+  _createFolder() async {
+    String baseDir = Platform.isAndroid
+        ? "/storage/emulated/0/Download/"
+        : (await getDownloadsDirectory())!.path;
+    final path = Directory("${baseDir}fpg/");
+    if ((await path.exists())) {
+      // TODO:
+      print("exist");
+    } else {
+      // TODO:
+      print("not exist");
+      path.create();
+    }
+  }
+
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort? sendPort =
+        IsolateNameServer.lookupPortByName("downloading");
+    //   print("progress + $progress");
+    sendPort!.send([id, status, progress]);
   }
 
   @override
   void dispose() {
-
 //    getIt<PageManager>().dispose();
+    IsolateNameServer.removePortNameMapping('downloading');
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("progressbuild + $progress");
+
     var items = widget.items.elementAt(widget.index).items ?? [];
     final pageManager = getIt<PageManager>();
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
           child: MainBody(
-            body:Column(
-              children: [
-
-                Container(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-                  child: Text(
-                    "${widget.items.elementAt(widget.index).title}",
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      //inherit: true,
-                      color: Colors.white,
-                      fontSize: 19,
-                    ),textAlign: TextAlign.center,
-                  ),
+              body: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 20.0, bottom: 20),
+                child: Text(
+                  "${widget.items.elementAt(widget.index).title}",
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        //inherit: true,
+                        color: Colors.white,
+                        fontSize: 19,
+                      ),
+                  textAlign: TextAlign.center,
                 ),
-                Expanded(
-                  child: Container(
-                    color: clr_black,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          items.isEmpty
-                              ? Container()
-                              : ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                print(items.first.enclosure!.url);
-                                return Container(
-                                  //  margin: EdgeInsets.only(top: 4, bottom: 4),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 4),
-                                  color: /*nowPlaying == items.elementAt(index)
+              ),
+              Expanded(
+                child: Container(
+                  color: clr_black,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        items.isEmpty
+                            ? Container()
+                            : ListView.separated(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    //  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 4),
+                                    color: /*nowPlaying == items.elementAt(index)
                                             ? Colors.blueGrey.withOpacity(0.3)
-                                            : */Colors.black54,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${items[index].title}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1!
-                                            .copyWith(
-                                            inherit: true,
-                                            color: Colors.white,
-                                            fontSize: 16),
-                                      ),
-                                      Text(
-                                        "${items[index].pubDate?.toLocal()}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .copyWith(
-                                            inherit: true,
-                                            color: Colors.white,
-                                            fontSize: 10),
-                                      ),
-                                      Divider(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.end,
-                                        children: [
-                                          pageManager.currentSongTitleNotifier
-                                              .value ==
-                                              items[index].title
-                                              ? ValueListenableBuilder<
-                                              ButtonState>(
-                                            valueListenable: pageManager
-                                                .playButtonNotifier,
-                                            builder: (_, value, __) {
-                                              switch (value) {
-                                                case ButtonState
-                                                    .loading:
-                                                  return Container(
-                                                    margin:
-                                                    EdgeInsets.all(
-                                                        8.0),
-                                                    width: 32.0,
-                                                    height: 32.0,
-                                                    child:
-                                                    CircularProgressIndicator(),
-                                                  );
-                                                case ButtonState.paused:
-                                                  return IconButton(
+                                            : */
+                                        Colors.black54,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${items[index].title}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1!
+                                              .copyWith(
+                                                  inherit: true,
+                                                  color: Colors.white,
+                                                  fontSize: 16),
+                                        ),
+                                        Text(
+                                          "${items[index].pubDate?.toLocal()}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                  inherit: true,
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                        ),
+                                        Divider(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            pageManager.currentSongTitleNotifier
+                                                        .value ==
+                                                    items[index].title
+                                                ? ValueListenableBuilder<
+                                                    ButtonState>(
+                                                    valueListenable: pageManager
+                                                        .playButtonNotifier,
+                                                    builder: (_, value, __) {
+                                                      switch (value) {
+                                                        case ButtonState
+                                                            .loading:
+                                                          return Container(
+                                                            margin:
+                                                                EdgeInsets.all(
+                                                                    8.0),
+                                                            width: 32.0,
+                                                            height: 32.0,
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          );
+                                                        case ButtonState.paused:
+                                                          return IconButton(
+                                                            icon: Icon(
+                                                              Icons.play_arrow,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            iconSize: 32.0,
+                                                            onPressed:
+                                                                pageManager
+                                                                    .play,
+                                                          );
+                                                        case ButtonState
+                                                            .playing:
+                                                          return IconButton(
+                                                            icon: Icon(
+                                                              Icons.pause,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            iconSize: 32.0,
+                                                            onPressed:
+                                                                pageManager
+                                                                    .pause,
+                                                          );
+                                                      }
+                                                    },
+                                                  )
+                                                : IconButton(
+                                                    onPressed: () async {
+                                                      await pageManager
+                                                          .playWithId(index);
+                                                      setState(() {});
+                                                    },
                                                     icon: Icon(
                                                       Icons.play_arrow,
-                                                      color:
-                                                      Colors.white,
+                                                      size: 32,
+                                                      color: Colors.white,
                                                     ),
-                                                    iconSize: 32.0,
-                                                    onPressed:
-                                                    pageManager
-                                                        .play,
-                                                  );
-                                                case ButtonState
-                                                    .playing:
-                                                  return IconButton(
-                                                    icon: Icon(
-                                                      Icons.pause,
-                                                      color:
-                                                      Colors.white,
-                                                    ),
-                                                    iconSize: 32.0,
-                                                    onPressed:
-                                                    pageManager
-                                                        .pause,
-                                                  );
-                                              }
-                                            },
-                                          )
-                                              : IconButton(
-                                            onPressed: () async {
-                                              await pageManager
-                                                  .playWithId(index);
-                                              setState(() {});
-                                            },
-                                            icon: Icon(
-                                              Icons.play_arrow,
-                                              size: 32,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          IconButton(
-                                            onPressed: () async {
-                                            /*  await FlutterDownloader
-                                                  .initialize();
-                                              final taskId =
-                                              await FlutterDownloader
-                                                  .enqueue(
-                                                url: items
+                                                  ),
+                                            /*  Container(
+
+                                              height: 25,width: 25,
+                                                alignment: Alignment.topCenter,
+                                                margin: EdgeInsets.only(top: 0),
+                                                child: CircularProgressIndicator(
+                                                  backgroundColor: Colors.grey,
+                                                  color: Colors.deepOrange,
+                                                  strokeWidth: 2,
+                                                  value: progress/100,
+                                                )
+                                            ),*/
+                                            /*items
+                                                .elementAt(index)
+                                                .enclosure!
+                                                .url!.split('/').last*/
+                                            filesList.contains(items
                                                     .elementAt(index)
                                                     .enclosure!
-                                                    .url!,
-                                                headers: {
-                                                  'User-Agent':
-                                                  "Fgp Family App"
-                                                },
-                                                savedDir: Platform.isAndroid
-                                                    ? "/storage/emulated/0/Download/"
-                                                    : (await getDownloadsDirectory())!
-                                                    .path,
-                                                showNotification: true,
-                                                // show download progress in status bar (for Android)
-                                                openFileFromNotification:
-                                                true, // click on notification to open downloaded file (for Android)
-                                              );*/
-                                            },
-                                            icon: Icon(
-                                              Icons.download,
-                                              size: 32,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Container(
-                                  height: 0.5,
-                                  margin: EdgeInsets.symmetric(vertical: 2),
-                                  color: Colors.white30,
-                                );
-                              },
-                              itemCount: widget.items.elementAt(widget.index).items!.length),
-                        ],
-                      ),
+                                                    .url!
+                                                    .split('/')
+                                                    .last)
+                                                ? IconButton(
+                                                    icon: Icon(
+                                                      Icons.check_circle,
+                                                      size: 28,
+                                                      color: Colors.white,
+                                                    ),
+                                                    onPressed: () {},
+                                                  )
+                                                : (items
+                                                            .elementAt(index)
+                                                            .enclosure!
+                                                            .url!
+                                                            .split('/')
+                                                            .last) ==
+                                                        downloadSongUrl
+                                                    ? Container(
+                                              margin: EdgeInsets.symmetric(horizontal: 12.0),
+                                                        height: 25.0,
+                                                        width: 25.0,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                              strokeWidth: 2.0,
+                                                          backgroundColor:
+                                                              Colors.white,
+
+                                                          valueColor:
+                                                              AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                  Color(
+                                                                      0xfffd7013)),
+                                                          value: progress / 100,
+                                                        ))
+                                                    : IconButton(
+                                                        onPressed: () async {
+                                                          final status =
+                                                              await Permission
+                                                                  .storage
+                                                                  .request();
+                                                          if (status
+                                                              .isGranted) {
+                                                            print(
+                                                                "Yahoooooooooooooooooooooooooooooooooo.. Permission granted");
+                                                            var baseStorage = Platform
+                                                                    .isAndroid
+                                                                ? "/storage/emulated/0/Download/fpg/"
+                                                                : (await getDownloadsDirectory())!
+                                                                    .path;
+                                                            print(
+                                                                "Yahoooooooooooooooooooooooooooooooooo.. Jaaaan dooosss");
+                                                            try {
+                                                              print(
+                                                                  "baseStorage + $baseStorage");
+                                                              var id =
+                                                                  await FlutterDownloader
+                                                                      .enqueue(
+                                                                url: items
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .enclosure!
+                                                                    .url!,
+                                                                headers: {
+                                                                  'User-Agent':
+                                                                      "Fgp Family App"
+                                                                },
+                                                                savedDir:
+                                                                    baseStorage,
+                                                                fileName: items
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .enclosure!
+                                                                    .url!
+                                                                    .split('/')
+                                                                    .last /*items
+                                                          .elementAt(index)
+                                                          .title*/
+                                                                ,
+                                                                showNotification:
+                                                                    true,
+                                                                // show download progress in status bar (for Android)
+                                                                openFileFromNotification:
+                                                                    false, // click on notification to open downloaded file (for Android)
+                                                              );
+                                                              print(
+                                                                  "this file is downloading ${items.elementAt(index).enclosure!.url!.split('/').last}");
+                                                              downloadSongUrl =
+                                                                  items
+                                                                      .elementAt(
+                                                                          index)
+                                                                      .enclosure!
+                                                                      .url!
+                                                                      .split(
+                                                                          '/')
+                                                                      .last;
+                                                            } catch (e) {
+                                                              print(e);
+                                                            }
+                                                          } else {
+                                                            print(
+                                                                "No Permission");
+                                                          }
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.download,
+                                                          size: 32,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return Container(
+                                    height: 0.5,
+                                    margin: EdgeInsets.symmetric(vertical: 2),
+                                    color: Colors.white30,
+                                  );
+                                },
+                                itemCount: widget.items
+                                    .elementAt(widget.index)
+                                    .items!
+                                    .length),
+                      ],
                     ),
                   ),
                 ),
-                // Playlist(),
-                //  AddRemoveSongButtons(),
-                /* AudioProgressBar(),
-                  Container(
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ValueListenableBuilder<RepeatState>(
-                          valueListenable: pageManager.repeatButtonNotifier,
-                          builder: (context, value, child) {
-                            Icon icon;
-                            switch (value) {
-                              case RepeatState.off:
-                                icon = Icon(Icons.repeat, color: Colors.grey);
-                                break;
-                              case RepeatState.repeatSong:
-                                icon = Icon(Icons.repeat_one);
-                                break;
-                              case RepeatState.repeatPlaylist:
-                                icon = Icon(Icons.repeat);
-                                break;
-                            }
-                            return IconButton(
-                              icon: icon,
-                              onPressed: pageManager.repeat,
-                            );
-                          },
-                        ),
-                        ValueListenableBuilder<bool>(
-                          valueListenable: pageManager.isFirstSongNotifier,
-                          builder: (_, isFirst, __) {
-                            return IconButton(
-                              icon: Icon(
-                                Icons.skip_previous,
-                                color: Colors.white,
-                              ),
-                              onPressed: (isFirst) ? null : pageManager.previous,
-                            );
-                          },
-                        ),
-                        ValueListenableBuilder<ButtonState>(
-                          valueListenable: pageManager.playButtonNotifier,
-                          builder: (_, value, __) {
-                            switch (value) {
-                              case ButtonState.loading:
-                                return Container(
-                                  margin: EdgeInsets.all(8.0),
-                                  width: 32.0,
-                                  height: 32.0,
-                                  child: CircularProgressIndicator(),
-                                );
-                              case ButtonState.paused:
-                                return IconButton(
-                                  icon: Icon(
-                                    Icons.play_arrow,
-                                    color: Colors.white,
-                                  ),
-                                  iconSize: 32.0,
-                                  onPressed: pageManager.play,
-                                );
-                              case ButtonState.playing:
-                                return IconButton(
-                                  icon: Icon(
-                                    Icons.pause,
-                                    color: Colors.white,
-                                  ),
-                                  iconSize: 32.0,
-                                  onPressed: pageManager.pause,
-                                );
-                            }
-                          },
-                        ),
-                        ValueListenableBuilder<bool>(
-                          valueListenable: pageManager.isLastSongNotifier,
-                          builder: (_, isLast, __) {
-                            return IconButton(
-                                icon: Icon(
-                                  Icons.skip_next,
-                                  color: Colors.white,
-                                ),
-                                onPressed:() async {
-                                  if (!isLast) {
-                                    await pageManager.next();
-                                    setState((){});
-
-                                  }
-                                }
-
-                            );
-                          },
-                        ),
-                        ValueListenableBuilder<bool>(
-                          valueListenable: pageManager.isShuffleModeEnabledNotifier,
-                          builder: (context, isEnabled, child) {
-                            return IconButton(
-                              icon: (isEnabled)
-                                  ? Icon(Icons.shuffle)
-                                  : Icon(Icons.shuffle, color: Colors.grey),
-                              onPressed: pageManager.shuffle,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),*/
-              ],
-            )
-          ),
+              ),
+            ],
+          )),
         ),
       ),
     );
@@ -478,18 +543,18 @@ class AudioControlButtons extends StatelessWidget {
               );
             },
           ),
-      ValueListenableBuilder<bool>(
-        valueListenable: pageManager.isFirstSongNotifier,
-        builder: (_, isFirst, __) {
-          return IconButton(
-            icon: Icon(
-              Icons.skip_previous,
-              color: Colors.white,
-            ),
-            onPressed: (isFirst) ? null : pageManager.previous,
-          );
-        },
-      ),
+          ValueListenableBuilder<bool>(
+            valueListenable: pageManager.isFirstSongNotifier,
+            builder: (_, isFirst, __) {
+              return IconButton(
+                icon: Icon(
+                  Icons.skip_previous,
+                  color: Colors.white,
+                ),
+                onPressed: (isFirst) ? null : pageManager.previous,
+              );
+            },
+          ),
           ValueListenableBuilder<ButtonState>(
             valueListenable: pageManager.playButtonNotifier,
             builder: (_, value, __) {
@@ -530,14 +595,11 @@ class AudioControlButtons extends StatelessWidget {
                     Icons.skip_next,
                     color: Colors.white,
                   ),
-                  onPressed:() async {
+                  onPressed: () async {
                     if (!isLast) {
                       await pageManager.next();
-
                     }
-                  }
-
-              );
+                  });
             },
           ),
           ValueListenableBuilder<bool>(
@@ -659,18 +721,15 @@ class NextSongButton extends StatelessWidget {
       valueListenable: pageManager.isLastSongNotifier,
       builder: (_, isLast, __) {
         return IconButton(
-          icon: Icon(
-            Icons.skip_next,
-            color: Colors.white,
-          ),
-          onPressed:() async {
+            icon: Icon(
+              Icons.skip_next,
+              color: Colors.white,
+            ),
+            onPressed: () async {
               if (!isLast) {
                 await pageManager.next();
-
               }
-            }
-
-        );
+            });
       },
     );
   }

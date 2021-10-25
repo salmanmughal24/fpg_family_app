@@ -21,14 +21,14 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 
 /// Homepage
-class VideoPlayer extends StatefulWidget {
+class VideoPlayerr extends StatefulWidget {
   String videooUrl;
-  VideoPlayer({required this.videooUrl});
+  VideoPlayerr({required this.videooUrl});
   @override
-  _VideoPlayerState createState() => _VideoPlayerState();
+  _VideoPlayerrState createState() => _VideoPlayerrState();
 }
 
-class _VideoPlayerState extends State<VideoPlayer> {
+class _VideoPlayerrState extends State<VideoPlayerr> {
   late YoutubePlayerController _controller;
   late TextEditingController _idController;
   late TextEditingController _seekToController;

@@ -1,8 +1,14 @@
+import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/model/channel.dart';
 import 'package:fpg_family_app/see_all.dart';
+import 'package:fpg_family_app/video_player.dart' as vd;
 import 'package:fpg_family_app/video_player.dart';
+import 'package:fpg_family_app/yoyo_player.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import 'helper/colors.dart';
 import 'model/category.dart';
@@ -17,138 +23,231 @@ class WatchSection extends StatefulWidget{
 
 class _WatchSectionState extends State<WatchSection> {
 
+  List<Channel> channelList= [
+    Channel(url: 'https://s2.cwebtv.net:4433/fpgchurch/fpgchurch/playlist.m3u8',
+        thumbnail:'assets/images/english.jpeg' ,
+        title: "English"),
+    Channel(url: 'https://s2.cwebtv.net:4433/faad/faad/playlist.m3u8',
+        thumbnail:'assets/images/other.jpeg' ,
+        title: "Español")
+
+  ];
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getCategoryData() {
     return FirebaseFirestore.instance.collection("categories").snapshots();
   }
   Stream<QuerySnapshot<Map<String, dynamic>>> getProductData(id) {
     return FirebaseFirestore.instance.collection("products").where('category',isEqualTo:id).snapshots();
   }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
-       child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<QueryDocumentSnapshot<Map<String, dynamic>>> list =
-                      snapshot.data!.docs;
-                  List<Category> categoryList =
-                  list.map((e) => Category.fromJson(e.data())).toList();
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      Category category = categoryList.elementAt(index);
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 14.0, top: 30.0, bottom: 0.0, right: 16.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  category.name,
-                                  style: GoogleFonts.lora(
-                                      textStyle: TextStyle(
-                                          color: Colors.white70,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14)),
-                                ),
-                                Spacer(),
-                                GestureDetector(
-                                  onTap: () {
+       child: SingleChildScrollView(
+         physics: ScrollPhysics(),
+         child: Column(
+           children: [
+             Padding(
+               padding: const EdgeInsets.only(
+                   left: 14.0, top: 30.0, bottom: 20.0, right: 16.0),
+               child: Row(
+                 children: [
+                   Text(
+                     "Live Streaming",
+                     style: GoogleFonts.lora(
+                         textStyle: TextStyle(
+                             color: Colors.white70,
+                             fontWeight: FontWeight.w700,
+                             fontSize: 14)),
+                   ),
+                   Spacer(),
+                   GestureDetector(
+                     onTap: () {
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
-                                    );
-                                  },
-                                  child: Container(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.navigate_next,
-                                          color: Colors.white54,
-                                          size: 20,
-                                        )
-                                      ],
-                                    ),
+                       /* Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
+                                      );*/
+                     },
+                     child: Container(
+                       child: Row(
+                         children: [
+                           Icon(
+                             Icons.navigate_next,
+                             color: Colors.white54,
+                             size: 20,
+                           )
+                         ],
+                       ),
+                     ),
+                   ),
+                 ],
+               ),
+             ),
+             /*Container(
+               height: MediaQuery.of(context).size.height / 3.5,
+
+               width:MediaQuery.of(context).size.width,
+               padding:
+               const EdgeInsets.symmetric(horizontal: 5.0),
+               child: ListView.builder(
+                   shrinkWrap: true,
+                   scrollDirection: Axis.horizontal,
+                   itemCount: liveStreamingTitles.length,
+                   itemBuilder:
+                       (BuildContext context, int position) {
+                     *//*  Product product =
+                                  productList.elementAt(position);*//*
+
+
+                     return CustomLiveStreamingCard(
+                       title: liveStreamingTitles[position],
+                       thumbnail: liveStreamingVideosThumbnails[position],
+                       videoUrl: liveStreamingVideosLinks[position],
+                       // onTap: myfunction,
+                     );
+                   }),
+             ),*/
+             SingleChildScrollView(
+               scrollDirection: Axis.horizontal,
+               child: Row(
+                 children: channelList.map((e) => CustomLiveStreamingCard(
+                   title: e.title,
+                   thumbnail: e.thumbnail,
+                   videoUrl: e.url,
+                   // onTap: myfunction,
+                 )).toList(),
+               ),
+             ),
+             Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<QueryDocumentSnapshot<Map<String, dynamic>>> list =
+                            snapshot.data!.docs;
+                        List<Category> categoryList =
+                        list.map((e) => Category.fromJson(e.data())).toList();
+                        return ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            Category category = categoryList.elementAt(index);
+                            return Column(
+                              children: [
+
+
+
+
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 14.0, top: 30.0, bottom: 0.0, right: 16.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        category.name,
+                                        style: GoogleFonts.lora(
+                                            textStyle: TextStyle(
+                                                color: Colors.white70,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 14)),
+                                      ),
+                                      Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
+                                          );
+                                        },
+                                        child: Container(
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.navigate_next,
+                                                color: Colors.white54,
+                                                size: 20,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height / 4,
+
+                                  child: Padding(
+                                    padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: StreamBuilder<
+                                        QuerySnapshot<Map<String, dynamic>>>(
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          List<
+                                              QueryDocumentSnapshot<
+                                                  Map<String, dynamic>>> list =
+                                              snapshot.data!.docs;
+                                          List<Product> productList = list
+                                              .map((e) => Product.fromJson(e.data()))
+                                              .toList();
+                                          return ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: productList.length,
+                                              itemBuilder:
+                                                  (BuildContext context, int position) {
+                                                Product product =
+                                                productList.elementAt(position);
+
+
+                                                return CustomCard(
+                                                  title: product.title,
+                                                  thumbnail: product.thumbnail,
+                                                  videoUrl: product.url,
+                                                  // onTap: myfunction,
+                                                );
+                                              });
+                                        } else {
+                                          return const Center(
+                                              child: CircularProgressIndicator(
+                                                  color: clr_selected_icon));
+                                        }
+                                      },
+                                      stream: getProductData(category.id),),
+
+                                    /*ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 10,
+                                itemBuilder: (BuildContext context, int position) {
+                                  return CustomCard(
+                                    title: "Song Title",
+                                    thumbnail: Images.songImage,
+                                    videoUrl: "",
+                                    onTap: () {},
+                                  );
+                                })*/
+
                                   ),
                                 ),
                               ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 4,
-
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: StreamBuilder<
-                                  QuerySnapshot<Map<String, dynamic>>>(
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    List<
-                                        QueryDocumentSnapshot<
-                                            Map<String, dynamic>>> list =
-                                        snapshot.data!.docs;
-                                    List<Product> productList = list
-                                        .map((e) => Product.fromJson(e.data()))
-                                        .toList();
-                                    return ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: productList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int position) {
-                                          Product product =
-                                          productList.elementAt(position);
-
-
-                                          return CustomCard(
-                                            title: product.title,
-                                            thumbnail: product.thumbnail,
-                                            videoUrl: product.url,
-                                            // onTap: myfunction,
-                                          );
-                                        });
-                                  } else {
-                                    return const Center(
-                                        child: CircularProgressIndicator(
-                                            color: clr_selected_icon));
-                                  }
-                                },
-                                stream: getProductData(category.id),),
-
-                              /*ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10,
-                          itemBuilder: (BuildContext context, int position) {
-                            return CustomCard(
-                              title: "Song Title",
-                              thumbnail: Images.songImage,
-                              videoUrl: "",
-                              onTap: () {},
                             );
-                          })*/
-
-                            ),
-                          ),
-                        ],
-                      );
+                          },
+                          shrinkWrap: true,
+                          itemCount: categoryList.length,
+                        );
+                      } else {
+                        return const Center(
+                            child: CircularProgressIndicator(color: Colors.pink));
+                      }
                     },
-                    shrinkWrap: true,
-                    itemCount: categoryList.length,
-                  );
-                } else {
-                  return const Center(
-                      child: CircularProgressIndicator(color: Colors.pink));
-                }
-              },
-              stream: getCategoryData(),
-            )
+                    stream: getCategoryData(),
+                  )
+             ),
+           ],
+         ),
        )
     );
   }
@@ -177,7 +276,7 @@ class _CustomCardState extends State<CustomCard> {
     double _height = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap:(){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> VideoPlayer(videooUrl:widget.videoUrl)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> VideoPlayerr(videooUrl:widget.videoUrl)));
 
       },
       child: Container(
@@ -264,6 +363,189 @@ class _CustomCardState extends State<CustomCard> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomLiveStreamingCard extends StatefulWidget {
+  String title;
+  String thumbnail;
+  String videoUrl;
+  Function? onTap;
+
+  CustomLiveStreamingCard(
+      {required this.title,
+        required this.thumbnail,
+        required this.videoUrl,
+        this.onTap});
+
+  @override
+  _CustomLiveStreamingCardState createState() => _CustomLiveStreamingCardState();
+}
+
+class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
+
+
+
+  late VideoPlayerController videoPlayerController;
+  ChewieController? chewieController;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeVideoPlayer();
+  }
+
+  Future<void> initializeVideoPlayer() async {
+    videoPlayerController = VideoPlayerController.network(widget.videoUrl);
+    await Future.wait([
+      videoPlayerController.initialize()
+    ]);
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+
+      autoPlay: true,
+      looping: true,
+      isLive: true,
+      autoInitialize: true,
+      showControls: false,
+      cupertinoProgressColors: ChewieProgressColors(playedColor: Colors.deepOrange, bufferedColor: Colors.deepOrangeAccent.withOpacity(0.25)),
+      placeholder: Container(
+        color: Colors.black87,
+        child: Container(
+          child: Center(
+              child: CircularProgressIndicator(
+                valueColor:
+                new AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+              )),
+        ),
+      ),
+    );
+    setState(() {
+
+    });
+  }
+  @override
+  void dispose() {
+    videoPlayerController.dispose();
+    chewieController!.dispose();
+    super.dispose();
+  }
+  @override
+  Widget build(BuildContext context) {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    return VisibilityDetector(
+      key: Key(widget.videoUrl),
+      onVisibilityChanged: (VisibilityInfo visibilityInfo) {
+
+        var visiblePercentage = visibilityInfo.visibleFraction * 100;
+        if(visiblePercentage < 100){
+          videoPlayerController.pause();
+        }
+        else{
+          videoPlayerController.play();
+        }
+        debugPrint(
+            'Widget ${visibilityInfo.key} is ${visiblePercentage}% visible');
+      },
+      child: GestureDetector(
+        onTap:(){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl:widget.videoUrl)));
+
+        },
+        child: Container(
+        //  height:((_width/1.15)* 0.5635)+40,
+          width: _width/1.15,
+          margin: EdgeInsets.only(left: 10,right: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+            boxShadow: [
+              /* BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 0,
+                blurRadius: 5,
+                offset: Offset(0, 1), // changes position of shadow
+              ),*/
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+                child: Container(
+
+                //  color: Colors.green,
+                  height: ((_width/1.15)* 0.5635),
+                  width: (_width/1.15),
+                  child: chewieController != null ?
+                  chewieController!.videoPlayerController.value.isInitialized
+                      ? Chewie(
+                    controller: chewieController!,
+                  )
+                      : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      CircularProgressIndicator(color: Colors.deepOrange,),
+                      SizedBox(height: 20),
+                      Text("Loading"),
+                    ],
+                  ): Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          topLeft: Radius.circular(10),
+                        ),
+                        child: Image.asset(
+                          widget.thumbnail,
+                          fit: BoxFit.fill,errorBuilder: ( context,  exception,  stackTrace) {
+                          return Image.asset(
+                            "assets/images/error.png",
+                            fit: BoxFit.fill,
+                          );
+                        },
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black45,
+                            radius: 20.0,
+                            child: Icon(Icons.play_arrow, color: Colors.white),
+                          ))
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                padding:
+                const EdgeInsets.only(left: 10, right: 10,top: 10,bottom: 10),
+                child: Text(
+                  widget.title,
+                  style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14
+                    ),
+                  ),
+
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
