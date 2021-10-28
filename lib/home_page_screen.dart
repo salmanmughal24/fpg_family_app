@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/foryou.dart';
 import 'package:fpg_family_app/layouts/my_scaffold.dart';
 import 'package:fpg_family_app/read_section.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
@@ -19,8 +20,6 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
-
-
   int _currentIndex = 0;
   PageController _pageController = PageController(
     keepPage: true,
@@ -32,6 +31,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
 
   FeedsRepository feedsRepository = FeedsRepository();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,31 +47,31 @@ class _HomePageScreenState extends State<HomePageScreen> {
           IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
         ],
       ),
-      body: MainBody(body: PageView.builder(
-        controller: _pageController,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return WatchSection();
-          }
-          if (index == 1) {
-            return ListenSection();
-          }
-          if (index == 2) {
-            return ReadSection(feedsRepository);
-          }
-          /*if (index == 3) {
-            return ReadSection(feedsRepository);
-          }*/
-          return WatchSection();
-        },
-        onPageChanged: (value) {
-          setState(() {
-            _currentIndex = value;
-          });
-        },
-        itemCount: 4,
-      ),
-
+      body: MainBody(
+        body: PageView.builder(
+          controller: _pageController,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return WatchSection();
+            }
+            if (index == 1) {
+              return ListenSection();
+            }
+            if (index == 2) {
+              return ReadSection(feedsRepository);
+            }
+            if (index == 3) {
+              return ForYouSection();
+            }
+            return Container();
+          },
+          onPageChanged: (value) {
+            setState(() {
+              _currentIndex = value;
+            });
+          },
+          itemCount: 4,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: true,

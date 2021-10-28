@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fpg_family_app/audio/audio_player_handler.dart';
 import 'package:fpg_family_app/audio_player.dart';
+import 'package:fpg_family_app/global.dart';
 import 'package:fpg_family_app/helper/colors.dart';
 import 'package:fpg_family_app/page_manager.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
@@ -19,7 +20,8 @@ class ListenSection extends StatefulWidget {
   State<ListenSection> createState() => _ListenSectionState();
 }
 
-class _ListenSectionState extends State<ListenSection> {
+class _ListenSectionState extends State<ListenSection>
+{
 
   @override
   void initState() {
@@ -48,6 +50,9 @@ class _ListenSectionState extends State<ListenSection> {
           var generator = items[index].generator ?? "";
           return InkWell(
             onTap: () {
+              Global.albumImage = items[index].image!.url!;
+              Global.albumName=items[index].title!;
+              print(Global.albumImage);
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyAudioPlayer(index:  index,items:items)));
 
               /* Navigator.of(context)

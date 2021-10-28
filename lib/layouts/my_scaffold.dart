@@ -1,6 +1,7 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/global.dart';
 import 'package:fpg_family_app/notifiers/play_button_notifier.dart';
 import 'package:fpg_family_app/notifiers/progress_notifier.dart';
 import 'package:fpg_family_app/page_manager.dart';
@@ -18,6 +19,8 @@ class MainBody extends StatefulWidget {
 class _MainBodyState extends State<MainBody> {
   final pageManager = getIt<PageManager>();
 
+  bool showPlayer = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,108 +30,216 @@ class _MainBodyState extends State<MainBody> {
             Expanded(
               child: widget.body,
             ),
-            ValueListenableBuilder<String>(
-              valueListenable: pageManager.currentSongTitleNotifier,
-              builder: (_, title, __) {
-                if (title != null) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 5,left: 10,right: 10),
-                    child: Text(
-                      "${title}",
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            //inherit: true,
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),textAlign: TextAlign.center,
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-            ValueListenableBuilder<ProgressBarState>(
-                valueListenable: pageManager.progressNotifier,
-                builder: (_, value, __) {
-                  if (value != null) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: ProgressBar(
-                        progress: value.current,
-                        buffered: value.buffered,baseBarColor: Colors.black54,thumbColor: Colors.black,progressBarColor: Colors.black87,
-                        total: value.total,
-                        onSeek: pageManager.seek,
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                }),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ValueListenableBuilder<bool>(
-                  valueListenable: pageManager.isFirstSongNotifier,
-                  builder: (_, isFirst, __) {
-                    return IconButton(
-                      icon: Icon(
-                        Icons.skip_previous,
-                        color: Colors.white,
-                      ),
-                      onPressed: (isFirst) ? null : pageManager.previous,
-                    );
-                  },
-                ),
-                ValueListenableBuilder<ButtonState>(
-                  valueListenable: pageManager.playButtonNotifier,
-                  builder: (_, value, __) {
-                    switch (value) {
-                      case ButtonState.loading:
-                        return Container(
-                          margin: EdgeInsets.all(8.0),
-                          width: 32.0,
-                          height: 32.0,
-                          child: CircularProgressIndicator(color: Colors.black,),
-                        );
-                      case ButtonState.paused:
-                        return IconButton(
-                          icon: Icon(
-                            Icons.play_arrow,
-                            color: Colors.white,
-                          ),
-                          iconSize: 32.0,
-                          onPressed: pageManager.play,
-                        );
-                      case ButtonState.playing:
-                        return IconButton(
-                          icon: Icon(
-                            Icons.pause,
-                            color: Colors.white,
-                          ),
-                          iconSize: 32.0,
-                          onPressed: pageManager.pause,
-                        );
-                    }
-                  },
-                ),
-                ValueListenableBuilder<bool>(
-                  valueListenable: pageManager.isLastSongNotifier,
-                  builder: (_, isLast, __) {
-                    return IconButton(
-                        icon: Icon(
-                          Icons.skip_next,
-                          color: Colors.white,
-                        ),
-                        onPressed: () async {
-                          if (!isLast) {
-                            await pageManager.next();
-                            setState(() {});
+            Global.isPlaying == true
+                ? Column(
+                    children: [
+                      showPlayer == false
+                          ? GestureDetector(
+                              onTap: () {
+                                this.showPlayer = true;
+                                setState(() {});
+                              },
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Icon(
+                                      Icons.expand_less,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      //   color:Colors.red.withOpacity(0.85),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            showPlayer = false;
+                                          });
+                                        },
+                                        child: Icon(
+                                          Icons.expand_more,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20.0,
+                                        bottom: 20,
+                                        left: 10,
+                                        right: 10),
+                                    child: Text(
+                                      Global.albumName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1!
+                                          .copyWith(
+                                              //inherit: true,
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width /
+                                        1.2,
+                                    height:
+                                        MediaQuery.of(context).size.height /
+                                            2.2,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                              Global.albumImage)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0)),
+                                      color: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                      ValueListenableBuilder<String>(
+                        valueListenable: pageManager.currentSongTitleNotifier,
+                        builder: (_, title, __) {
+                          if (title != null) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, bottom: 5, left: 10, right: 10),
+                              child: Text(
+                                "${title}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                      //inherit: true,
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          } else {
+                            return Container();
                           }
-                        });
-                  },
-                ),
-              ],
-            )
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      ValueListenableBuilder<ProgressBarState>(
+                          valueListenable: pageManager.progressNotifier,
+                          builder: (_, value, __) {
+                            if (value != null) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
+                                child: ProgressBar(
+                                  progress: value.current,
+                                  buffered: value.buffered,
+                                  baseBarColor: Colors.black54,
+                                  thumbColor: Colors.black,
+                                  progressBarColor: Colors.black87,
+                                  total: value.total,
+                                  onSeek: pageManager.seek,
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ValueListenableBuilder<bool>(
+                            valueListenable: pageManager.isFirstSongNotifier,
+                            builder: (_, isFirst, __) {
+                              return IconButton(
+                                icon: Icon(
+                                  Icons.skip_previous,
+                                  color: Colors.white,
+                                ),
+                                onPressed:
+                                    (isFirst) ? null : pageManager.previous,
+                              );
+                            },
+                          ),
+                          ValueListenableBuilder<ButtonState>(
+                            valueListenable: pageManager.playButtonNotifier,
+                            builder: (_, value, __) {
+                              switch (value) {
+                                case ButtonState.loading:
+                                  return Container(
+                                    margin: EdgeInsets.all(8.0),
+                                    width: 32.0,
+                                    height: 32.0,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    ),
+                                  );
+                                case ButtonState.paused:
+                                  return IconButton(
+                                    icon: Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.white,
+                                    ),
+                                    iconSize: 32.0,
+                                    onPressed: () {
+                                      Global.isPlaying = true;
+                                      pageManager.play();
+                                      setState(() {});
+                                    },
+                                  );
+                                case ButtonState.playing:
+                                  return IconButton(
+                                      icon: Icon(
+                                        Icons.pause,
+                                        color: Colors.white,
+                                      ),
+                                      iconSize: 32.0,
+                                      onPressed: () {
+                                        Global.isPlaying = false;
+                                        pageManager.pause();
+                                        setState(() {});
+                                      });
+                              }
+                            },
+                          ),
+                          ValueListenableBuilder<bool>(
+                            valueListenable: pageManager.isLastSongNotifier,
+                            builder: (_, isLast, __) {
+                              return IconButton(
+                                  icon: Icon(
+                                    Icons.skip_next,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () async {
+                                    if (!isLast) {
+                                      await pageManager.next();
+                                      setState(() {});
+                                    }
+                                  });
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                : Container(),
           ],
         ));
   }
