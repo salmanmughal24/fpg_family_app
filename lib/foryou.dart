@@ -81,7 +81,18 @@ class _ForYouSectionState extends State<ForYouSection>
     // await new Future.delayed(new Duration(milliseconds: 500));
     print("filesList $filesList");
   }
+_deleteFile(String link) async {
+  String baseDir = Platform.isAndroid
+      ? "/storage/emulated/0/Download/"
+      : (await getDownloadsDirectory())!.path;
+  final path = Directory("${baseDir}fpg/${link}");
+  path.deleteSync(recursive: true);
+  await _inFutureList();
 
+  setState(() {
+    print("setState");
+  });
+}
   _createFolder() async {
     String baseDir = Platform.isAndroid
         ? "/storage/emulated/0/Download/"
@@ -291,119 +302,23 @@ print("Main Items $mainItems");
                                         ),
                                       ),
 
-                                      filesList.contains(downloadedItems
-                                          .elementAt(index)
-                                          .enclosure!
-                                          .url!
-                                          .split('/')
-                                          .last)
-                                          ? IconButton(
+                                      IconButton(
                                         icon: Icon(
-                                          Icons.check_circle,
+                                          Icons.delete,
                                           size: 28,
                                           color: Colors.white,
                                         ),
-                                        onPressed: () {},
-                                      )
-                                          : (downloadedItems
-                                          .elementAt(index)
-                                          .enclosure!
-                                          .url!
-                                          .split('/')
-                                          .last) ==
-                                          downloadSongUrl
-                                          ? Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 12.0),
-                                          height: 25.0,
-                                          width: 25.0,
-                                          child:
-                                          CircularProgressIndicator(
-                                            strokeWidth: 2.0,
-                                            backgroundColor:
-                                            Colors.white,
-
-                                            valueColor:
-                                            AlwaysStoppedAnimation<
-                                                Color>(
-                                                Color(
-                                                    0xfffd7013)),
-                                            value: progress / 100,
-                                          ))
-                                          : IconButton(
                                         onPressed: () async {
-                                          final status =
-                                          await Permission
-                                              .storage
-                                              .request();
-                                          if (status
-                                              .isGranted) {
-                                            print(
-                                                "Yahoooooooooooooooooooooooooooooooooo.. Permission granted");
-                                            var baseStorage = Platform
-                                                .isAndroid
-                                                ? "/storage/emulated/0/Download/fpg/"
-                                                : (await getDownloadsDirectory())!
-                                                .path;
-                                            print(
-                                                "Yahoooooooooooooooooooooooooooooooooo.. Jaaaan dooosss");
-                                            try {
-                                              print(
-                                                  "baseStorage + $baseStorage");
-                                              var id =
-                                              await FlutterDownloader
-                                                  .enqueue(
-                                                url: downloadedItems
-                                                    .elementAt(
-                                                    index)
-                                                    .enclosure!
-                                                    .url!,
-                                                headers: {
-                                                  'User-Agent':
-                                                  "Fgp Family App"
-                                                },
-                                                savedDir:
-                                                baseStorage,
-                                                fileName: downloadedItems
-                                                    .elementAt(
-                                                    index)
-                                                    .enclosure!
-                                                    .url!
-                                                    .split('/')
-                                                    .last /*items
-                                                        .elementAt(index)
-                                                        .title*/
-                                                ,
-                                                showNotification:
-                                                true,
-                                                // show download progress in status bar (for Android)
-                                                openFileFromNotification:
-                                                false, // click on notification to open downloaded file (for Android)
-                                              );
-                                              print(
-                                                  "this file is downloading ${downloadedItems.elementAt(index).enclosure!.url!.split('/').last}");
-                                              downloadSongUrl =
-                                                  downloadedItems
-                                                      .elementAt(
-                                                      index)
-                                                      .enclosure!
-                                                      .url!
-                                                      .split(
-                                                      '/')
-                                                      .last;
-                                            } catch (e) {
-                                              print(e);
-                                            }
-                                          } else {
-                                            print(
-                                                "No Permission");
-                                          }
+                                          print("delete ${downloadedItems.elementAt(index).enclosure!.url!.split("/").last}");
+                                          await _deleteFile(downloadedItems.elementAt(index).enclosure!.url!.split("/").last);
+
+                                          print("done");
+                                          setState(() {
+
+                                          });
                                         },
-                                        icon: Icon(
-                                          Icons.download,
-                                          size: 32,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                      )
+
                                     ],
                                   ),
                                 ],

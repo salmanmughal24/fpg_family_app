@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'dart:isolate';
-
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:fpg_family_app/global.dart';
 import 'package:fpg_family_app/layouts/my_scaffold.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -123,21 +124,118 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
     final pageManager = getIt<PageManager>();
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: clr_black,
         body: SafeArea(
           child: MainBody(
               body: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-                child: Text(
-                  "${widget.items.elementAt(widget.index).title}",
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        //inherit: true,
-                        color: Colors.white,
-                        fontSize: 19,
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 16.0),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Image.network(
+                              "${widget.items.elementAt(widget.index).image!.url}",
+                              height: 120,
+                              width: 120,
+                              fit: BoxFit.fill,
+                            )),
                       ),
-                  textAlign: TextAlign.center,
-                ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Container(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              //color: Colors.black,
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                "${widget.items.elementAt(widget.index).title}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                      //inherit: true,
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, bottom: 20, left: 10, right: 10),
+                              //color: Colors.black,
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                "${widget.items.elementAt(widget.index).author??""}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                      //inherit: true,
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                    ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    //color: Colors.black,
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "${widget.items.elementAt(widget.index).description}",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            //inherit: true,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 12,
+                          ),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    //color: Colors.black,
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "${widget.items.elementAt(widget.index).items!.length} Episodes",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        //inherit: true,
+                        color: Colors.deepOrange.shade300,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(height: 10.0,),
+                  Container(
+                    height: 0.25,
+                    margin: EdgeInsets.symmetric(vertical: 1),
+                    color: Colors.white30,
+                  ),
+                  SizedBox(height: 10.0,),
+                ],
               ),
               Expanded(
                 child: Container(
@@ -164,6 +262,19 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                          child: Text(
+                                            "${DateFormat('MMMM dd').format(items[index].pubDate!.toLocal())}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1!
+                                                .copyWith(
+                                                inherit: true,
+                                                color: Colors.white,
+                                                fontSize: 10),
+                                          ),
+                                        ),
                                         Text(
                                           "${items[index].title}",
                                           style: Theme.of(context)
@@ -174,16 +285,26 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                   color: Colors.white,
                                                   fontSize: 16),
                                         ),
-                                        Text(
-                                          "${items[index].pubDate?.toLocal()}",
-                                          style: Theme.of(context)
+                                        items[index].description!.contains("<")     ? Html(
+
+                                        data:"${items[index].description}",
+
+                                         style: {
+                                          'p':Style(color: Colors.white70,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
+
+
+                                         },
+
+                                        )
+                                        :Text("${items[index].description}", style: Theme.of(context)
                                               .textTheme
                                               .bodyText1!
                                               .copyWith(
-                                                  inherit: true,
-                                                  color: Colors.white,
-                                                  fontSize: 10),
-                                        ),
+                                              inherit: true,
+                                              color: Colors.white70,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 10) ,),
+
                                         Divider(
                                           height: 5,
                                         ),
@@ -213,47 +334,42 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                           );
                                                         case ButtonState.paused:
                                                           return IconButton(
-                                                            icon: Icon(
-                                                              Icons.play_arrow,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            iconSize: 32.0,
-                                                            onPressed:(){
-                                                              Global.isPlaying=true;
-                                                              pageManager
-                                                                  .play;
-                                                              setState(() {
-
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .play_arrow,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              iconSize: 32.0,
+                                                              onPressed: () {
+                                                                Global.isPlaying =
+                                                                    true;
+                                                                pageManager
+                                                                    .play;
+                                                                setState(() {});
                                                               });
-                                                            }
-
-                                                          );
                                                         case ButtonState
                                                             .playing:
                                                           return IconButton(
-                                                            icon: Icon(
-                                                              Icons.pause,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            iconSize: 32.0,
-                                                            onPressed:(){
-                                                              Global.isPlaying=false;
-                                                              pageManager
-                                                                  .pause;
-                                                              setState(() {
-
+                                                              icon: Icon(
+                                                                Icons.pause,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              iconSize: 32.0,
+                                                              onPressed: () {
+                                                                Global.isPlaying =
+                                                                    false;
+                                                                pageManager
+                                                                    .pause;
+                                                                setState(() {});
                                                               });
-                                                            }
-
-                                                          );
                                                       }
                                                     },
                                                   )
                                                 : IconButton(
                                                     onPressed: () async {
-                                                      Global.isPlaying=true;
+                                                      Global.isPlaying = true;
                                                       await pageManager
                                                           .playWithId(index);
                                                       setState(() {});
@@ -264,7 +380,6 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                       color: Colors.white,
                                                     ),
                                                   ),
-
                                             filesList.contains(items
                                                     .elementAt(index)
                                                     .enclosure!
@@ -287,15 +402,17 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                             .last) ==
                                                         downloadSongUrl
                                                     ? Container(
-                                              margin: EdgeInsets.symmetric(horizontal: 12.0),
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    12.0),
                                                         height: 25.0,
                                                         width: 25.0,
                                                         child:
                                                             CircularProgressIndicator(
-                                                              strokeWidth: 2.0,
+                                                          strokeWidth: 2.0,
                                                           backgroundColor:
                                                               Colors.white,
-
                                                           valueColor:
                                                               AlwaysStoppedAnimation<
                                                                       Color>(
@@ -386,9 +503,12 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                 },
                                 separatorBuilder: (context, index) {
                                   return Container(
-                                    height: 0.5,
-                                    margin: EdgeInsets.symmetric(vertical: 2),
-                                    color: Colors.white30,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 10.0,
+                                    ),
+                                    height: 0.2,
+                                    margin: EdgeInsets.symmetric(vertical: 1),
+                                    color: Colors.black12,
                                   );
                                 },
                                 itemCount: widget.items
@@ -729,4 +849,3 @@ class ShuffleButton extends StatelessWidget {
     );
   }
 }
-

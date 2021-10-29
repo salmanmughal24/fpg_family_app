@@ -35,12 +35,12 @@ class _ListenSectionState extends State<ListenSection>
   Widget build(BuildContext context) {
     var items = getIt<PageManager>().feedsItem;
     return Container(
-      color: clr_black,
+      color: Colors.black,
       child: ListView.separated(
         separatorBuilder: (context, index) {
           return Container(
-            height: 0.5,
-            color: Colors.white,
+            height: 0.8,
+            color:clr_black ,
           );
         },
         itemBuilder: (context, index) {
@@ -66,8 +66,8 @@ class _ListenSectionState extends State<ListenSection>
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
                       image,
-                      height: 40,
-                      width: 40,
+                      height: 75,
+                      width: 75,
                     ),
                   ),
                   VerticalDivider(
@@ -80,26 +80,31 @@ class _ListenSectionState extends State<ListenSection>
                       children: [
                         Text(
                           items[index].title ?? "",
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            fontSize: 17.0
+                          ),
                         ),
+                        SizedBox(height: 5.0),
                         Text(
                           "by $author",
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontWeight: FontWeight.w300,
+                              fontSize: 11.0
+                          ),
+                        ),
+                        SizedBox(height: 5.0,),
+                        Text(
+                          "${items[index].items?.length.toString()} Episodes",
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                              fontWeight: FontWeight.w300,
+                              fontSize: 11.0,
+                            color: Colors.deepOrange.shade300
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white38,
-                      ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 2),
-                      child: Text(
-                        (items[index].items?.length.toString() ?? ""),
-                        style: Theme.of(context).textTheme.bodyText1,
-                      )),
+                  SizedBox(height: 010.0,),
                 ],
               ),
             ),

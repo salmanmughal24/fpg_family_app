@@ -23,18 +23,13 @@ class WatchSection extends StatefulWidget{
 
 class _WatchSectionState extends State<WatchSection> {
 
-  List<Channel> channelList= [
-    Channel(url: 'https://s2.cwebtv.net:4433/fpgchurch/fpgchurch/playlist.m3u8',
-        thumbnail:'assets/images/english.jpeg' ,
-        title: "English"),
-    Channel(url: 'https://s2.cwebtv.net:4433/faad/faad/playlist.m3u8',
-        thumbnail:'assets/images/other.jpeg' ,
-        title: "Español")
 
-  ];
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getCategoryData() {
-    return FirebaseFirestore.instance.collection("categories").snapshots();
+    return FirebaseFirestore.instance.collection("categories").orderBy("index").snapshots();
+  }
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChannelData() {
+    return FirebaseFirestore.instance.collection("channels").snapshots();
   }
   Stream<QuerySnapshot<Map<String, dynamic>>> getProductData(id) {
     return FirebaseFirestore.instance.collection("products").where('category',isEqualTo:id).snapshots();
@@ -84,31 +79,66 @@ class _WatchSectionState extends State<WatchSection> {
                  ],
                ),
              ),
-             /*Container(
-               height: MediaQuery.of(context).size.height / 3.5,
+             SizedBox(
+              height: MediaQuery.of(context).size.height / 3.6,
 
-               width:MediaQuery.of(context).size.width,
-               padding:
-               const EdgeInsets.symmetric(horizontal: 5.0),
-               child: ListView.builder(
-                   shrinkWrap: true,
-                   scrollDirection: Axis.horizontal,
-                   itemCount: liveStreamingTitles.length,
-                   itemBuilder:
-                       (BuildContext context, int position) {
-                     *//*  Product product =
-                                  productList.elementAt(position);*//*
+               child: Padding(
+                 padding:
+                 const EdgeInsets.symmetric(horizontal: 8.0),
+                 child: StreamBuilder<
+                     QuerySnapshot<Map<String, dynamic>>>(
+                   builder: (context, snapshot) {
+                     if (snapshot.hasData) {
+                       List<
+                           QueryDocumentSnapshot<
+                               Map<String, dynamic>>> list =
+                           snapshot.data!.docs;
+                       List<Channel> channelList = list
+                           .map((e) => Channel.fromJson(e.data()))
+                           .toList();
+                       return ListView.builder(
+                           shrinkWrap: true,
+                           scrollDirection: Axis.horizontal,
+                           itemCount: channelList.length,
+                           itemBuilder:
+                               (BuildContext context, int position) {
+                             Channel channel =
+                             channelList.elementAt(position);
 
 
-                     return CustomLiveStreamingCard(
-                       title: liveStreamingTitles[position],
-                       thumbnail: liveStreamingVideosThumbnails[position],
-                       videoUrl: liveStreamingVideosLinks[position],
-                       // onTap: myfunction,
-                     );
-                   }),
-             ),*/
-             SingleChildScrollView(
+                             return CustomLiveStreamingCard(
+                               title: channel.title,
+                               thumbnail: channel.thumbnail,
+                               videoUrl: channel.url,
+                               // onTap: myfunction,
+                             );
+                           });
+                     } else {
+                       return const Center(
+                           child: CircularProgressIndicator(
+                               color: clr_selected_icon));
+                     }
+                   },
+                   stream: getChannelData(),
+
+                 /*ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 10,
+                                itemBuilder: (BuildContext context, int position) {
+                                  return CustomCard(
+                                    title: "Song Title",
+                                    thumbnail: Images.songImage,
+                                    videoUrl: "",
+                                    onTap: () {},
+                                  );
+                                })*/
+
+               ),
+             ),
+             ),
+
+            /* SingleChildScrollView(
                scrollDirection: Axis.horizontal,
                child: Row(
                  children: channelList.map((e) => CustomLiveStreamingCard(
@@ -118,7 +148,7 @@ class _WatchSectionState extends State<WatchSection> {
                    // onTap: myfunction,
                  )).toList(),
                ),
-             ),
+             ),*/
              Padding(
                   padding: const EdgeInsets.all(0),
                   child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -128,16 +158,13 @@ class _WatchSectionState extends State<WatchSection> {
                             snapshot.data!.docs;
                         List<Category> categoryList =
                         list.map((e) => Category.fromJson(e.data())).toList();
+
                         return ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             Category category = categoryList.elementAt(index);
                             return Column(
                               children: [
-
-
-
-
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       left: 14.0, top: 30.0, bottom: 0.0, right: 16.0),
@@ -240,7 +267,7 @@ class _WatchSectionState extends State<WatchSection> {
                         );
                       } else {
                         return const Center(
-                            child: CircularProgressIndicator(color: Colors.pink));
+                            child: CircularProgressIndicator(color: Colors.deepOrange));
                       }
                     },
                     stream: getCategoryData(),
@@ -457,7 +484,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
 
         },
         child: Container(
-        //  height:((_width/1.15)* 0.5635)+40,
+       //  height:((_width/1.15)* 0.5635)+40,
           width: _width/1.15,
           margin: EdgeInsets.only(left: 10,right: 10),
           decoration: BoxDecoration(
