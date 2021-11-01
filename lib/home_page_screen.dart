@@ -5,6 +5,7 @@ import 'package:fpg_family_app/read_section.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/watch_section.dart';
 import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'helper/colors.dart';
 import 'helper/dimens.dart';
@@ -27,7 +28,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   @override
   void initState() {
+    askPermission();
     super.initState();
+  }
+  askPermission() async {
+    final status =
+        await Permission
+        .storage
+        .request();
+    if (status
+        .isGranted) {
+
+    } else {
+      print(
+          "No Permission");
+    }
   }
 
   FeedsRepository feedsRepository = FeedsRepository();

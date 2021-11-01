@@ -142,205 +142,186 @@ print("Main Items $mainItems");
         }
       }
     }
-
     print(total);
     print("downloaded item + ${downloadedItems.length}");
     print("fileList item + ${filesList.length}");
-
-
     print(filesList);
-    /*filesList.contains(items
-        .elementAt(1)
-        .enclosure!
-        .url!
-        .split('/')
-        .last);*/
-
     final pageManager = getIt<PageManager>();
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
+    return Container(
+      color: clr_black,
+      child: SingleChildScrollView(
+        child: Column(
           children: [
-            /*Container(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-                  child: Text(
-                    "${mainItems.elementAt(0).title}",
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      //inherit: true,
-                      color: Colors.white,
-                      fontSize: 19,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),*/
-            Expanded(
-              child: Container(
-                color: clr_black,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      downloadedItems.isEmpty
-                          ? Container()
-                          : ListView.separated(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return Container(
-                              //  margin: EdgeInsets.only(top: 4, bottom: 4),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 4),
-                              color: /*nowPlaying == items.elementAt(index)
-                                          ? Colors.blueGrey.withOpacity(0.3)
-                                          : */
-                              Colors.black54,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${downloadedItems[index].title}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1!
-                                        .copyWith(
-                                        inherit: true,
-                                        color: Colors.white,
-                                        fontSize: 16),
-                                  ),
-                                  Text(
-                                    "${downloadedItems[index].pubDate?.toLocal()}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .copyWith(
-                                        inherit: true,
-                                        color: Colors.white,
-                                        fontSize: 10),
-                                  ),
-                                  Divider(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.end,
-                                    children: [
-                                      pageManager.currentSongTitleNotifier
-                                          .value ==
-                                          downloadedItems[index].title
-                                          ? ValueListenableBuilder<
-                                          ButtonState>(
-                                        valueListenable: pageManager
-                                            .playButtonNotifier,
-                                        builder: (_, value, __) {
-                                          switch (value) {
-                                            case ButtonState
-                                                .loading:
-                                              return Container(
-                                                margin:
-                                                EdgeInsets.all(
-                                                    8.0),
-                                                width: 32.0,
-                                                height: 32.0,
-                                                child:
-                                                CircularProgressIndicator(),
-                                              );
-                                            case ButtonState.paused:
-                                              return IconButton(
-                                                  icon: Icon(
-                                                    Icons.play_arrow,
-                                                    color:
-                                                    Colors.white,
-                                                  ),
-                                                  iconSize: 32.0,
-                                                  onPressed:(){
-                                                    Global.isPlaying=true;
-                                                    pageManager
-                                                        .play;
-                                                    setState(() {
-
-                                                    });
-                                                  }
-
-                                              );
-                                            case ButtonState
-                                                .playing:
-                                              return IconButton(
-                                                  icon: Icon(
-                                                    Icons.pause,
-                                                    color:
-                                                    Colors.white,
-                                                  ),
-                                                  iconSize: 32.0,
-                                                  onPressed:(){
-                                                    Global.isPlaying=false;
-                                                    pageManager
-                                                        .pause;
-                                                    setState(() {
-
-                                                    });
-                                                  }
-
-                                              );
-                                          }
-                                        },
-                                      )
-                                          : IconButton(
-                                        onPressed: () async {
-                                          Global.isPlaying=true;
-                                          /*await pageManager
-                                                  .playWithId(index);*/
-                                          print("sekectedd uri ${downloadedItems.elementAt(index).enclosure!.url}");
-                                          await pageManager
-                                              .playWithUri(downloadedItems.elementAt(index).enclosure!.url);
-                                          setState(() {});
-                                        },
+            downloadedItems.isEmpty
+                ?  Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(child: Text("No item in the list",style: Theme.of(context)
+                  .textTheme
+                  .subtitle1!
+                  .copyWith(
+                  inherit: true,
+                  color: Colors.white,
+                  fontSize: 16),)),
+                )
+                : ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Container(
+                    //  margin: EdgeInsets.only(top: 4, bottom: 4),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 4),
+                    color: /*nowPlaying == items.elementAt(index)
+                                    ? Colors.blueGrey.withOpacity(0.3)
+                                    : */
+                    Colors.black54,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${downloadedItems[index].title}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(
+                              inherit: true,
+                              color: Colors.white,
+                              fontSize: 16),
+                        ),
+                        Text(
+                          "${downloadedItems[index].pubDate?.toLocal()}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(
+                              inherit: true,
+                              color: Colors.white,
+                              fontSize: 10),
+                        ),
+                        Divider(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.end,
+                          children: [
+                            pageManager.currentSongTitleNotifier
+                                .value ==
+                                downloadedItems[index].title
+                                ? ValueListenableBuilder<
+                                ButtonState>(
+                              valueListenable: pageManager
+                                  .playButtonNotifier,
+                              builder: (_, value, __) {
+                                switch (value) {
+                                  case ButtonState
+                                      .loading:
+                                    return Container(
+                                      margin:
+                                      EdgeInsets.all(
+                                          8.0),
+                                      width: 32.0,
+                                      height: 32.0,
+                                      child:
+                                      CircularProgressIndicator(),
+                                    );
+                                  case ButtonState.paused:
+                                    return IconButton(
                                         icon: Icon(
                                           Icons.play_arrow,
-                                          size: 32,
-                                          color: Colors.white,
+                                          color:
+                                          Colors.white,
                                         ),
-                                      ),
+                                        iconSize: 32.0,
+                                        onPressed:(){
+                                          pageManager
+                                              .play();
+                                          Future.delayed(Duration(milliseconds: 3000)).then((value) {
 
-                                      IconButton(
+                                            Global.isPlaying=true;
+                                            setState(() {});
+                                          });
+                                        }
+
+                                    );
+                                  case ButtonState
+                                      .playing:
+                                    return IconButton(
                                         icon: Icon(
-                                          Icons.delete,
-                                          size: 28,
-                                          color: Colors.white,
+                                          Icons.pause,
+                                          color:
+                                          Colors.white,
                                         ),
-                                        onPressed: () async {
-                                          print("delete ${downloadedItems.elementAt(index).enclosure!.url!.split("/").last}");
-                                          await _deleteFile(downloadedItems.elementAt(index).enclosure!.url!.split("/").last);
-
-                                          print("done");
+                                        iconSize: 32.0,
+                                        onPressed:(){
+                                          Global.isPlaying=false;
+                                          pageManager
+                                              .pause();
                                           setState(() {
 
                                           });
-                                        },
-                                      )
+                                        }
 
-                                    ],
-                                  ),
-                                ],
+                                    );
+                                }
+                              },
+                            )
+                                : IconButton(
+                              onPressed: () async {
+                                /*await pageManager
+                                            .playWithId(index);*/
+                                print("sekectedd uri ${downloadedItems.elementAt(index).enclosure!.url}");
+                                await pageManager
+                                    .playWithUri(downloadedItems.elementAt(index).enclosure!.url);
+                                Global.isPlaying=true;
+                                Future.delayed(Duration(milliseconds: 3000)).then((value) {
+
+                                  setState(() {});
+                                });
+                              },
+                              icon: Icon(
+                                Icons.play_arrow,
+                                size: 32,
+                                color: Colors.white,
                               ),
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return Container(
-                              height: 0.5,
-                              margin: EdgeInsets.symmetric(vertical: 2),
-                              color: Colors.white30,
-                            );
-                          },
-                          itemCount: filesList.length /*mainItems
-                                  .elementAt(3)
-                                  .items!
-                                  .length*/),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                            ),
+
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                size: 28,
+                                color: Colors.white,
+                              ),
+                              onPressed: () async {
+                                print("delete ${downloadedItems.elementAt(index).enclosure!.url!.split("/").last}");
+                                await _deleteFile(downloadedItems.elementAt(index).enclosure!.url!.split("/").last);
+
+                                print("done");
+                                setState(() {
+
+                                });
+                              },
+                            )
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Container(
+                    height: 0.5,
+                    margin: EdgeInsets.symmetric(vertical: 2),
+                    color: Colors.white30,
+                  );
+                },
+                itemCount: downloadedItems.length /*mainItems
+                            .elementAt(3)
+                            .items!
+                            .length*/),
           ],
         ),
       ),

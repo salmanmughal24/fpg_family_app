@@ -201,6 +201,7 @@ class PageManager {
   }
   Future<void> playWithUri(String? uri) async {
     await _audioHandler.skipToQueueItem(mediaItems.indexOf(mediaItems.where((element) => element.extras!["url"]==uri).first));
+
   }
 
   void repeat() {

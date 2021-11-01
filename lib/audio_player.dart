@@ -138,7 +138,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: Image.network(
-                              "${widget.items.elementAt(widget.index).image!.url}",
+                              widget.items.elementAt(widget.index).image?.url??'https://images.subsplash.com/base64/L2ltYWdlLmpwZz9pZD1mYzYwZDhhZS1jN2UxLTRhODMtOTVhNi1kMjIzMjBmZDRhZGYmdz0zMDAwJmg9MzAwMCZhbGxvd191cHNjYWxlPXRydWU.jpg',
                               height: 120,
                               width: 120,
                               fit: BoxFit.fill,
@@ -296,7 +296,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                          },
 
                                         )
-                                        :Text("${items[index].description}", style: Theme.of(context)
+                                        :Text(items[index].description==''?"No description":items[index].description!, style: Theme.of(context)
                                               .textTheme
                                               .bodyText1!
                                               .copyWith(

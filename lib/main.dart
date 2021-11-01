@@ -9,6 +9,7 @@ import 'package:fpg_family_app/page_manager.dart';
 import 'package:fpg_family_app/repositories/feed_repository.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/services/service_locator.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'audio/audio_player_handler.dart';
 
@@ -40,11 +41,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FPG Family',
       theme: ThemeData(
-        textTheme: const TextTheme(
-            bodyText1: TextStyle(color: Colors.white, fontSize: 13),
-            bodyText2: TextStyle(color: Colors.white, fontSize: 13),
-            subtitle2: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-            subtitle1: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)
+        textTheme: GoogleFonts.openSansTextTheme(
+            /*TextTheme(
+                bodyText1: TextStyle(color: Colors.white, fontSize: 13, ),
+                bodyText2: TextStyle(color: Colors.white, fontSize: 13),
+                subtitle2: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+                subtitle1: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)
+            ),*/
         ),
         // This is the theme of your application.
         //

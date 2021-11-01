@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:fpg_family_app/audio/audio_player_handler.dart';
 import 'package:fpg_family_app/audio_player.dart';
 import 'package:fpg_family_app/global.dart';
@@ -45,12 +46,13 @@ class _ListenSectionState extends State<ListenSection>
         },
         itemBuilder: (context, index) {
           var image = items[index].image?.url ??
-              'https://fpgfamily.com/wp-content/uploads/2021/09/cropped-FPG-Family-Circle-black-and-white-1-128x128.png';
+              'https://images.subsplash.com/base64/L2ltYWdlLmpwZz9pZD1mYzYwZDhhZS1jN2UxLTRhODMtOTVhNi1kMjIzMjBmZDRhZGYmdz0zMDAwJmg9MzAwMCZhbGxvd191cHNjYWxlPXRydWU.jpg';
           var author = items[index].author ?? "";
           var generator = items[index].generator ?? "";
           return InkWell(
             onTap: () {
-              Global.albumImage = items[index].image!.url!;
+             // print("image = > $image");
+              Global.albumImage = image;
               Global.albumName=items[index].title!;
               print(Global.albumImage);
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyAudioPlayer(index:  index,items:items)));
@@ -60,51 +62,82 @@ class _ListenSectionState extends State<ListenSection>
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      image,
-                      height: 75,
-                      width: 75,
-                    ),
-                  ),
-                  VerticalDivider(
-                    color: Colors.white70,
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          items[index].title ?? "",
-                          style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            fontSize: 17.0
-                          ),
+                  Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          image,
+                          height: 75,
+                          width: 75,
                         ),
-                        SizedBox(height: 5.0),
-                        Text(
-                          "by $author",
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            fontWeight: FontWeight.w300,
-                              fontSize: 11.0
-                          ),
+                      ),
+                      VerticalDivider(
+                        color: Colors.white70,
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              items[index].title ?? "",
+                              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                fontSize: 17.0,
+                                  fontWeight: FontWeight.w500,
+                                color: Colors.white
+                              ),
+                            ),
+                            SizedBox(height: 5.0),
+                            Text(
+                              "$author",
+                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                fontWeight: FontWeight.w400,
+                                  color: Colors.blue,
+                                  fontSize: 10.0
+                              ),
+                            ),
+
+
+                          ],
                         ),
-                        SizedBox(height: 5.0,),
-                        Text(
-                          "${items[index].items?.length.toString()} Episodes",
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 11.0,
-                            color: Colors.deepOrange.shade300
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 010.0,),
+                    ],
                   ),
-                  SizedBox(height: 010.0,),
+          SizedBox(height: 10.0),
+                  items[index].description!.contains("<")     ? Html(
+
+                    data:"${items[index].description}",
+
+                    style: {
+                      'p':Style(color: Colors.white70,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
+
+
+                    },
+
+                  )
+                      :Text("${items[index].description}", style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(
+                      inherit: true,
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 10) ,),
+
+          SizedBox(height: 5.0,),
+          Text(
+          "${items[index].items?.length.toString()} Episodes",
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          fontWeight: FontWeight.w300,
+          fontSize: 12.0,
+          color: Colors.deepOrange.shade300
+          ),
+          ),
                 ],
               ),
             ),
