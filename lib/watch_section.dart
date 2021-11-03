@@ -49,7 +49,7 @@ class _WatchSectionState extends State<WatchSection> {
                  children: [
                    Text(
                      "Live Streaming",
-                     style: GoogleFonts.lora(
+                     style: GoogleFonts.openSans(
                          textStyle: TextStyle(
                              color: Colors.white70,
                              fontWeight: FontWeight.w700,
@@ -172,7 +172,7 @@ class _WatchSectionState extends State<WatchSection> {
                                     children: [
                                       Text(
                                         category.name,
-                                        style: GoogleFonts.lora(
+                                        style: GoogleFonts.openSans(
                                             textStyle: TextStyle(
                                                 color: Colors.white70,
                                                 fontWeight: FontWeight.w700,
@@ -375,7 +375,7 @@ class _CustomCardState extends State<CustomCard> {
                   const EdgeInsets.only(left: 10, right: 10),
                   child: Text(
                     widget.title,
-                    style: GoogleFonts.roboto(
+                    style: GoogleFonts.openSans(
                       textStyle: TextStyle(
                         color: Colors.white70,
                         fontWeight: FontWeight.w500,
@@ -524,7 +524,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
                     children: const [
                       CircularProgressIndicator(color: Colors.deepOrange,),
                       SizedBox(height: 20),
-                      Text("Loading"),
+                      Text("Loading",),
                     ],
                   ): Stack(
                     children: [
@@ -559,11 +559,11 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
                 const EdgeInsets.only(left: 10, right: 10,top: 10,bottom: 10),
                 child: Text(
                   widget.title,
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.openSans(
                     textStyle: TextStyle(
                         color: Colors.white70,
                         fontWeight: FontWeight.w700,
-                        fontSize: 14
+                        fontSize: 12
                     ),
                   ),
 

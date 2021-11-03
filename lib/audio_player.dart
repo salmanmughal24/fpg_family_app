@@ -7,6 +7,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:fpg_family_app/global.dart';
 import 'package:fpg_family_app/layouts/my_scaffold.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -266,22 +267,15 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                                           child: Text(
                                             "${DateFormat('MMMM dd').format(items[index].pubDate!.toLocal())}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1!
-                                                .copyWith(
-                                                inherit: true,
+                                            style: GoogleFonts.openSans(
                                                 color: Colors.white,
                                                 fontSize: 10),
                                           ),
                                         ),
                                         Text(
-                                          "${items[index].title}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1!
-                                              .copyWith(
-                                                  inherit: true,
+                                          items[index].title!,
+                                          style: GoogleFonts.openSans(
+
                                                   color: Colors.white,
                                                   fontSize: 16),
                                         ),
@@ -290,17 +284,16 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                         data:"${items[index].description}",
 
                                          style: {
-                                          'p':Style(color: Colors.white70,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
+                                          'p':Style(
+                                              fontFamily: 'opensans',
+                                              color: Colors.white70,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
 
 
                                          },
 
                                         )
-                                        :Text(items[index].description==''?"No description":items[index].description!, style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .copyWith(
-                                              inherit: true,
+                                        :Text(items[index].description==''?"No description":items[index].description!, style: GoogleFonts.openSans(
+                                             // inherit: true,
                                               color: Colors.white70,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 10) ,),
@@ -573,7 +566,7 @@ class Playlist extends StatelessWidget {
                 child: Column(
                   children: [
                     //   Container(child: Image.network(),),
-                    Text('${playlistTitles[index]}'),
+                    Text('${playlistTitles[index]}' ,style: GoogleFonts.openSans()),
                   ],
                 ),
                 // ...

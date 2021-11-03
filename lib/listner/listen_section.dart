@@ -40,8 +40,8 @@ class _ListenSectionState extends State<ListenSection>
       child: ListView.separated(
         separatorBuilder: (context, index) {
           return Container(
-            height: 0.8,
-            color:clr_black ,
+            height: 0.0,
+            color:Colors.black ,
           );
         },
         itemBuilder: (context, index) {
@@ -61,85 +61,115 @@ class _ListenSectionState extends State<ListenSection>
                         .push(ChannelDetails.route(items[index]));*/
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              margin: EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                color: clr_black,
+              ),
+              child:
+              Column(
                 children: [
                   Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          image,
-                          height: 75,
-                          width: 75,
-                        ),
-                      ),
-                      VerticalDivider(
-                        color: Colors.white70,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 16.0),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Image.network(
+                             items.elementAt(index).image?.url??'https://images.subsplash.com/base64/L2ltYWdlLmpwZz9pZD1mYzYwZDhhZS1jN2UxLTRhODMtOTVhNi1kMjIzMjBmZDRhZGYmdz0zMDAwJmg9MzAwMCZhbGxvd191cHNjYWxlPXRydWU.jpg',
+                              height: 120,
+                              width: 120,
+                              fit: BoxFit.fill,
+                            )),
                       ),
                       Expanded(
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              items[index].title ?? "",
-                              style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                fontSize: 17.0,
-                                  fontWeight: FontWeight.w500,
-                                color: Colors.white
+                            Container(
+                              padding:
+                              const EdgeInsets.only(left: 10, right: 10),
+                              //color: Colors.black,
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                "${items.elementAt(index).title}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                  //inherit: true,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
                               ),
                             ),
-                            SizedBox(height: 5.0),
-                            Text(
-                              "$author",
-                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                fontWeight: FontWeight.w400,
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, bottom: 20, left: 10, right: 10),
+                              //color: Colors.black,
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                "${items.elementAt(index).author??""}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                  //inherit: true,
                                   color: Colors.blue,
-                                  fontSize: 10.0
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
                               ),
                             ),
-
-
                           ],
                         ),
                       ),
-                      SizedBox(height: 010.0,),
                     ],
                   ),
-          SizedBox(height: 10.0),
-                  items[index].description!.contains("<")     ? Html(
-
-                    data:"${items[index].description}",
-
-                    style: {
-                      'p':Style(color: Colors.white70,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
-
-
-                    },
-
-                  )
-                      :Text("${items[index].description}", style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(
-                      inherit: true,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 10) ,),
-
-          SizedBox(height: 5.0,),
-          Text(
-          "${items[index].items?.length.toString()} Episodes",
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-          fontWeight: FontWeight.w300,
-          fontSize: 12.0,
-          color: Colors.deepOrange.shade300
-          ),
-          ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    //color: Colors.black,
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "${items.elementAt(index).description}",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        //inherit: true,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12,
+                      ),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    //color: Colors.black,
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "${items.elementAt(index).items!.length} Episodes",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        //inherit: true,
+                        color: Colors.deepOrange.shade300,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(height: 5.0,),
                 ],
               ),
+
             ),
           );
         },

@@ -33,7 +33,7 @@ class _ReadSectionState extends State<ReadSection>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: clr_black,
+      color: Colors.black,//clr_black,
       child: PagedListView.separated(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<FeedsItem>(

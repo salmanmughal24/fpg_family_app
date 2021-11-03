@@ -12,6 +12,11 @@ import 'helper/dimens.dart';
 import 'helper/utils.dart';
 import 'listner/listen_section.dart';
 import 'repositories/feed_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+
 
 class HomePageScreen extends StatefulWidget {
   HomePageScreen();
@@ -29,6 +34,47 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   void initState() {
     askPermission();
+ /*   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+            //    channel.description,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification!;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: this.context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title!),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body!)],
+                  ),
+                ),
+              );
+            });
+      }
+    });*/
     super.initState();
   }
   askPermission() async {
@@ -58,8 +104,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
           style: label_appbar(),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+          IconButton(onPressed: () {
+          }, icon: Icon(Icons.search)),
+          IconButton(onPressed: () {
+          /*  flutterLocalNotificationsPlugin.show(
+                0,
+                "Testing Fgp Family",
+                "How you doing ?",
+                NotificationDetails(
+                    android: AndroidNotificationDetails(channel.id, channel.name, *//*channel.description*//*
+                        importance: Importance.high,
+                        color: Colors.blue,
+                        playSound: true,
+                        icon: '@mipmap/ic_launcher')));*/
+
+          }, icon: Icon(Icons.settings)),
         ],
       ),
       body: MainBody(

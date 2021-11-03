@@ -7,6 +7,7 @@ import 'package:fpg_family_app/notifiers/progress_notifier.dart';
 import 'package:fpg_family_app/page_manager.dart';
 import 'package:fpg_family_app/services/service_locator.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MainBody extends StatefulWidget {
   final Widget body;
@@ -93,10 +94,7 @@ class _MainBodyState extends State<MainBody> {
                                                 right: 10),
                                             child: Text(
                                               Global.albumName,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1!
-                                                  .copyWith(
+                                              style: GoogleFonts.openSans(
                                                       //inherit: true,
                                                       color: Colors.black87,
                                                       fontSize: 18,
@@ -145,10 +143,7 @@ class _MainBodyState extends State<MainBody> {
                                           animatedTexts: [
                                             TypewriterAnimatedText(
                                               '${title}',
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1!
-                                                  .copyWith(
+                                              textStyle: GoogleFonts.openSans(
                                                     //inherit: true,
                                                     color: Colors.black87,
                                                     fontWeight: FontWeight.w600,
