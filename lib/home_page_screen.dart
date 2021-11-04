@@ -3,7 +3,10 @@ import 'package:fpg_family_app/foryou.dart';
 import 'package:fpg_family_app/layouts/my_scaffold.dart';
 import 'package:fpg_family_app/read_section.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
+import 'package:fpg_family_app/services/local_notification_service.dart';
+import 'package:fpg_family_app/video_player.dart';
 import 'package:fpg_family_app/watch_section.dart';
+import 'package:fpg_family_app/yoyo_player.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -34,48 +37,61 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   void initState() {
     askPermission();
- /*   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification!;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-            //    channel.description,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher',
-              ),
-            ));
+    super.initState();
+    LocalNotificationService.initialize(this.context);
+
+    ///gives you the message on which user taps
+    ///and it opened the app from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if(message != null){
+        if(message.data["route"] != null){
+          if(message.data["route"].contains(".m3u8")){
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: message.data["route"])));
+          }
+          else if(message.data["route"].contains("https://www.youtube.com/watch?v=")){
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> VideoPlayerr(videooUrl:message.data["route"])));
+          }
+          else {
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> WatchSection()));
+          }
+
+        }
+        //Navigator.of(this.context).pushNamed(routeFromMessage);
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      RemoteNotification notification = message.notification!;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        showDialog(
-            context: this.context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text(notification.title!),
-                content: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(notification.body!)],
-                  ),
-                ),
-              );
-            });
+    ///forground work
+    FirebaseMessaging.onMessage.listen((message) {
+      if(message.notification != null){
+        print(message.notification!.body);
+        print(message.notification!.title);
+
       }
-    });*/
-    super.initState();
+
+      LocalNotificationService.display(message);
+    });
+
+    ///When the app is in background but opened and user taps
+    ///on the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      final routeFromMessage = message.data["route"];
+      if(message != null){
+        if(message.data["route"] != null){
+          if(message.data["route"].contains(".m3u8")){
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: message.data["route"])));
+          }
+          else if(message.data["route"].contains("https://www.youtube.com/watch?v=")){
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> VideoPlayerr(videooUrl:message.data["route"])));
+          }
+          else {
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> WatchSection()));
+          }
+
+        }
+        //Navigator.of(this.context).pushNamed(routeFromMessage);
+      }
+    });
+
   }
   askPermission() async {
     final status =
@@ -96,7 +112,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: clr_black,
+      /*backgroundColor: clr_black,
       appBar: AppBar(
         backgroundColor: clr_black,
         title: Text(
@@ -107,20 +123,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
           IconButton(onPressed: () {
           }, icon: Icon(Icons.search)),
           IconButton(onPressed: () {
-          /*  flutterLocalNotificationsPlugin.show(
-                0,
-                "Testing Fgp Family",
-                "How you doing ?",
-                NotificationDetails(
-                    android: AndroidNotificationDetails(channel.id, channel.name, *//*channel.description*//*
-                        importance: Importance.high,
-                        color: Colors.blue,
-                        playSound: true,
-                        icon: '@mipmap/ic_launcher')));*/
-
           }, icon: Icon(Icons.settings)),
         ],
-      ),
+      ),*/
       body: MainBody(
         body: PageView.builder(
           controller: _pageController,

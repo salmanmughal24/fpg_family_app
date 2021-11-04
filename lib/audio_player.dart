@@ -204,7 +204,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                             //inherit: true,
                             color: Colors.white,
                             fontWeight: FontWeight.w300,
-                            fontSize: 12,
+                            fontSize: 14,
                           ),
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,

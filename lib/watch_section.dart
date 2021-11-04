@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/helper/utils.dart';
 import 'package:fpg_family_app/model/channel.dart';
 import 'package:fpg_family_app/see_all.dart';
 import 'package:fpg_family_app/video_player.dart' as vd;
@@ -36,246 +37,262 @@ class _WatchSectionState extends State<WatchSection> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-       child: SingleChildScrollView(
-         physics: ScrollPhysics(),
-         child: Column(
-           children: [
-             Padding(
-               padding: const EdgeInsets.only(
-                   left: 14.0, top: 30.0, bottom: 20.0, right: 16.0),
-               child: Row(
-                 children: [
-                   Text(
-                     "Live Streaming",
-                     style: GoogleFonts.openSans(
-                         textStyle: TextStyle(
-                             color: Colors.white70,
-                             fontWeight: FontWeight.w700,
-                             fontSize: 14)),
-                   ),
-                   Spacer(),
-                   GestureDetector(
-                     onTap: () {
+    return Scaffold(
+      backgroundColor: clr_black,
+      appBar: AppBar(
+        backgroundColor: clr_black,
+        title: Text(
+          'FPG Family',
+          style: label_appbar(),
+        ),
+        actions: [
+          IconButton(onPressed: () {
+          }, icon: Icon(Icons.search)),
+          IconButton(onPressed: () {
+          }, icon: Icon(Icons.settings)),
+        ],
+      ),
+      body: Container(
+        color: Colors.black,
+         child: SingleChildScrollView(
+           physics: ScrollPhysics(),
+           child: Column(
+             children: [
+               Padding(
+                 padding: const EdgeInsets.only(
+                     left: 14.0, top: 30.0, bottom: 20.0, right: 16.0),
+                 child: Row(
+                   children: [
+                     Text(
+                       "Live Streaming",
+                       style: GoogleFonts.openSans(
+                           textStyle: TextStyle(
+                               color: Colors.white70,
+                               fontWeight: FontWeight.w700,
+                               fontSize: 14)),
+                     ),
+                     Spacer(),
+                     GestureDetector(
+                       onTap: () {
 
-                       /* Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
-                                      );*/
-                     },
-                     child: Container(
-                       child: Row(
-                         children: [
-                           Icon(
-                             Icons.navigate_next,
-                             color: Colors.white54,
-                             size: 20,
-                           )
-                         ],
+                         /* Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
+                                        );*/
+                       },
+                       child: Container(
+                         child: Row(
+                           children: [
+                             Icon(
+                               Icons.navigate_next,
+                               color: Colors.white54,
+                               size: 20,
+                             )
+                           ],
+                         ),
                        ),
                      ),
-                   ),
-                 ],
+                   ],
+                 ),
                ),
-             ),
-             SizedBox(
-              height: MediaQuery.of(context).size.height / 3.6,
+               SizedBox(
+                height: MediaQuery.of(context).size.height / 3.6,
 
-               child: Padding(
-                 padding:
-                 const EdgeInsets.symmetric(horizontal: 8.0),
-                 child: StreamBuilder<
-                     QuerySnapshot<Map<String, dynamic>>>(
-                   builder: (context, snapshot) {
-                     if (snapshot.hasData) {
-                       List<
-                           QueryDocumentSnapshot<
-                               Map<String, dynamic>>> list =
-                           snapshot.data!.docs;
-                       List<Channel> channelList = list
-                           .map((e) => Channel.fromJson(e.data()))
-                           .toList();
-                       return ListView.builder(
-                           shrinkWrap: true,
-                           scrollDirection: Axis.horizontal,
-                           itemCount: channelList.length,
-                           itemBuilder:
-                               (BuildContext context, int position) {
-                             Channel channel =
-                             channelList.elementAt(position);
+                 child: Padding(
+                   padding:
+                   const EdgeInsets.symmetric(horizontal: 8.0),
+                   child: StreamBuilder<
+                       QuerySnapshot<Map<String, dynamic>>>(
+                     builder: (context, snapshot) {
+                       if (snapshot.hasData) {
+                         List<
+                             QueryDocumentSnapshot<
+                                 Map<String, dynamic>>> list =
+                             snapshot.data!.docs;
+                         List<Channel> channelList = list
+                             .map((e) => Channel.fromJson(e.data()))
+                             .toList();
+                         return ListView.builder(
+                             shrinkWrap: true,
+                             scrollDirection: Axis.horizontal,
+                             itemCount: channelList.length,
+                             itemBuilder:
+                                 (BuildContext context, int position) {
+                               Channel channel =
+                               channelList.elementAt(position);
 
 
-                             return CustomLiveStreamingCard(
-                               title: channel.title,
-                               thumbnail: channel.thumbnail,
-                               videoUrl: channel.url,
-                               // onTap: myfunction,
-                             );
-                           });
-                     } else {
-                       return const Center(
-                           child: CircularProgressIndicator(
-                               color: clr_selected_icon));
-                     }
-                   },
-                   stream: getChannelData(),
+                               return CustomLiveStreamingCard(
+                                 title: channel.title,
+                                 thumbnail: channel.thumbnail,
+                                 videoUrl: channel.url,
+                                 // onTap: myfunction,
+                               );
+                             });
+                       } else {
+                         return const Center(
+                             child: CircularProgressIndicator(
+                                 color: clr_selected_icon));
+                       }
+                     },
+                     stream: getChannelData(),
 
-                 /*ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 10,
-                                itemBuilder: (BuildContext context, int position) {
-                                  return CustomCard(
-                                    title: "Song Title",
-                                    thumbnail: Images.songImage,
-                                    videoUrl: "",
-                                    onTap: () {},
-                                  );
-                                })*/
+                   /*ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 10,
+                                  itemBuilder: (BuildContext context, int position) {
+                                    return CustomCard(
+                                      title: "Song Title",
+                                      thumbnail: Images.songImage,
+                                      videoUrl: "",
+                                      onTap: () {},
+                                    );
+                                  })*/
 
+                 ),
                ),
-             ),
-             ),
-
-            /* SingleChildScrollView(
-               scrollDirection: Axis.horizontal,
-               child: Row(
-                 children: channelList.map((e) => CustomLiveStreamingCard(
-                   title: e.title,
-                   thumbnail: e.thumbnail,
-                   videoUrl: e.url,
-                   // onTap: myfunction,
-                 )).toList(),
                ),
-             ),*/
-             Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<QueryDocumentSnapshot<Map<String, dynamic>>> list =
-                            snapshot.data!.docs;
-                        List<Category> categoryList =
-                        list.map((e) => Category.fromJson(e.data())).toList();
 
-                        return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            Category category = categoryList.elementAt(index);
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 14.0, top: 30.0, bottom: 0.0, right: 16.0),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        category.name,
-                                        style: GoogleFonts.openSans(
-                                            textStyle: TextStyle(
-                                                color: Colors.white70,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14)),
-                                      ),
-                                      Spacer(),
-                                      GestureDetector(
-                                        onTap: () {
+              /* SingleChildScrollView(
+                 scrollDirection: Axis.horizontal,
+                 child: Row(
+                   children: channelList.map((e) => CustomLiveStreamingCard(
+                     title: e.title,
+                     thumbnail: e.thumbnail,
+                     videoUrl: e.url,
+                     // onTap: myfunction,
+                   )).toList(),
+                 ),
+               ),*/
+               Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<QueryDocumentSnapshot<Map<String, dynamic>>> list =
+                              snapshot.data!.docs;
+                          List<Category> categoryList =
+                          list.map((e) => Category.fromJson(e.data())).toList();
 
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
-                                          );
-                                        },
-                                        child: Container(
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.navigate_next,
-                                                color: Colors.white54,
-                                                size: 20,
-                                              )
-                                            ],
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              Category category = categoryList.elementAt(index);
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 14.0, top: 30.0, bottom: 0.0, right: 16.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          category.name,
+                                          style: GoogleFonts.openSans(
+                                              textStyle: TextStyle(
+                                                  color: Colors.white70,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 14)),
+                                        ),
+                                        Spacer(),
+                                        GestureDetector(
+                                          onTap: () {
+
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
+                                            );
+                                          },
+                                          child: Container(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.navigate_next,
+                                                  color: Colors.white54,
+                                                  size: 20,
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.height / 4,
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height / 4,
 
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: StreamBuilder<
-                                        QuerySnapshot<Map<String, dynamic>>>(
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          List<
-                                              QueryDocumentSnapshot<
-                                                  Map<String, dynamic>>> list =
-                                              snapshot.data!.docs;
-                                          List<Product> productList = list
-                                              .map((e) => Product.fromJson(e.data()))
-                                              .toList();
-                                          return ListView.builder(
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: productList.length,
-                                              itemBuilder:
-                                                  (BuildContext context, int position) {
-                                                Product product =
-                                                productList.elementAt(position);
+                                    child: Padding(
+                                      padding:
+                                      const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: StreamBuilder<
+                                          QuerySnapshot<Map<String, dynamic>>>(
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            List<
+                                                QueryDocumentSnapshot<
+                                                    Map<String, dynamic>>> list =
+                                                snapshot.data!.docs;
+                                            List<Product> productList = list
+                                                .map((e) => Product.fromJson(e.data()))
+                                                .toList();
+                                            return ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: productList.length,
+                                                itemBuilder:
+                                                    (BuildContext context, int position) {
+                                                  Product product =
+                                                  productList.elementAt(position);
 
 
-                                                return CustomCard(
-                                                  title: product.title,
-                                                  thumbnail: product.thumbnail,
-                                                  videoUrl: product.url,
-                                                  // onTap: myfunction,
-                                                );
-                                              });
-                                        } else {
-                                          return const Center(
-                                              child: CircularProgressIndicator(
-                                                  color: clr_selected_icon));
-                                        }
-                                      },
-                                      stream: getProductData(category.id),),
+                                                  return CustomCard(
+                                                    title: product.title,
+                                                    thumbnail: product.thumbnail,
+                                                    videoUrl: product.url,
+                                                    // onTap: myfunction,
+                                                  );
+                                                });
+                                          } else {
+                                            return const Center(
+                                                child: CircularProgressIndicator(
+                                                    color: clr_selected_icon));
+                                          }
+                                        },
+                                        stream: getProductData(category.id),),
 
-                                    /*ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 10,
-                                itemBuilder: (BuildContext context, int position) {
-                                  return CustomCard(
-                                    title: "Song Title",
-                                    thumbnail: Images.songImage,
-                                    videoUrl: "",
-                                    onTap: () {},
-                                  );
-                                })*/
+                                      /*ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 10,
+                                  itemBuilder: (BuildContext context, int position) {
+                                    return CustomCard(
+                                      title: "Song Title",
+                                      thumbnail: Images.songImage,
+                                      videoUrl: "",
+                                      onTap: () {},
+                                    );
+                                  })*/
 
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
-                          shrinkWrap: true,
-                          itemCount: categoryList.length,
-                        );
-                      } else {
-                        return const Center(
-                            child: CircularProgressIndicator(color: Colors.deepOrange));
-                      }
-                    },
-                    stream: getCategoryData(),
-                  )
-             ),
-           ],
-         ),
-       )
+                                ],
+                              );
+                            },
+                            shrinkWrap: true,
+                            itemCount: categoryList.length,
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator(color: Colors.deepOrange));
+                        }
+                      },
+                      stream: getCategoryData(),
+                    )
+               ),
+             ],
+           ),
+         )
+      ),
     );
   }
 }

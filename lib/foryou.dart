@@ -7,13 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:fpg_family_app/global.dart';
+import 'package:fpg_family_app/helper/utils.dart';
 import 'package:fpg_family_app/layouts/my_scaffold.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:webfeed/domain/rss_item.dart';
+import 'helper/colors.dart';
 import 'helper/colors.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
@@ -147,182 +151,200 @@ print("Main Items $mainItems");
     print("fileList item + ${filesList.length}");
     print(filesList);
     final pageManager = getIt<PageManager>();
-    return Container(
-      color: clr_black,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            downloadedItems.isEmpty
-                ?  Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(child: Text("No item in the list",style: Theme.of(context)
-                  .textTheme
-                  .subtitle1!
-                  .copyWith(
-                  inherit: true,
-                  color: Colors.white,
-                  fontSize: 16),)),
-                )
-                : ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Container(
-                    //  margin: EdgeInsets.only(top: 4, bottom: 4),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
-                    color: /*nowPlaying == items.elementAt(index)
-                                    ? Colors.blueGrey.withOpacity(0.3)
-                                    : */
-                    Colors.black54,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${downloadedItems[index].title}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(
-                              inherit: true,
-                              color: Colors.white,
-                              fontSize: 16),
-                        ),
-                        Text(
-                          "${downloadedItems[index].pubDate?.toLocal()}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(
-                              inherit: true,
-                              color: Colors.white,
-                              fontSize: 10),
-                        ),
-                        Divider(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.end,
-                          children: [
-                            pageManager.currentSongTitleNotifier
-                                .value ==
-                                downloadedItems[index].title
-                                ? ValueListenableBuilder<
-                                ButtonState>(
-                              valueListenable: pageManager
-                                  .playButtonNotifier,
-                              builder: (_, value, __) {
-                                switch (value) {
-                                  case ButtonState
-                                      .loading:
-                                    return Container(
-                                      margin:
-                                      EdgeInsets.all(
-                                          8.0),
-                                      width: 32.0,
-                                      height: 32.0,
-                                      child:
-                                      CircularProgressIndicator(),
-                                    );
-                                  case ButtonState.paused:
-                                    return IconButton(
-                                        icon: Icon(
-                                          Icons.play_arrow,
-                                          color:
-                                          Colors.white,
-                                        ),
-                                        iconSize: 32.0,
-                                        onPressed:(){
-                                          pageManager
-                                              .play();
-                                          Future.delayed(Duration(milliseconds: 3000)).then((value) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: clr_black,
+        title: Text(
+          'FPG Family',
+          style: label_appbar(),
+        ),
+        actions: [
+          IconButton(onPressed: () {
+          }, icon: Icon(Icons.search)),
+          IconButton(onPressed: () {
+          }, icon: Icon(Icons.settings)),
+        ],
+      ),
+      body: Container(
+        color: Colors.black,
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              downloadedItems.isEmpty
+                  ?  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Center(child: Text("No item in the list",style: Theme.of(context)
+                    .textTheme
+                    .subtitle1!
+                    .copyWith(
+                    inherit: true,
+                    color: Colors.white,
+                    fontSize: 16),)),
+                  )
+                  : ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      //  margin: EdgeInsets.only(top: 4, bottom: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        color:
+                        clr_black,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
 
-                                            Global.isPlaying=true;
-                                            setState(() {});
-                                          });
-                                        }
-
-                                    );
-                                  case ButtonState
-                                      .playing:
-                                    return IconButton(
-                                        icon: Icon(
-                                          Icons.pause,
-                                          color:
-                                          Colors.white,
-                                        ),
-                                        iconSize: 32.0,
-                                        onPressed:(){
-                                          Global.isPlaying=false;
-                                          pageManager
-                                              .pause();
-                                          setState(() {
-
-                                          });
-                                        }
-
-                                    );
-                                }
-                              },
-                            )
-                                : IconButton(
-                              onPressed: () async {
-                                /*await pageManager
-                                            .playWithId(index);*/
-                                print("sekectedd uri ${downloadedItems.elementAt(index).enclosure!.url}");
-                                await pageManager
-                                    .playWithUri(downloadedItems.elementAt(index).enclosure!.url);
-                                Global.isPlaying=true;
-                                Future.delayed(Duration(milliseconds: 3000)).then((value) {
-
-                                  setState(() {});
-                                });
-                              },
-                              icon: Icon(
-                                Icons.play_arrow,
-                                size: 32,
-                                color: Colors.white,
-                              ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Text(
+                              "${DateFormat('MMMM dd').format(downloadedItems[index].pubDate!.toLocal())}",
+                              style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 10),
                             ),
-
-                            IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                size: 28,
+                          ),
+                          Text(
+                            "${downloadedItems[index].title}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(
+                                inherit: true,
                                 color: Colors.white,
+                                fontSize: 16),
+                          ),
+                          Divider(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.end,
+                            children: [
+                              pageManager.currentSongTitleNotifier
+                                  .value ==
+                                  downloadedItems[index].title
+                                  ? ValueListenableBuilder<
+                                  ButtonState>(
+                                valueListenable: pageManager
+                                    .playButtonNotifier,
+                                builder: (_, value, __) {
+                                  switch (value) {
+                                    case ButtonState
+                                        .loading:
+                                      return Container(
+                                        margin:
+                                        EdgeInsets.all(
+                                            8.0),
+                                        width: 32.0,
+                                        height: 32.0,
+                                        child:
+                                        CircularProgressIndicator(),
+                                      );
+                                    case ButtonState.paused:
+                                      return IconButton(
+                                          icon: Icon(
+                                            Icons.play_arrow,
+                                            color:
+                                            Colors.white,
+                                          ),
+                                          iconSize: 32.0,
+                                          onPressed:(){
+                                            pageManager
+                                                .play();
+                                            Future.delayed(Duration(milliseconds: 3000)).then((value) {
+
+                                              Global.isPlaying=true;
+                                              setState(() {});
+                                            });
+                                          }
+
+                                      );
+                                    case ButtonState
+                                        .playing:
+                                      return IconButton(
+                                          icon: Icon(
+                                            Icons.pause,
+                                            color:
+                                            Colors.white,
+                                          ),
+                                          iconSize: 32.0,
+                                          onPressed:(){
+                                            Global.isPlaying=false;
+                                            pageManager
+                                                .pause();
+                                            setState(() {
+
+                                            });
+                                          }
+
+                                      );
+                                  }
+                                },
+                              )
+                                  : IconButton(
+                                onPressed: () async {
+                                  /*await pageManager
+                                              .playWithId(index);*/
+                                  print("sekectedd uri ${downloadedItems.elementAt(index).enclosure!.url}");
+                                  await pageManager
+                                      .playWithUri(downloadedItems.elementAt(index).enclosure!.url);
+                                  Global.isPlaying=true;
+                                  Future.delayed(Duration(milliseconds: 3000)).then((value) {
+
+                                    setState(() {});
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.play_arrow,
+                                  size: 32,
+                                  color: Colors.white,
+                                ),
                               ),
-                              onPressed: () async {
-                                print("delete ${downloadedItems.elementAt(index).enclosure!.url!.split("/").last}");
-                                await _deleteFile(downloadedItems.elementAt(index).enclosure!.url!.split("/").last);
 
-                                print("done");
-                                setState(() {
+                              IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  size: 28,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  print("delete ${downloadedItems.elementAt(index).enclosure!.url!.split("/").last}");
+                                  await _deleteFile(downloadedItems.elementAt(index).enclosure!.url!.split("/").last);
 
-                                });
-                              },
-                            )
+                                  print("done");
+                                  setState(() {
 
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Container(
-                    height: 0.5,
-                    margin: EdgeInsets.symmetric(vertical: 2),
-                    color: Colors.white30,
-                  );
-                },
-                itemCount: downloadedItems.length /*mainItems
-                            .elementAt(3)
-                            .items!
-                            .length*/),
-          ],
+                                  });
+                                },
+                              )
+
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Container(
+                      height: 2.0,
+                      margin: EdgeInsets.symmetric(vertical: 4.0),
+                      color: Colors.black,
+                    );
+                  },
+                  itemCount: downloadedItems.length /*mainItems
+                              .elementAt(3)
+                              .items!
+                              .length*/),
+            ],
+          ),
         ),
       ),
     );

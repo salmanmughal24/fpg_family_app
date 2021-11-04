@@ -5,19 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fpg_family_app/foryou.dart';
 import 'package:fpg_family_app/home_page_screen.dart';
 import 'package:fpg_family_app/listner/bloc/listen_bloc.dart';
 import 'package:fpg_family_app/page_manager.dart';
+import 'package:fpg_family_app/read_section.dart';
 import 'package:fpg_family_app/repositories/feed_repository.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/services/service_locator.dart';
+import 'package:fpg_family_app/watch_section.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'audio/audio_player_handler.dart';
+import 'listner/listen_section.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('A bg message just showed up :  ${message.messageId}');
+Future<void> backgroundHandler(RemoteMessage message) async{
+  print(message.data.toString());
+  print(message.notification!.title);
 }
 Future<void> main() async {
 
@@ -28,30 +32,19 @@ Future<void> main() async {
       debug: true
   );
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
   FeedsRepository feedsRepository = FeedsRepository();
   PodcastRepository podcastsRepository = PodcastRepository();
   await podcastsRepository.getChannelDetails();
 
   getIt<PageManager>().init(podcastsRepository.feeds);
-/*
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );*/
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+   MyApp({Key? key}) : super(key: key);
+  FeedsRepository feedsRepository = FeedsRepository();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -78,6 +71,12 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      routes: {
+        "watch": (_) => WatchSection(),
+        "listen": (_) => ListenSection(),
+        "read": (_) => ReadSection(feedsRepository),
+        "foryou": (_) => ForYouSection(),
+      },
       home: MultiBlocProvider(
         providers: [
           BlocProvider<ListenBloc>(

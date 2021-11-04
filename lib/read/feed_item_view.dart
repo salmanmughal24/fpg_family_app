@@ -48,7 +48,7 @@ class FeedItemView extends StatelessWidget {
             Html(
               data: feedsItem.description.toString(),
 style: {
-                "p": Style(color: Colors.white, fontSize: FontSize.small)
+                "p": Style(color: Colors.white, fontSize: FontSize.medium)
 },
               onImageTap: (url, con, attributes, element) {
                 Navigator.of(context).push(FeedItemDetailsView.route(feedsItem));

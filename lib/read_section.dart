@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpg_family_app/helper/utils.dart';
 import 'read/feed_item_view.dart';
 import 'package:fpg_family_app/helper/colors.dart';
 import 'package:fpg_family_app/model/FeedsItem.dart';
@@ -32,20 +33,36 @@ class _ReadSectionState extends State<ReadSection>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,//clr_black,
-      child: PagedListView.separated(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<FeedsItem>(
-          itemBuilder: (context, item, index) {
-            return FeedItemView(item);
+    return Scaffold(
+      backgroundColor: clr_black,
+      appBar: AppBar(
+        backgroundColor: clr_black,
+        title: Text(
+          'FPG Family',
+          style: label_appbar(),
+        ),
+        actions: [
+          IconButton(onPressed: () {
+          }, icon: Icon(Icons.search)),
+          IconButton(onPressed: () {
+          }, icon: Icon(Icons.settings)),
+        ],
+      ),
+      body:Container(
+        color: Colors.black,//clr_black,
+        child: PagedListView.separated(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<FeedsItem>(
+            itemBuilder: (context, item, index) {
+              return FeedItemView(item);
+            },
+          ),
+          separatorBuilder: (context, index) {
+            return Container(
+              height: 10,
+            );
           },
         ),
-        separatorBuilder: (context, index) {
-          return Container(
-            height: 10,
-          );
-        },
       ),
     );
   }
