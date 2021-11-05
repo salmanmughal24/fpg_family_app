@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -126,6 +127,14 @@ _deleteFile(String link) async {
     IsolateNameServer.removePortNameMapping('downloading');
     super.dispose();
   }
+  _launchURL() async {
+    const url = 'https://fpgchurch.com/give';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,16 +163,27 @@ print("Main Items $mainItems");
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: clr_black,
+        backgroundColor:  clr_selected_icon,
         title: Text(
           'FPG Family',
           style: label_appbar(),
         ),
         actions: [
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.settings)),
+          GestureDetector(
+
+            onTap: ()  {
+              _launchURL();
+            },
+            child: Center(child: Container(margin: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 4.0),
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    border: Border.all(color: Colors.green,)
+                ),
+                child: Text("GIVE",))),
+          ),
+
         ],
       ),
       body: Container(

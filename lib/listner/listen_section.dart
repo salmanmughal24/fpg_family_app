@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fpg_family_app/audio/audio_player_handler.dart';
 import 'package:fpg_family_app/audio_player.dart';
@@ -9,6 +10,7 @@ import 'package:fpg_family_app/helper/utils.dart';
 import 'package:fpg_family_app/page_manager.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/services/service_locator.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webfeed/domain/rss_feed.dart';
 
 import 'channel_details.dart';
@@ -32,23 +34,41 @@ class _ListenSectionState extends State<ListenSection>
 
     super.initState();
   }
-
+  _launchURL() async {
+    const url = 'https://fpgchurch.com/give';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     var items = getIt<PageManager>().feedsItem;
     return Scaffold(
       backgroundColor: clr_black,
       appBar: AppBar(
-        backgroundColor: clr_black,
+        backgroundColor:  clr_selected_icon,
         title: Text(
           'FPG Family',
           style: label_appbar(),
         ),
         actions: [
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.settings)),
+          GestureDetector(
+
+            onTap: ()  {
+                _launchURL();
+            },
+            child: Center(child: Container(margin: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 4.0),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  border: Border.all(color: Colors.green,)
+                ),
+                child: Text("GIVE",))),
+          ),
+
         ],
       ),
       body:Container(

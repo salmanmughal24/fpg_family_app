@@ -8,6 +8,7 @@ import 'package:fpg_family_app/video_player.dart' as vd;
 import 'package:fpg_family_app/video_player.dart';
 import 'package:fpg_family_app/yoyo_player.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -30,26 +31,45 @@ class _WatchSectionState extends State<WatchSection> {
     return FirebaseFirestore.instance.collection("categories").orderBy("index").snapshots();
   }
   Stream<QuerySnapshot<Map<String, dynamic>>> getChannelData() {
-    return FirebaseFirestore.instance.collection("channels").snapshots();
+    return FirebaseFirestore.instance.collection("channels").orderBy("index").snapshots();
   }
   Stream<QuerySnapshot<Map<String, dynamic>>> getProductData(id) {
-    return FirebaseFirestore.instance.collection("products").where('category',isEqualTo:id).snapshots();
+    return FirebaseFirestore.instance.collection("products").where('category',isEqualTo:id).orderBy("index").snapshots();
+  }
+  _launchURL() async {
+    const url = 'https://fpgchurch.com/give';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: clr_black,
       appBar: AppBar(
-        backgroundColor: clr_black,
+        backgroundColor:  clr_selected_icon,
         title: Text(
           'FPG Family',
           style: label_appbar(),
         ),
         actions: [
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.settings)),
+          GestureDetector(
+
+            onTap: ()  {
+              _launchURL();
+            },
+            child: Center(child: Container(margin: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 4.0),
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    border: Border.all(color: Colors.green,)
+                ),
+                child: Text("GIVE",))),
+          ),
+
         ],
       ),
       body: Container(

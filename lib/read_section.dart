@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fpg_family_app/helper/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'read/feed_item_view.dart';
 import 'package:fpg_family_app/helper/colors.dart';
 import 'package:fpg_family_app/model/FeedsItem.dart';
@@ -30,22 +31,40 @@ class _ReadSectionState extends State<ReadSection>
     });
     super.initState();
   }
-
+  _launchURL() async {
+    const url = 'https://fpgchurch.com/give';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: clr_black,
       appBar: AppBar(
-        backgroundColor: clr_black,
+        backgroundColor:  clr_selected_icon,
         title: Text(
           'FPG Family',
           style: label_appbar(),
         ),
         actions: [
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {
-          }, icon: Icon(Icons.settings)),
+          GestureDetector(
+
+            onTap: ()  {
+              _launchURL();
+            },
+            child: Center(child: Container(margin: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 4.0),
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    border: Border.all(color: Colors.green,)
+                ),
+                child: Text("GIVE",))),
+          ),
+
         ],
       ),
       body:Container(
