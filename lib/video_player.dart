@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import 'model/theme_model.dart';
 
 
 
@@ -87,6 +90,7 @@ class _VideoPlayerrState extends State<VideoPlayerr> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return  YoutubePlayerBuilder(
 
         player: YoutubePlayer(
@@ -98,8 +102,8 @@ class _VideoPlayerrState extends State<VideoPlayerr> {
             Expanded(
               child: Text(
                 _controller.metadata.title,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: themeProvider.isLightTheme?Colors.black:Colors.white,
                   fontSize: 18.0,
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -114,7 +118,7 @@ class _VideoPlayerrState extends State<VideoPlayerr> {
 
         ),
         builder: (context, player) => Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: themeProvider.isLightTheme?Colors.white:Colors.black,
           body: Center(child: player),
         ),
 

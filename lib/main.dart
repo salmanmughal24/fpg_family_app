@@ -15,9 +15,12 @@ import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/services/service_locator.dart';
 import 'package:fpg_family_app/watch_section.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:provider/provider.dart';
 import 'audio/audio_player_handler.dart';
 import 'listner/listen_section.dart';
+import 'model/theme_model.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async{
   print(message.data.toString());
@@ -38,39 +41,56 @@ Future<void> main() async {
   PodcastRepository podcastsRepository = PodcastRepository();
   await podcastsRepository.getChannelDetails();
 
+  final appDocumentDirectory =
+  await pathProvider.getApplicationDocumentsDirectory();
+
+  Hive.init(appDocumentDirectory.path);
+
+  final settings = await Hive.openBox('settings');
+  bool isLightTheme = settings.get('isLightTheme') ?? false;
+
+  print(isLightTheme);
   getIt<PageManager>().init(podcastsRepository.feeds);
-  runApp( MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => ThemeProvider(isLightTheme: isLightTheme),
+    child: AppStart(),
+  ));
+
+}
+class AppStart extends StatelessWidget {
+  const AppStart({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    return MyApp(
+      themeProvider: themeProvider,
+    );
+  }
+}
+class MyApp extends StatefulWidget with WidgetsBindingObserver  {
+  final ThemeProvider themeProvider;
+   MyApp({Key? key, required this.themeProvider}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyApp extends StatelessWidget {
-   MyApp({Key? key}) : super(key: key);
+class _MyAppState extends State<MyApp> {
   FeedsRepository feedsRepository = FeedsRepository();
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
       title: 'FPG Family',
-      theme: ThemeData(
+      theme: widget.themeProvider.themeData(),
+     /* theme: ThemeData(
         textTheme: GoogleFonts.openSansTextTheme(
-            /*TextTheme(
-                bodyText1: TextStyle(color: Colors.white, fontSize: 13, ),
-                bodyText2: TextStyle(color: Colors.white, fontSize: 13),
-                subtitle2: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-                subtitle1: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)
-            ),*/
         ),
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+
         primarySwatch: Colors.blue,
-      ),
+      ),*/
       routes: {
         "watch": (_) => WatchSection(),
         "listen": (_) => ListenSection(),

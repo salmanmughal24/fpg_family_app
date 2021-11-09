@@ -9,11 +9,13 @@ import 'package:fpg_family_app/watch_section.dart';
 import 'package:fpg_family_app/yoyo_player.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 import 'helper/colors.dart';
 import 'helper/dimens.dart';
 import 'helper/utils.dart';
 import 'listner/listen_section.dart';
+import 'model/theme_model.dart';
 import 'repositories/feed_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -93,6 +95,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     });
 
   }
+
   askPermission() async {
     final status =
         await Permission
@@ -111,7 +114,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    print(themeProvider.isLightTheme);
     return Scaffold(
+        backgroundColor: themeProvider.isLightTheme
+            ? Colors.white
+            : Color(0xFF26242e),
       /*backgroundColor: clr_black,
       appBar: AppBar(
         backgroundColor: clr_black,
@@ -153,11 +161,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        showUnselectedLabels: true,
+        showUnselectedLabels: themeProvider.isLightTheme,
         selectedItemColor: clr_selected_icon,
-        unselectedItemColor: Colors.white,
+        unselectedItemColor: themeProvider.isLightTheme
+            ? Colors.black54
+            : Colors.white54,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: clr_black,
+        backgroundColor: themeProvider.isLightTheme
+            ? Colors.white
+            : clr_black,
         elevation: 2,
         items: [
           BottomNavigationBarItem(

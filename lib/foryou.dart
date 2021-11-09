@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:webfeed/domain/rss_feed.dart';
@@ -20,6 +21,7 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:webfeed/domain/rss_item.dart';
 import 'helper/colors.dart';
 import 'helper/colors.dart';
+import 'model/theme_model.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
 import 'notifiers/repeat_button_notifier.dart';
@@ -135,7 +137,14 @@ _deleteFile(String link) async {
       throw 'Could not launch $url';
     }
   }
-
+  late bool isSwitched = false ;
+  changeThemeMode(bool theme) {
+    if (!theme) {
+      // _animationController.forward(from: 0.0);
+    } else {
+      // _animationController.reverse(from: 1.0);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     print("progressbuild + $progress");
@@ -160,13 +169,27 @@ print("Main Items $mainItems");
     print("fileList item + ${filesList.length}");
     print(filesList);
     final pageManager = getIt<PageManager>();
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    isSwitched = !(themeProvider.isLightTheme);
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: themeProvider.isLightTheme
+          ? clr_white
+          : clr_black,
       appBar: AppBar(
         backgroundColor:  clr_selected_icon,
+        /*   backgroundColor: themeProvider.isLightTheme
+            ? Colors.white
+            : clr_black,*/
         title: Text(
           'FPG Family',
-          style: label_appbar(),
+          style: TextStyle(
+              color: Colors.white,
+              /*  color: themeProvider.isLightTheme
+              ? Colors.black87
+              : Colors.white,*/
+              fontSize: 16,
+              fontWeight: FontWeight.w700
+          ),
         ),
         actions: [
           GestureDetector(
@@ -181,13 +204,39 @@ print("Main Items $mainItems");
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                     border: Border.all(color: Colors.green,)
                 ),
-                child: Text("GIVE",))),
+                child: Text("GIVE" ,style: TextStyle(color: Colors.white),))),
+          ),
+
+          Container(
+            height: 20.0,
+            margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
+            child:
+
+
+            Switch(
+              value: isSwitched,
+
+
+              onChanged: (value) {
+                setState(() async {
+
+                  await themeProvider.toggleThemeData();
+                  isSwitched = value;
+                  changeThemeMode(themeProvider.isLightTheme);
+
+                });
+              },
+              activeTrackColor: Colors.white30,
+              activeColor: Colors.black26,
+            ),
+
           ),
 
         ],
       ),
       body: Container(
-        color: Colors.black,
+        color: themeProvider.isLightTheme?clr_white:clr_black,
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
         child: SingleChildScrollView(
           child: Column(
@@ -200,7 +249,7 @@ print("Main Items $mainItems");
                     .subtitle1!
                     .copyWith(
                     inherit: true,
-                    color: Colors.white,
+                    color: themeProvider.isLightTheme?clr_black87:clr_white,
                     fontSize: 16),)),
                   )
                   : ListView.separated(
@@ -212,7 +261,7 @@ print("Main Items $mainItems");
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         color:
-                        clr_black,
+                        themeProvider.isLightTheme?clr_black12:clr_white12,
                       ),
                       padding: EdgeInsets.symmetric(
                           horizontal: 16, vertical: 4),
@@ -227,7 +276,7 @@ print("Main Items $mainItems");
                             child: Text(
                               "${DateFormat('MMMM dd').format(downloadedItems[index].pubDate!.toLocal())}",
                               style: GoogleFonts.openSans(
-                                  color: Colors.white,
+                                  color: themeProvider.isLightTheme?clr_black:clr_white,
                                   fontSize: 10),
                             ),
                           ),
@@ -238,12 +287,10 @@ print("Main Items $mainItems");
                                 .subtitle1!
                                 .copyWith(
                                 inherit: true,
-                                color: Colors.white,
+                                color: themeProvider.isLightTheme?clr_black87:clr_white,
                                 fontSize: 16),
                           ),
-                          Divider(
-                            height: 5,
-                          ),
+
                           Row(
                             mainAxisAlignment:
                             MainAxisAlignment.end,
@@ -273,7 +320,7 @@ print("Main Items $mainItems");
                                           icon: Icon(
                                             Icons.play_arrow,
                                             color:
-                                            Colors.white,
+                                            themeProvider.isLightTheme?clr_black87:clr_white,
                                           ),
                                           iconSize: 32.0,
                                           onPressed:(){
@@ -293,7 +340,7 @@ print("Main Items $mainItems");
                                           icon: Icon(
                                             Icons.pause,
                                             color:
-                                            Colors.white,
+                                            themeProvider.isLightTheme?clr_black87:clr_white,
                                           ),
                                           iconSize: 32.0,
                                           onPressed:(){
@@ -325,7 +372,7 @@ print("Main Items $mainItems");
                                 icon: Icon(
                                   Icons.play_arrow,
                                   size: 32,
-                                  color: Colors.white,
+                                    color: themeProvider.isLightTheme?clr_black:clr_white,
                                 ),
                               ),
 
@@ -333,7 +380,7 @@ print("Main Items $mainItems");
                                 icon: Icon(
                                   Icons.delete,
                                   size: 28,
-                                  color: Colors.white,
+                                    color: themeProvider.isLightTheme?clr_black:clr_white,
                                 ),
                                 onPressed: () async {
                                   print("delete ${downloadedItems.elementAt(index).enclosure!.url!.split("/").last}");
@@ -356,7 +403,7 @@ print("Main Items $mainItems");
                     return Container(
                       height: 2.0,
                       margin: EdgeInsets.symmetric(vertical: 4.0),
-                      color: Colors.black,
+                      color: themeProvider.isLightTheme?clr_white:clr_black,
                     );
                   },
                   itemCount: downloadedItems.length /*mainItems
@@ -376,6 +423,7 @@ class CurrentSongTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final pageManager = getIt<PageManager>();
     return ValueListenableBuilder<String>(
       valueListenable: pageManager.currentSongTitleNotifier,
@@ -387,7 +435,7 @@ class CurrentSongTitle extends StatelessWidget {
               "Now Playing: ${title}",
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                 //inherit: true,
-                color: Colors.white,
+                color: themeProvider.isLightTheme?clr_black87:clr_white,
                 fontSize: 16,
               ),
             ),
@@ -455,6 +503,7 @@ class AudioControlButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageManager = getIt<PageManager>();
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
       height: 60,
       child: Row(
@@ -508,7 +557,7 @@ class AudioControlButtons extends StatelessWidget {
                   return IconButton(
                     icon: Icon(
                       Icons.play_arrow,
-                      color: Colors.white,
+                      color: themeProvider.isLightTheme?clr_black:clr_white,
                     ),
                     iconSize: 32.0,
                     onPressed: pageManager.play,
@@ -517,7 +566,7 @@ class AudioControlButtons extends StatelessWidget {
                   return IconButton(
                     icon: Icon(
                       Icons.pause,
-                      color: Colors.white,
+                      color: themeProvider.isLightTheme?clr_black:clr_white,
                     ),
                     iconSize: 32.0,
                     onPressed: pageManager.pause,
@@ -531,7 +580,7 @@ class AudioControlButtons extends StatelessWidget {
               return IconButton(
                   icon: Icon(
                     Icons.skip_next,
-                    color: Colors.white,
+                    color:  themeProvider.isLightTheme?clr_black:clr_white,
                   ),
                   onPressed: () async {
                     if (!isLast) {

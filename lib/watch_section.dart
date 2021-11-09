@@ -8,6 +8,8 @@ import 'package:fpg_family_app/video_player.dart' as vd;
 import 'package:fpg_family_app/video_player.dart';
 import 'package:fpg_family_app/yoyo_player.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -15,6 +17,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'helper/colors.dart';
 import 'model/category.dart';
 import 'model/product.dart';
+import 'model/theme_model.dart';
 
 class WatchSection extends StatefulWidget{
   @override
@@ -25,8 +28,11 @@ class WatchSection extends StatefulWidget{
 
 class _WatchSectionState extends State<WatchSection> {
 
+  late bool isSwitched = false ;
+  void initState() {
+    super.initState();
 
-
+  }
   Stream<QuerySnapshot<Map<String, dynamic>>> getCategoryData() {
     return FirebaseFirestore.instance.collection("categories").orderBy("index").snapshots();
   }
@@ -44,15 +50,38 @@ class _WatchSectionState extends State<WatchSection> {
       throw 'Could not launch $url';
     }
   }
+  // function to toggle circle animation
+  changeThemeMode(bool theme) {
+    if (!theme) {
+     // _animationController.forward(from: 0.0);
+    } else {
+     // _animationController.reverse(from: 1.0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    isSwitched = !(themeProvider.isLightTheme);
     return Scaffold(
-      backgroundColor: clr_black,
+      backgroundColor: themeProvider.isLightTheme
+          ? clr_white
+          : clr_black,
       appBar: AppBar(
-        backgroundColor:  clr_selected_icon,
+       backgroundColor:  clr_selected_icon,
+     /*   backgroundColor: themeProvider.isLightTheme
+            ? Colors.white
+            : clr_black,*/
         title: Text(
           'FPG Family',
-          style: label_appbar(),
+          style: TextStyle(
+            color: clr_white,
+            /*  color: themeProvider.isLightTheme
+              ? Colors.black87
+              : Colors.white,*/
+              fontSize: 16,
+              fontWeight: FontWeight.w700
+          ),
         ),
         actions: [
           GestureDetector(
@@ -67,13 +96,67 @@ class _WatchSectionState extends State<WatchSection> {
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                     border: Border.all(color: Colors.green,)
                 ),
-                child: Text("GIVE",))),
+                child: Text("GIVE" ,style: TextStyle(color: Colors.white),))),
+          ),
+
+          Container(
+            height: 20.0,
+            margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
+            child:
+
+
+            Switch(
+              value: isSwitched,
+
+
+              onChanged: (value) {
+                setState(() async {
+
+                 await themeProvider.toggleThemeData();
+                 isSwitched = value;
+    changeThemeMode(themeProvider.isLightTheme);
+
+                });
+              },
+              activeTrackColor: Colors.white30,
+              activeColor: Colors.black26,
+            ),
+
+            /*ToggleSwitch(
+              minWidth: 60.0,
+              minHeight: 10.0,
+              cornerRadius: 10.0,
+              activeBgColors: [[Colors.green!], [Colors.black45!]],
+              activeFgColor: Colors.white,
+              inactiveBgColor: Colors.grey,
+              inactiveFgColor: Colors.white,
+              initialLabelIndex: 1,
+              totalSwitches: 2,
+              labels: ['light', 'dark'],
+              radiusStyle: true,
+              onToggle: (index) async {
+                // await themeProvider.toggleThemeData();
+                  if (index == 0){
+                    changeThemeMode(themeProvider.isLightTheme);
+                  }
+                  else if (index == 1){
+
+                  }
+
+
+
+                print('switched to: $index');
+              },
+            ),*/
           ),
 
         ],
       ),
       body: Container(
-        color: Colors.black,
+        color: themeProvider.isLightTheme
+          ? clr_white
+          : clr_black,
          child: SingleChildScrollView(
            physics: ScrollPhysics(),
            child: Column(
@@ -87,31 +170,14 @@ class _WatchSectionState extends State<WatchSection> {
                        "Live Streaming",
                        style: GoogleFonts.openSans(
                            textStyle: TextStyle(
-                               color: Colors.white70,
+                               color: themeProvider.isLightTheme
+                                   ? clr_black87
+                                   : clr_white70,
+                              // color: ,
                                fontWeight: FontWeight.w700,
                                fontSize: 14)),
                      ),
-                     Spacer(),
-                     GestureDetector(
-                       onTap: () {
 
-                         /* Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => SeeAll(id: category.id,categoryName:  category.name)),
-                                        );*/
-                       },
-                       child: Container(
-                         child: Row(
-                           children: [
-                             Icon(
-                               Icons.navigate_next,
-                               color: Colors.white54,
-                               size: 20,
-                             )
-                           ],
-                         ),
-                       ),
-                     ),
                    ],
                  ),
                ),
@@ -146,6 +212,7 @@ class _WatchSectionState extends State<WatchSection> {
                                  title: channel.title,
                                  thumbnail: channel.thumbnail,
                                  videoUrl: channel.url,
+                                 themeProvider:themeProvider
                                  // onTap: myfunction,
                                );
                              });
@@ -157,34 +224,10 @@ class _WatchSectionState extends State<WatchSection> {
                      },
                      stream: getChannelData(),
 
-                   /*ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 10,
-                                  itemBuilder: (BuildContext context, int position) {
-                                    return CustomCard(
-                                      title: "Song Title",
-                                      thumbnail: Images.songImage,
-                                      videoUrl: "",
-                                      onTap: () {},
-                                    );
-                                  })*/
-
                  ),
                ),
                ),
 
-              /* SingleChildScrollView(
-                 scrollDirection: Axis.horizontal,
-                 child: Row(
-                   children: channelList.map((e) => CustomLiveStreamingCard(
-                     title: e.title,
-                     thumbnail: e.thumbnail,
-                     videoUrl: e.url,
-                     // onTap: myfunction,
-                   )).toList(),
-                 ),
-               ),*/
                Padding(
                     padding: const EdgeInsets.all(0),
                     child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -203,14 +246,14 @@ class _WatchSectionState extends State<WatchSection> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 14.0, top: 30.0, bottom: 0.0, right: 16.0),
+                                        left: 14.0, top: 30.0, bottom: 10.0, right: 16.0),
                                     child: Row(
                                       children: [
                                         Text(
                                           category.name,
                                           style: GoogleFonts.openSans(
                                               textStyle: TextStyle(
-                                                  color: Colors.white70,
+                                                  color: themeProvider.isLightTheme?clr_black87:clr_white70,
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 14)),
                                         ),
@@ -228,7 +271,7 @@ class _WatchSectionState extends State<WatchSection> {
                                               children: [
                                                 Icon(
                                                   Icons.navigate_next,
-                                                  color: Colors.white54,
+                                                  color: themeProvider.isLightTheme?clr_black45:clr_white54,
                                                   size: 20,
                                                 )
                                               ],
@@ -280,19 +323,6 @@ class _WatchSectionState extends State<WatchSection> {
                                         },
                                         stream: getProductData(category.id),),
 
-                                      /*ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 10,
-                                  itemBuilder: (BuildContext context, int position) {
-                                    return CustomCard(
-                                      title: "Song Title",
-                                      thumbnail: Images.songImage,
-                                      videoUrl: "",
-                                      onTap: () {},
-                                    );
-                                  })*/
-
                                     ),
                                   ),
                                 ],
@@ -338,6 +368,7 @@ class _CustomCardState extends State<CustomCard> {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return GestureDetector(
       onTap:(){
         Navigator.push(context, MaterialPageRoute(builder: (context)=> VideoPlayerr(videooUrl:widget.videoUrl)));
@@ -348,7 +379,7 @@ class _CustomCardState extends State<CustomCard> {
         width: _width / 2,
         margin:  EdgeInsets.only(left: 5, right: 5,),
         decoration: BoxDecoration(
-          color: Colors.white12,
+          color: themeProvider.isLightTheme?clr_black12:clr_white12,
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
@@ -368,7 +399,7 @@ class _CustomCardState extends State<CustomCard> {
               flex: 3,
               child: Container(
 
-                color: Colors.black,
+                color: themeProvider.isLightTheme?clr_white:clr_black,
                 height: _height / 3,
                 width: _width / 1.4,
                 child: SizedBox.expand(
@@ -394,7 +425,7 @@ class _CustomCardState extends State<CustomCard> {
                       Align(
                           alignment: Alignment.center,
                           child: CircleAvatar(
-                            backgroundColor: Colors.black45,
+                            backgroundColor: clr_black45,
                             radius: 20.0,
                             child: Icon(Icons.play_arrow, color: Colors.white),
                           ))
@@ -414,7 +445,7 @@ class _CustomCardState extends State<CustomCard> {
                     widget.title,
                     style: GoogleFonts.openSans(
                       textStyle: TextStyle(
-                        color: Colors.white70,
+                        color: themeProvider.isLightTheme?clr_black87:clr_white70,
                         fontWeight: FontWeight.w500,
                         fontSize: 11
                       ),
@@ -438,11 +469,13 @@ class CustomLiveStreamingCard extends StatefulWidget {
   String thumbnail;
   String videoUrl;
   Function? onTap;
+  ThemeProvider themeProvider;
 
   CustomLiveStreamingCard(
       {required this.title,
         required this.thumbnail,
         required this.videoUrl,
+        required this.themeProvider,
         this.onTap});
 
   @override
@@ -462,6 +495,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
     initializeVideoPlayer();
   }
 
+
   Future<void> initializeVideoPlayer() async {
     videoPlayerController = VideoPlayerController.network(widget.videoUrl);
     await Future.wait([
@@ -477,7 +511,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
       showControls: false,
       cupertinoProgressColors: ChewieProgressColors(playedColor: Colors.deepOrange, bufferedColor: Colors.deepOrangeAccent.withOpacity(0.25)),
       placeholder: Container(
-        color: Colors.black87,
+        color: widget.themeProvider.isLightTheme?clr_white70:clr_black87,
         child: Container(
           child: Center(
               child: CircularProgressIndicator(
@@ -501,6 +535,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return VisibilityDetector(
       key: Key(widget.videoUrl),
       onVisibilityChanged: (VisibilityInfo visibilityInfo) {
@@ -598,7 +633,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
                   widget.title,
                   style: GoogleFonts.openSans(
                     textStyle: TextStyle(
-                        color: Colors.white70,
+                        color: themeProvider.isLightTheme?clr_black87:clr_white70,
                         fontWeight: FontWeight.w700,
                         fontSize: 12
                     ),

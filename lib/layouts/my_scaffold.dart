@@ -2,12 +2,15 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fpg_family_app/global.dart';
+import 'package:fpg_family_app/helper/colors.dart';
+import 'package:fpg_family_app/model/theme_model.dart';
 import 'package:fpg_family_app/notifiers/play_button_notifier.dart';
 import 'package:fpg_family_app/notifiers/progress_notifier.dart';
 import 'package:fpg_family_app/page_manager.dart';
 import 'package:fpg_family_app/services/service_locator.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class MainBody extends StatefulWidget {
   final Widget body;
@@ -25,6 +28,7 @@ class _MainBodyState extends State<MainBody> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
         decoration: BoxDecoration(color: Colors.black45),
         child: Stack(
@@ -38,8 +42,8 @@ class _MainBodyState extends State<MainBody> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.deepOrange,
-                              border: Border.all(color: Colors.deepOrange),
+                              color: clr_selected_icon,
+                              border: Border.all(color: clr_selected_icon,),
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.0),
                                 topRight: Radius.circular(20.0),
@@ -96,7 +100,7 @@ class _MainBodyState extends State<MainBody> {
                                               Global.albumName,
                                               style: GoogleFonts.openSans(
                                                       //inherit: true,
-                                                      color: Colors.black87,
+                                                  color: themeProvider.isLightTheme?clr_white:clr_black,
                                                       fontSize: 18,
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -119,7 +123,7 @@ class _MainBodyState extends State<MainBody> {
                                                       Global.albumImage)),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(8.0)),
-                                              color: Colors.blueGrey,
+                                              color: Colors.transparent,
                                             ),
                                           ),
                                           SizedBox(
@@ -145,7 +149,7 @@ class _MainBodyState extends State<MainBody> {
                                               '${title}',
                                               textStyle: GoogleFonts.openSans(
                                                     //inherit: true,
-                                                    color: Colors.black87,
+                                                    color: themeProvider.isLightTheme?clr_white:clr_black,
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 14,
                                                   ),
@@ -178,10 +182,11 @@ class _MainBodyState extends State<MainBody> {
                                         child: ProgressBar(
                                           progress: value.current,
                                           buffered: value.buffered,
-                                          baseBarColor: Colors.black54,
-                                          thumbColor: Colors.black,
-                                          progressBarColor: Colors.black87,
+                                          baseBarColor: themeProvider.isLightTheme?clr_white12:clr_black45,
+                                          thumbColor:  themeProvider.isLightTheme?clr_white:clr_black,
+                                          progressBarColor: themeProvider.isLightTheme?clr_white:clr_black,
                                           total: value.total,
+                                          timeLabelTextStyle: TextStyle(color:themeProvider.isLightTheme?clr_white:clr_black,),
                                           onSeek: pageManager.seek,
                                         ),
                                       );
@@ -200,7 +205,7 @@ class _MainBodyState extends State<MainBody> {
                                       return IconButton(
                                         icon: Icon(
                                           Icons.skip_previous,
-                                          color: Colors.white,
+                                          color: themeProvider.isLightTheme?clr_white:clr_black,
                                         ),
                                         onPressed: (isFirst)
                                             ? null
@@ -219,14 +224,14 @@ class _MainBodyState extends State<MainBody> {
                                             width: 32.0,
                                             height: 32.0,
                                             child: CircularProgressIndicator(
-                                              color: Colors.black,
+                                              color: themeProvider.isLightTheme?clr_white:clr_black,
                                             ),
                                           );
                                         case ButtonState.paused:
                                           return IconButton(
                                             icon: Icon(
                                               Icons.play_arrow,
-                                              color: Colors.white,
+                                              color: themeProvider.isLightTheme?clr_white:clr_black,
                                             ),
                                             iconSize: 32.0,
                                             onPressed: () {
@@ -239,7 +244,7 @@ class _MainBodyState extends State<MainBody> {
                                           return IconButton(
                                               icon: Icon(
                                                 Icons.pause,
-                                                color: Colors.white,
+                                                color: themeProvider.isLightTheme?clr_white:clr_black,
                                               ),
                                               iconSize: 32.0,
                                               onPressed: () {
@@ -257,7 +262,7 @@ class _MainBodyState extends State<MainBody> {
                                       return IconButton(
                                           icon: Icon(
                                             Icons.skip_next,
-                                            color: Colors.white,
+                                            color: themeProvider.isLightTheme?clr_white:clr_black,
                                           ),
                                           onPressed: () async {
                                             if (!isLast) {

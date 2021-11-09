@@ -11,11 +11,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:webfeed/domain/rss_item.dart';
 import 'helper/colors.dart';
+import 'model/theme_model.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
 import 'notifiers/repeat_button_notifier.dart';
@@ -123,124 +125,131 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
 
     var items = widget.items.elementAt(widget.index).items ?? [];
     final pageManager = getIt<PageManager>();
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
+
       home: Scaffold(
-        backgroundColor: clr_black,
+        backgroundColor: themeProvider.isLightTheme
+            ? clr_white
+            : clr_black,
         body: SafeArea(
           child: MainBody(
               body: Column(
             children: [
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 16.0),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.network(
-                              widget.items.elementAt(widget.index).image?.url??'https://images.subsplash.com/base64/L2ltYWdlLmpwZz9pZD1mYzYwZDhhZS1jN2UxLTRhODMtOTVhNi1kMjIzMjBmZDRhZGYmdz0zMDAwJmg9MzAwMCZhbGxvd191cHNjYWxlPXRydWU.jpg',
-                              height: 120,
-                              width: 120,
-                              fit: BoxFit.fill,
-                            )),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Container(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              //color: Colors.black,
-                              width: MediaQuery.of(context).size.width,
-                              child: Text(
-                                "${widget.items.elementAt(widget.index).title}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
-                                    .copyWith(
-                                      //inherit: true,
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                    ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 20, left: 10, right: 10),
-                              //color: Colors.black,
-                              width: MediaQuery.of(context).size.width,
-                              child: Text(
-                                "${widget.items.elementAt(widget.index).author??""}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
-                                    .copyWith(
-                                      //inherit: true,
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                    ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
-                          ],
+              Container(
+                color: themeProvider.isLightTheme?clr_white:clr_black,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 16.0),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                widget.items.elementAt(widget.index).image?.url??'https://images.subsplash.com/base64/L2ltYWdlLmpwZz9pZD1mYzYwZDhhZS1jN2UxLTRhODMtOTVhNi1kMjIzMjBmZDRhZGYmdz0zMDAwJmg9MzAwMCZhbGxvd191cHNjYWxlPXRydWU.jpg',
+                                height: 120,
+                                width: 120,
+                                fit: BoxFit.fill,
+                              )),
                         ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    //color: Colors.black,
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      "${widget.items.elementAt(widget.index).description}",
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            //inherit: true,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300,
-                            fontSize: 14,
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
+                                //color: Colors.black,
+                                width: MediaQuery.of(context).size.width,
+                                child: Text(
+                                  "${widget.items.elementAt(widget.index).title}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(
+                                        //inherit: true,
+                                        color: themeProvider.isLightTheme?clr_black:clr_white,
+                                        fontSize: 18,
+                                      ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                    top: 10.0, bottom: 20, left: 10, right: 10),
+                                //color: Colors.black,
+                                width: MediaQuery.of(context).size.width,
+                                child: Text(
+                                  "${widget.items.elementAt(widget.index).author??""}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(
+                                        //inherit: true,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                      ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            ],
                           ),
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 20.0,),
-                  Container(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    //color: Colors.black,
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      "${widget.items.elementAt(widget.index).items!.length} Episodes",
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        //inherit: true,
-                        color: Colors.deepOrange.shade300,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                    Container(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      //color: Colors.black,
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "${widget.items.elementAt(widget.index).description}",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              //inherit: true,
+                              color: themeProvider.isLightTheme?clr_black:clr_white,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 14,
+                            ),
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
                       ),
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
                     ),
-                  ),
-                  SizedBox(height: 10.0,),
-                  Container(
-                    height: 0.25,
-                    margin: EdgeInsets.symmetric(vertical: 1),
-                    color: Colors.white30,
-                  ),
-                  SizedBox(height: 10.0,),
-                ],
+                    SizedBox(height: 20.0,),
+                    Container(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      //color: Colors.black,
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "${widget.items.elementAt(widget.index).items!.length} Episodes",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          //inherit: true,
+                          color: Colors.deepOrange.shade300,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    SizedBox(height: 10.0,),
+                    /*Container(
+                      height: 0.25,
+                      margin: EdgeInsets.symmetric(vertical: 1),
+                      color: Colors.white30,
+                    ),*/
+                    SizedBox(height: 10.0,),
+                  ],
+                ),
               ),
               Expanded(
                 child: Container(
-                  color: clr_black,
+                    color: themeProvider.isLightTheme?clr_white:clr_black,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -257,7 +266,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                     color: /*nowPlaying == items.elementAt(index)
                                             ? Colors.blueGrey.withOpacity(0.3)
                                             : */
-                                        Colors.black54,
+                                        themeProvider.isLightTheme?clr_white:clr_black,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
@@ -268,7 +277,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                           child: Text(
                                             "${DateFormat('MMMM dd').format(items[index].pubDate!.toLocal())}",
                                             style: GoogleFonts.openSans(
-                                                color: Colors.white,
+                                                color: themeProvider.isLightTheme?clr_black:clr_white,
                                                 fontSize: 10),
                                           ),
                                         ),
@@ -276,7 +285,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                           items[index].title!,
                                           style: GoogleFonts.openSans(
 
-                                                  color: Colors.white,
+                                              color: themeProvider.isLightTheme?clr_black:clr_white,
                                                   fontSize: 16),
                                         ),
                                         items[index].description!.contains("<")     ? Html(
@@ -286,7 +295,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                          style: {
                                           'p':Style(
                                               fontFamily: 'opensans',
-                                              color: Colors.white70,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
+                                        color: themeProvider.isLightTheme?clr_black:clr_white,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
 
 
                                          },
@@ -294,13 +303,10 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                         )
                                         :Text(items[index].description==''?"No description":items[index].description!, style: GoogleFonts.openSans(
                                              // inherit: true,
-                                              color: Colors.white70,
+                                            color: themeProvider.isLightTheme?clr_black:clr_white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 10) ,),
 
-                                        Divider(
-                                          height: 5,
-                                        ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
@@ -330,8 +336,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                               icon: Icon(
                                                                 Icons
                                                                     .play_arrow,
-                                                                color: Colors
-                                                                    .white,
+                                                                color: themeProvider.isLightTheme?clr_black:clr_white,
                                                               ),
                                                               iconSize: 32.0,
                                                               onPressed: () {
@@ -346,8 +351,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                           return IconButton(
                                                               icon: Icon(
                                                                 Icons.pause,
-                                                                color: Colors
-                                                                    .white,
+                                                                color: themeProvider.isLightTheme?clr_black:clr_white,
                                                               ),
                                                               iconSize: 32.0,
                                                               onPressed: () {
@@ -370,7 +374,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                     icon: Icon(
                                                       Icons.play_arrow,
                                                       size: 32,
-                                                      color: Colors.white,
+                                                      color: themeProvider.isLightTheme?clr_black:clr_white,
                                                     ),
                                                   ),
                                             filesList.contains(items
@@ -383,7 +387,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                     icon: Icon(
                                                       Icons.check_circle,
                                                       size: 28,
-                                                      color: Colors.white,
+                                                      color: themeProvider.isLightTheme?clr_black:clr_white,
                                                     ),
                                                     onPressed: () {},
                                                   )
@@ -405,7 +409,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                             CircularProgressIndicator(
                                                           strokeWidth: 2.0,
                                                           backgroundColor:
-                                                              Colors.white,
+                                                           themeProvider.isLightTheme?clr_black:clr_white,
                                                           valueColor:
                                                               AlwaysStoppedAnimation<
                                                                       Color>(
@@ -485,7 +489,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                                         icon: Icon(
                                                           Icons.download,
                                                           size: 32,
-                                                          color: Colors.white,
+                                                          color: themeProvider.isLightTheme?clr_black:clr_white,
                                                         ),
                                                       ),
                                           ],
@@ -499,9 +503,9 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                     padding: EdgeInsets.symmetric(
                                       vertical: 10.0,
                                     ),
-                                    height: 0.2,
+                                    height: 0.5,
                                     margin: EdgeInsets.symmetric(vertical: 1),
-                                    color: Colors.black12,
+                                    color: themeProvider.isLightTheme?clr_black12:clr_white12,
                                   );
                                 },
                                 itemCount: widget.items
@@ -526,6 +530,7 @@ class CurrentSongTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final pageManager = getIt<PageManager>();
     return ValueListenableBuilder<String>(
       valueListenable: pageManager.currentSongTitleNotifier,
@@ -537,7 +542,7 @@ class CurrentSongTitle extends StatelessWidget {
               "Now Playing: ${title}",
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     //inherit: true,
-                    color: Colors.white,
+                color: themeProvider.isLightTheme?clr_black:clr_white,
                     fontSize: 16,
                   ),
             ),

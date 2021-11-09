@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fpg_family_app/helper/colors.dart';
+import 'package:fpg_family_app/model/theme_model.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xml/xml.dart';
 import 'feed_item_details_view.dart';
@@ -18,10 +20,11 @@ class FeedItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        color: clr_black,
+        color: themeProvider.isLightTheme?clr_black12:clr_black,
       ),
       margin: EdgeInsets.symmetric(horizontal: 8),
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -40,7 +43,7 @@ class FeedItemView extends StatelessWidget {
                 feedsItem.title,
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     inherit: true,
-                    color: Colors.white,
+                    color: themeProvider.isLightTheme?clr_black87:clr_white,
                     fontWeight: FontWeight.w600,
                     fontSize: 14),
               ),
@@ -48,7 +51,7 @@ class FeedItemView extends StatelessWidget {
             Html(
               data: feedsItem.description.toString(),
 style: {
-                "p": Style(color: Colors.white, fontSize: FontSize.medium)
+                "p": Style(color: themeProvider.isLightTheme?clr_black87:clr_white, fontSize: FontSize.medium)
 },
               onImageTap: (url, con, attributes, element) {
                 Navigator.of(context).push(FeedItemDetailsView.route(feedsItem));
