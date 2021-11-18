@@ -45,13 +45,13 @@ class FeedItemView extends StatelessWidget {
                     inherit: true,
                     color: themeProvider.isLightTheme?clr_black87:clr_white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14),
+                    fontSize: 16),
               ),
             ),
             Html(
               data: feedsItem.description.toString(),
 style: {
-                "p": Style(color: themeProvider.isLightTheme?clr_black87:clr_white, fontSize: FontSize.medium)
+                "p": Style(color: themeProvider.isLightTheme?clr_black87:clr_white, fontSize: FontSize.large)
 },
               onImageTap: (url, con, attributes, element) {
                 Navigator.of(context).push(FeedItemDetailsView.route(feedsItem));

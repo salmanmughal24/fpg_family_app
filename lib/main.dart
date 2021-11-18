@@ -13,6 +13,7 @@ import 'package:fpg_family_app/read_section.dart';
 import 'package:fpg_family_app/repositories/feed_repository.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/services/service_locator.dart';
+import 'package:fpg_family_app/splash_screen.dart';
 import 'package:fpg_family_app/watch_section.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -39,7 +40,7 @@ Future<void> main() async {
 
   FeedsRepository feedsRepository = FeedsRepository();
   PodcastRepository podcastsRepository = PodcastRepository();
-  await podcastsRepository.getChannelDetails();
+  await podcastsRepository.getFeeds();
 
   final appDocumentDirectory =
   await pathProvider.getApplicationDocumentsDirectory();
@@ -47,7 +48,7 @@ Future<void> main() async {
   Hive.init(appDocumentDirectory.path);
 
   final settings = await Hive.openBox('settings');
-  bool isLightTheme = settings.get('isLightTheme') ?? false;
+  bool isLightTheme = settings.get('isLightTheme') ?? true;
 
   print(isLightTheme);
   getIt<PageManager>().init(podcastsRepository.feeds);
@@ -105,7 +106,7 @@ class _MyAppState extends State<MyApp> {
             },
           )
         ],
-        child: HomePageScreen(),
+        child: SplashScreen()/*HomePageScreen()*/,
       ),
     );
   }

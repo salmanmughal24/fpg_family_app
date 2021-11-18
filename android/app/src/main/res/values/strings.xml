@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fpg Family</string>
+
+
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
+    <string name="facebook_app_id">1762585070604141</string>
+    <string name="fb_login_protocol_scheme">fb1762585070604141</string>
+</resources>

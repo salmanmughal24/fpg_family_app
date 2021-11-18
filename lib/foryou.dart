@@ -130,7 +130,7 @@ _deleteFile(String link) async {
     super.dispose();
   }
   _launchURL() async {
-    const url = 'https://fpgchurch.com/give';
+    const url = 'https://tithe.ly/give_new/www/#/tithely/give-one-time/3317107?widget=1&action=Give%20Online%20Now';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -187,7 +187,7 @@ print("Main Items $mainItems");
               /*  color: themeProvider.isLightTheme
               ? Colors.black87
               : Colors.white,*/
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.w700
           ),
         ),
@@ -207,31 +207,7 @@ print("Main Items $mainItems");
                 child: Text("GIVE" ,style: TextStyle(color: Colors.white),))),
           ),
 
-          Container(
-            height: 20.0,
-            margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
-            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
-            child:
 
-
-            Switch(
-              value: isSwitched,
-
-
-              onChanged: (value) {
-                setState(() async {
-
-                  await themeProvider.toggleThemeData();
-                  isSwitched = value;
-                  changeThemeMode(themeProvider.isLightTheme);
-
-                });
-              },
-              activeTrackColor: Colors.white30,
-              activeColor: Colors.black26,
-            ),
-
-          ),
 
         ],
       ),
@@ -250,7 +226,7 @@ print("Main Items $mainItems");
                     .copyWith(
                     inherit: true,
                     color: themeProvider.isLightTheme?clr_black87:clr_white,
-                    fontSize: 16),)),
+                    fontSize: 17),)),
                   )
                   : ListView.separated(
                   shrinkWrap: true,
@@ -277,7 +253,7 @@ print("Main Items $mainItems");
                               "${DateFormat('MMMM dd').format(downloadedItems[index].pubDate!.toLocal())}",
                               style: GoogleFonts.openSans(
                                   color: themeProvider.isLightTheme?clr_black:clr_white,
-                                  fontSize: 10),
+                                  fontSize: 12),
                             ),
                           ),
                           Text(
@@ -288,7 +264,7 @@ print("Main Items $mainItems");
                                 .copyWith(
                                 inherit: true,
                                 color: themeProvider.isLightTheme?clr_black87:clr_white,
-                                fontSize: 16),
+                                fontSize: 17),
                           ),
 
                           Row(
@@ -363,6 +339,7 @@ print("Main Items $mainItems");
                                   print("sekectedd uri ${downloadedItems.elementAt(index).enclosure!.url}");
                                   await pageManager
                                       .playWithUri(downloadedItems.elementAt(index).enclosure!.url);
+
                                   Global.isPlaying=true;
                                   Future.delayed(Duration(milliseconds: 3000)).then((value) {
 
@@ -436,7 +413,7 @@ class CurrentSongTitle extends StatelessWidget {
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                 //inherit: true,
                 color: themeProvider.isLightTheme?clr_black87:clr_white,
-                fontSize: 16,
+                fontSize: 17,
               ),
             ),
           ),

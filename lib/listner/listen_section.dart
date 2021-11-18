@@ -44,7 +44,7 @@ class _ListenSectionState extends State<ListenSection>
     }
   }
   _launchURL() async {
-    const url = 'https://fpgchurch.com/give';
+    const url = 'https://tithe.ly/give_new/www/#/tithely/give-one-time/3317107?widget=1&action=Give%20Online%20Now';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -54,6 +54,9 @@ class _ListenSectionState extends State<ListenSection>
   @override
   Widget build(BuildContext context) {
     var items = getIt<PageManager>().feedsItem;
+    for (var element in items) {
+      print("item ${element.link}");
+    }
     final themeProvider = Provider.of<ThemeProvider>(context);
     isSwitched = !(themeProvider.isLightTheme);
     return Scaffold(
@@ -72,7 +75,7 @@ class _ListenSectionState extends State<ListenSection>
               /*  color: themeProvider.isLightTheme
               ? Colors.black87
               : Colors.white,*/
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.w700
           ),
         ),
@@ -92,57 +95,7 @@ class _ListenSectionState extends State<ListenSection>
                 child: Text("GIVE" ,style: TextStyle(color: Colors.white),))),
           ),
 
-          Container(
-            height: 20.0,
-            margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
-            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
-            child:
 
-
-            Switch(
-              value: isSwitched,
-
-
-              onChanged: (value) {
-                setState(() async {
-
-                  await themeProvider.toggleThemeData();
-                  isSwitched = value;
-                  changeThemeMode(themeProvider.isLightTheme);
-
-                });
-              },
-              activeTrackColor: Colors.white30,
-              activeColor: Colors.black26,
-            ),
-
-            /*ToggleSwitch(
-              minWidth: 60.0,
-              minHeight: 10.0,
-              cornerRadius: 10.0,
-              activeBgColors: [[Colors.green!], [Colors.black45!]],
-              activeFgColor: Colors.white,
-              inactiveBgColor: Colors.grey,
-              inactiveFgColor: Colors.white,
-              initialLabelIndex: 1,
-              totalSwitches: 2,
-              labels: ['light', 'dark'],
-              radiusStyle: true,
-              onToggle: (index) async {
-                // await themeProvider.toggleThemeData();
-                  if (index == 0){
-                    changeThemeMode(themeProvider.isLightTheme);
-                  }
-                  else if (index == 1){
-
-                  }
-
-
-
-                print('switched to: $index');
-              },
-            ),*/
-          ),
 
         ],
       ),
@@ -216,7 +169,7 @@ class _ListenSectionState extends State<ListenSection>
                                     color: themeProvider.isLightTheme
                                         ? clr_black87
                                         : clr_white,
-                                    fontSize: 18,
+                                    fontSize: 20,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -237,7 +190,7 @@ class _ListenSectionState extends State<ListenSection>
                                     //inherit: true,
                                     color: Colors.blue,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -261,7 +214,7 @@ class _ListenSectionState extends State<ListenSection>
                             ? clr_black87
                             : clr_white,
                           fontWeight: FontWeight.w300,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
@@ -279,7 +232,7 @@ class _ListenSectionState extends State<ListenSection>
                           //inherit: true,
                           color: Colors.deepOrange.shade300,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
