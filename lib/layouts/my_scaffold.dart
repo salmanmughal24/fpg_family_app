@@ -151,7 +151,7 @@ class _MainBodyState extends State<MainBody> {
                                                     //inherit: true,
                                                     color: themeProvider.isLightTheme?clr_white:clr_black,
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 14,
+                                                    fontSize: 16,
                                                   ),
                                               textAlign: TextAlign.center,
                                               speed: const Duration(

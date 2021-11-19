@@ -4,6 +4,7 @@ import 'package:fpg_family_app/layouts/my_scaffold.dart';
 import 'package:fpg_family_app/read_section.dart';
 import 'package:fpg_family_app/repositories/podcast_repository.dart';
 import 'package:fpg_family_app/services/local_notification_service.dart';
+import 'package:fpg_family_app/setttings.dart';
 import 'package:fpg_family_app/video_player.dart';
 import 'package:fpg_family_app/watch_section.dart';
 import 'package:fpg_family_app/yoyo_player.dart';
@@ -150,6 +151,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
             if (index == 3) {
               return ForYouSection();
             }
+            if (index == 4) {
+              return SettingsScreen();
+            }
             return Container();
           },
           onPageChanged: (value) {
@@ -157,11 +161,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
               _currentIndex = value;
             });
           },
-          itemCount: 4,
+          itemCount: 5,
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        showUnselectedLabels: themeProvider.isLightTheme,
+        showUnselectedLabels: true,
         selectedItemColor: clr_selected_icon,
         unselectedItemColor: themeProvider.isLightTheme
             ? Colors.black54
@@ -190,6 +194,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.star_border),
             label: 'For You',
+            backgroundColor: clr_black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
             backgroundColor: clr_black,
           ),
         ],

@@ -190,7 +190,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                         //inherit: true,
                                         color: Colors.blue,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14,
+                                        fontSize: 17,
                                       ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -212,7 +212,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                               //inherit: true,
                               color: themeProvider.isLightTheme?clr_black:clr_white,
                               fontWeight: FontWeight.w300,
-                              fontSize: 14,
+                              fontSize: 16,
                             ),
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
@@ -230,7 +230,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                           //inherit: true,
                           color: Colors.deepOrange.shade300,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                          fontSize: 17,
                         ),
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
@@ -278,7 +278,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                             "${DateFormat('MMMM dd').format(items[index].pubDate!.toLocal())}",
                                             style: GoogleFonts.openSans(
                                                 color: themeProvider.isLightTheme?clr_black:clr_white,
-                                                fontSize: 10),
+                                                fontSize: 12),
                                           ),
                                         ),
                                         Text(
@@ -286,7 +286,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                           style: GoogleFonts.openSans(
 
                                               color: themeProvider.isLightTheme?clr_black:clr_white,
-                                                  fontSize: 16),
+                                                  fontSize: 18),
                                         ),
                                         items[index].description!.contains("<")     ? Html(
 
@@ -295,7 +295,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                          style: {
                                           'p':Style(
                                               fontFamily: 'opensans',
-                                        color: themeProvider.isLightTheme?clr_black:clr_white,fontSize: FontSize.small,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
+                                        color: themeProvider.isLightTheme?clr_black87:clr_white70,fontSize: FontSize.large,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
 
 
                                          },
@@ -303,9 +303,9 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                         )
                                         :Text(items[index].description==''?"No description":items[index].description!, style: GoogleFonts.openSans(
                                              // inherit: true,
-                                            color: themeProvider.isLightTheme?clr_black:clr_white,
+                                            color: themeProvider.isLightTheme?clr_black87:clr_white70,
                                               fontWeight: FontWeight.w400,
-                                              fontSize: 10) ,),
+                                              fontSize: 14) ,),
 
                                         Row(
                                           mainAxisAlignment:

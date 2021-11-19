@@ -43,7 +43,7 @@ class _WatchSectionState extends State<WatchSection> {
     return FirebaseFirestore.instance.collection("products").where('category',isEqualTo:id).orderBy("index").snapshots();
   }
   _launchURL() async {
-    const url = 'https://fpgchurch.com/give';
+    const url = 'https://tithe.ly/give_new/www/#/tithely/give-one-time/3317107?widget=1&action=Give%20Online%20Now';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -79,7 +79,7 @@ class _WatchSectionState extends State<WatchSection> {
             /*  color: themeProvider.isLightTheme
               ? Colors.black87
               : Colors.white,*/
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.w700
           ),
         ),
@@ -99,57 +99,7 @@ class _WatchSectionState extends State<WatchSection> {
                 child: Text("GIVE" ,style: TextStyle(color: Colors.white),))),
           ),
 
-          Container(
-            height: 20.0,
-            margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
-            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
-            child:
 
-
-            Switch(
-              value: isSwitched,
-
-
-              onChanged: (value) {
-                setState(() async {
-
-                 await themeProvider.toggleThemeData();
-                 isSwitched = value;
-    changeThemeMode(themeProvider.isLightTheme);
-
-                });
-              },
-              activeTrackColor: Colors.white30,
-              activeColor: Colors.black26,
-            ),
-
-            /*ToggleSwitch(
-              minWidth: 60.0,
-              minHeight: 10.0,
-              cornerRadius: 10.0,
-              activeBgColors: [[Colors.green!], [Colors.black45!]],
-              activeFgColor: Colors.white,
-              inactiveBgColor: Colors.grey,
-              inactiveFgColor: Colors.white,
-              initialLabelIndex: 1,
-              totalSwitches: 2,
-              labels: ['light', 'dark'],
-              radiusStyle: true,
-              onToggle: (index) async {
-                // await themeProvider.toggleThemeData();
-                  if (index == 0){
-                    changeThemeMode(themeProvider.isLightTheme);
-                  }
-                  else if (index == 1){
-
-                  }
-
-
-
-                print('switched to: $index');
-              },
-            ),*/
-          ),
 
         ],
       ),
@@ -175,14 +125,14 @@ class _WatchSectionState extends State<WatchSection> {
                                    : clr_white70,
                               // color: ,
                                fontWeight: FontWeight.w700,
-                               fontSize: 14)),
+                               fontSize: 20)),
                      ),
 
                    ],
                  ),
                ),
                SizedBox(
-                height: MediaQuery.of(context).size.height / 3.6,
+                height: MediaQuery.of(context).size.height / 4.0,
 
                  child: Padding(
                    padding:
@@ -255,7 +205,7 @@ class _WatchSectionState extends State<WatchSection> {
                                               textStyle: TextStyle(
                                                   color: themeProvider.isLightTheme?clr_black87:clr_white70,
                                                   fontWeight: FontWeight.w700,
-                                                  fontSize: 14)),
+                                                  fontSize: 20)),
                                         ),
                                         Spacer(),
                                         GestureDetector(
@@ -447,7 +397,7 @@ class _CustomCardState extends State<CustomCard> {
                       textStyle: TextStyle(
                         color: themeProvider.isLightTheme?clr_black87:clr_white70,
                         fontWeight: FontWeight.w500,
-                        fontSize: 11
+                        fontSize: 12
                       ),
                     ),
 
@@ -492,7 +442,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
   @override
   void initState() {
     super.initState();
-    initializeVideoPlayer();
+    //initializeVideoPlayer();
   }
 
 
@@ -504,10 +454,10 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
 
-      autoPlay: true,
+      autoPlay: false,
       looping: true,
       isLive: true,
-      autoInitialize: true,
+      autoInitialize: false,
       showControls: false,
       cupertinoProgressColors: ChewieProgressColors(playedColor: Colors.deepOrange, bufferedColor: Colors.deepOrangeAccent.withOpacity(0.25)),
       placeholder: Container(
@@ -556,9 +506,9 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
 
         },
         child: Container(
-       //  height:((_width/1.15)* 0.5635)+40,
-          width: _width/1.15,
-          margin: EdgeInsets.only(left: 10,right: 10),
+         height:((_width/1.30)* 0.2)+40,
+          width: _width/1.30,
+          margin: EdgeInsets.only(left: 10,right: 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(20),
@@ -584,7 +534,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
                 child: Container(
 
                 //  color: Colors.green,
-                  height: ((_width/1.15)* 0.5635),
+                  height: ((_width/1.30)* 0.5635),
                   width: (_width/1.15),
                   child: chewieController != null ?
                   chewieController!.videoPlayerController.value.isInitialized
@@ -628,14 +578,14 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
               ),
               Container(
                 padding:
-                const EdgeInsets.only(left: 10, right: 10,top: 10,bottom: 10),
+                const EdgeInsets.only(left: 10, right: 10,top: 10.0,bottom: 0),
                 child: Text(
                   widget.title,
                   style: GoogleFonts.openSans(
                     textStyle: TextStyle(
                         color: themeProvider.isLightTheme?clr_black87:clr_white70,
                         fontWeight: FontWeight.w700,
-                        fontSize: 12
+                        fontSize: 13
                     ),
                   ),
 

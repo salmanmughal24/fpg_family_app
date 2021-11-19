@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>82220753168-hhcervhpr3cr6j6275t1fj4f1eksunv9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.82220753168-hhcervhpr3cr6j6275t1fj4f1eksunv9</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>82220753168-9dccf43gs6lt7f7g4ailbnubc3br68bf.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDCxANWRBFT6Gnwb651c0oC8i-ZPyoIfjo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>82220753168</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.thejadav.fpgFamilyApp</string>
+	<key>PROJECT_ID</key>
+	<string>podcast-9893a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>podcast-9893a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:82220753168:ios:66461f403e77dfaf674595</string>
+</dict>
+</plist>
