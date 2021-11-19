@@ -132,7 +132,7 @@ class _WatchSectionState extends State<WatchSection> {
                  ),
                ),
                SizedBox(
-                height: MediaQuery.of(context).size.height / 3.6,
+                height: MediaQuery.of(context).size.height / 4.0,
 
                  child: Padding(
                    padding:
@@ -506,9 +506,9 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
 
         },
         child: Container(
-       //  height:((_width/1.15)* 0.5635)+40,
-          width: _width/1.15,
-          margin: EdgeInsets.only(left: 10,right: 10),
+         height:((_width/1.30)* 0.2)+40,
+          width: _width/1.30,
+          margin: EdgeInsets.only(left: 10,right: 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(20),
@@ -534,7 +534,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
                 child: Container(
 
                 //  color: Colors.green,
-                  height: ((_width/1.15)* 0.5635),
+                  height: ((_width/1.30)* 0.5635),
                   width: (_width/1.15),
                   child: chewieController != null ?
                   chewieController!.videoPlayerController.value.isInitialized
@@ -578,7 +578,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
               ),
               Container(
                 padding:
-                const EdgeInsets.only(left: 10, right: 10,top: 10,bottom: 10),
+                const EdgeInsets.only(left: 10, right: 10,top: 10.0,bottom: 0),
                 child: Text(
                   widget.title,
                   style: GoogleFonts.openSans(
