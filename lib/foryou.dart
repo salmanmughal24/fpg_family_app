@@ -225,7 +225,7 @@ print("Main Items $mainItems");
                     .subtitle1!
                     .copyWith(
                     inherit: true,
-                    color: themeProvider.isLightTheme?clr_black87:clr_white,
+                    color: themeProvider.isLightTheme?clr_black:clr_white,
                     fontSize: 17),)),
                   )
                   : ListView.separated(
@@ -251,7 +251,7 @@ print("Main Items $mainItems");
                             padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Text(
                               "${DateFormat('MMMM dd').format(downloadedItems[index].pubDate!.toLocal())}",
-                              style: GoogleFonts.openSans(
+                              style: GoogleFonts.poppins(
                                   color: themeProvider.isLightTheme?clr_black:clr_white,
                                   fontSize: 12),
                             ),
@@ -263,7 +263,7 @@ print("Main Items $mainItems");
                                 .subtitle1!
                                 .copyWith(
                                 inherit: true,
-                                color: themeProvider.isLightTheme?clr_black87:clr_white,
+                                color: themeProvider.isLightTheme?clr_black:clr_white,
                                 fontSize: 17),
                           ),
 
@@ -296,7 +296,7 @@ print("Main Items $mainItems");
                                           icon: Icon(
                                             Icons.play_arrow,
                                             color:
-                                            themeProvider.isLightTheme?clr_black87:clr_white,
+                                            themeProvider.isLightTheme?clr_black:clr_white,
                                           ),
                                           iconSize: 32.0,
                                           onPressed:(){
@@ -316,7 +316,7 @@ print("Main Items $mainItems");
                                           icon: Icon(
                                             Icons.pause,
                                             color:
-                                            themeProvider.isLightTheme?clr_black87:clr_white,
+                                            themeProvider.isLightTheme?clr_black:clr_white,
                                           ),
                                           iconSize: 32.0,
                                           onPressed:(){
@@ -412,7 +412,7 @@ class CurrentSongTitle extends StatelessWidget {
               "Now Playing: ${title}",
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                 //inherit: true,
-                color: themeProvider.isLightTheme?clr_black87:clr_white,
+                color: themeProvider.isLightTheme?clr_black:clr_white,
                 fontSize: 17,
               ),
             ),

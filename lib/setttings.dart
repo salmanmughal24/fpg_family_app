@@ -97,15 +97,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
         SettingsSection(
           title: 'App Settings',
-         titleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black45:clr_white70 , fontSize: 16, fontWeight: FontWeight.w500)),
+         titleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 16, fontWeight: FontWeight.w500)),
 
          // titleTextStyle:  ,
           tiles: [
             SettingsTile.switchTile(
               switchActiveColor:Colors.black26,
               title: themeProvider.isLightTheme? 'Dark Theme':"Light Theme",
-              titleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black87:clr_white70 , fontSize: 16, fontWeight: FontWeight.w500)),
-              leading: Icon(Icons.dark_mode),
+              titleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 16, fontWeight: FontWeight.w500)),
+              leading: Icon(Icons.dark_mode, color:themeProvider.isLightTheme?clr_black:clr_white),
               switchValue: isSwitched,
 
               onToggle: (bool value) {
@@ -121,38 +121,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SettingsTile(
               title: 'Give',
-              titleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black87:clr_white70 , fontSize: 16, fontWeight: FontWeight.w500)),
+              titleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 16, fontWeight: FontWeight.w500)),
               subtitle: 'Simple and Secure Givings',
-              subtitleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black45:clr_white54 , fontSize: 12, fontWeight: FontWeight.w500)),
-              leading: Icon(Icons.language),
+              subtitleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 12, fontWeight: FontWeight.w500)),
+              leading: Icon(Icons.language,color:themeProvider.isLightTheme?clr_black:clr_white),
               onPressed: (context){
                 _launchURL();
               },
             ),
             SettingsTile(
-                titleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black87:clr_white70 , fontSize: 16, fontWeight: FontWeight.w500)),
-                title: 'About us', leading: Icon(Icons.description),
+                titleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 16, fontWeight: FontWeight.w500)),
+                title: 'About us', leading: Icon(Icons.description,color:themeProvider.isLightTheme?clr_black:clr_white),
               onPressed: (context){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> About()));
               },
             ),
             SettingsTile(
-              titleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black87:clr_white70 , fontSize: 16, fontWeight: FontWeight.w500)),
-              title: 'Request Prayer', leading: Image.asset("assets/images/prayer.png", color: themeProvider.isLightTheme?Colors.grey:clr_white, width: 25.0, height: 25.0,),
+              titleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 16, fontWeight: FontWeight.w500)),
+              title: 'Request Prayer', leading: Image.asset("assets/images/prayer.png", color: themeProvider.isLightTheme?clr_black:clr_white, width: 25.0, height: 25.0,),
               onPressed: (context){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> RequestPrayer()));
               },
             ),
             SettingsTile(
-              titleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black87:clr_white70 , fontSize: 16, fontWeight: FontWeight.w500)),
+              titleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 16, fontWeight: FontWeight.w500)),
               title: 'Version',
               subtitle: '2.5.2',
-              subtitleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black45:clr_white54 , fontSize: 12, fontWeight: FontWeight.w500)),
-              leading: Icon(Icons.app_settings_alt),
+              subtitleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 12, fontWeight: FontWeight.w500)),
+              leading: Icon(Icons.app_settings_alt,color:themeProvider.isLightTheme?clr_black:clr_white),
             ),
             SettingsTile(
-              titleTextStyle: GoogleFonts.openSans(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black87:clr_white70 , fontSize: 16, fontWeight: FontWeight.w500)),
-              title: 'Sign out', leading: Icon(Icons.exit_to_app),onPressed: (context) async {
+              titleTextStyle: GoogleFonts.poppins(textStyle: TextStyle(color:themeProvider.isLightTheme?clr_black:clr_white , fontSize: 16, fontWeight: FontWeight.w500)),
+              title: 'Sign out', leading: Icon(Icons.exit_to_app,color:themeProvider.isLightTheme?clr_black:clr_white),onPressed: (context) async {
               print("sign out button pressed");
               await FirebaseAuth.instance.signOut();
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Login(

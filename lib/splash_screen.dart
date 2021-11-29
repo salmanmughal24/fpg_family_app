@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fpg_family_app/home_page_screen.dart';
 import 'package:fpg_family_app/intro_screen.dart';
+import 'package:fpg_family_app/login.dart';
 import 'package:fpg_family_app/model/theme_model.dart';
 import 'package:provider/provider.dart';
 
@@ -23,11 +24,10 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      Timer(const Duration(seconds: 5),
-          getData(FirebaseAuth.instance.currentUser));
+      Future.delayed(Duration(seconds: 2)).then((value) => getData(FirebaseAuth.instance.currentUser));
     });
-  }
 
+  }
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
   getData(User? currentUser) async {
     if (currentUser == null) {
      // Navigator.pushReplacementNamed(context, 'intro');
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> IntroScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Login()));
     } else {
       print("else");
        FirebaseFirestore.instance
@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
       });
 
      // Navigator.pushReplacementNamed(context, 'navigation');
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePageScreen()));
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePageScreen()));
 
     }
   }

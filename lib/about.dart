@@ -89,22 +89,22 @@ class _AboutState extends State<About> {
           child: SizedBox.expand(
             child: Column(
               children: [
-                Text("The gospel shall not be censored.  We created FPG Family as a place to hear the preaching of the Word of God.  Every minister is anointed by God to preach and teach the gospel. 24/7 FPG Family is a place to grow in Word and in relationship with the Holy Ghost.  A ministry of Faith Pleases God Church.",style: GoogleFonts.openSans(
-                    textStyle: GoogleFonts.openSans(textStyle: TextStyle(
-                        color:themeProvider.isLightTheme? clr_black87:clr_white70,
+                Text("The gospel shall not be censored.  We created FPG Family as a place to hear the preaching of the Word of God.  Every minister is anointed by God to preach and teach the gospel. 24/7 FPG Family is a place to grow in Word and in relationship with the Holy Ghost.  A ministry of Faith Pleases God Church.",style: GoogleFonts.poppins(
+                    textStyle: GoogleFonts.poppins(textStyle: TextStyle(
+                        color:themeProvider.isLightTheme? clr_black:clr_white,
                         fontSize: 18,
                         fontWeight: FontWeight.w400
                     )),/*letterSpacing: 2, wordSpacing: 2.0*/),),
                 Spacer(),
                 Row(
                   children: [
-                    Text("Email:  ",style: GoogleFonts.openSans(
+                    Text("Email:  ",style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                            color:themeProvider.isLightTheme? clr_black87:clr_white70,
+                            color:themeProvider.isLightTheme? clr_black:clr_white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                         )),),
-                    Text("kevinsortiz@gmail.com",style: GoogleFonts.openSans(
+                    Text("kevinsortiz@gmail.com",style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             color:Colors.blue,
                             decoration: TextDecoration.underline,
@@ -116,15 +116,15 @@ class _AboutState extends State<About> {
                 ),
                 Row(
                   children: [
-                    Text("Contact number:  ",style: GoogleFonts.openSans(
+                    Text("Contact number:  ",style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                            color:themeProvider.isLightTheme? clr_black87:clr_white70,
+                            color:themeProvider.isLightTheme? clr_black:clr_white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                         )),),
-                    Text("+1 (956) 412-5600",style: GoogleFonts.openSans(
+                    Text("+1 (956) 412-5600",style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                            color:themeProvider.isLightTheme? clr_black87:clr_white70,
+                            color:themeProvider.isLightTheme? clr_black:clr_white,
                             fontSize: 18,
                             fontWeight: FontWeight.w500
                         )),),
@@ -134,16 +134,16 @@ class _AboutState extends State<About> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Church Address:  ",style: GoogleFonts.openSans(
+                    Text("Church Address:  ",style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                            color:themeProvider.isLightTheme? clr_black87:clr_white70,
+                            color:themeProvider.isLightTheme? clr_black:clr_white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                         )),),
                     Flexible(
-                      child: Text("Faith Pleases God Church 4501 West Expressway 83 Harlingen, TX 78552",style: GoogleFonts.openSans(
+                      child: Text("Faith Pleases God Church 4501 West Expressway 83 Harlingen, TX 78552",style: GoogleFonts.poppins(
                           textStyle: TextStyle(
-                              color:themeProvider.isLightTheme? clr_black87:clr_white70,
+                              color:themeProvider.isLightTheme? clr_black:clr_white,
                               fontSize: 18,
                               fontWeight: FontWeight.w500
                           ),
@@ -156,9 +156,9 @@ class _AboutState extends State<About> {
                 ),
                 Row(
                   children: [
-                    Text("Website:  ",style: GoogleFonts.openSans(
+                    Text("Website:  ",style: GoogleFonts.poppins(
                         textStyle: TextStyle(
-                            color:themeProvider.isLightTheme? clr_black87:clr_white70,
+                            color:themeProvider.isLightTheme? clr_black:clr_white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                         )),),
@@ -166,7 +166,7 @@ class _AboutState extends State<About> {
                       onTap: (){
                         _launchWebsite();
                       },
-                      child: Text("https://fpgchurch.com",style: GoogleFonts.openSans(
+                      child: Text("https://fpgchurch.com",style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color:themeProvider.isLightTheme? Colors.blue:Colors.blue,
                               fontSize: 18,

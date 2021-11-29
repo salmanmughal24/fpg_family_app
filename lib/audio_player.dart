@@ -276,14 +276,14 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                                           child: Text(
                                             "${DateFormat('MMMM dd').format(items[index].pubDate!.toLocal())}",
-                                            style: GoogleFonts.openSans(
+                                            style: GoogleFonts.poppins(
                                                 color: themeProvider.isLightTheme?clr_black:clr_white,
                                                 fontSize: 12),
                                           ),
                                         ),
                                         Text(
                                           items[index].title!,
-                                          style: GoogleFonts.openSans(
+                                          style: GoogleFonts.poppins(
 
                                               color: themeProvider.isLightTheme?clr_black:clr_white,
                                                   fontSize: 18),
@@ -294,14 +294,14 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
 
                                          style: {
                                           'p':Style(
-                                              fontFamily: 'opensans',
+                                              fontFamily: 'poppins',
                                         color: themeProvider.isLightTheme?clr_black87:clr_white70,fontSize: FontSize.large,maxLines: 2, textOverflow: TextOverflow.ellipsis,padding: EdgeInsets.all(0.0)),
 
 
                                          },
 
                                         )
-                                        :Text(items[index].description==''?"No description":items[index].description!, style: GoogleFonts.openSans(
+                                        :Text(items[index].description==''?"No description":items[index].description!, style: GoogleFonts.poppins(
                                              // inherit: true,
                                             color: themeProvider.isLightTheme?clr_black87:clr_white70,
                                               fontWeight: FontWeight.w400,
@@ -571,7 +571,7 @@ class Playlist extends StatelessWidget {
                 child: Column(
                   children: [
                     //   Container(child: Image.network(),),
-                    Text('${playlistTitles[index]}' ,style: GoogleFonts.openSans()),
+                    Text('${playlistTitles[index]}' ,style: GoogleFonts.poppins()),
                   ],
                 ),
                 // ...

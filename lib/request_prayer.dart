@@ -127,20 +127,20 @@ class _RequestPrayerState extends State<RequestPrayer> {
                       controller: _emailController,
                       cursorColor: themeProvider.isLightTheme
                           ? clr_black87
-                          : clr_white70,
+                          : clr_white,
                       //   autovalidate: false,
                       //validator: emailValidator,
                       autofocus: false,
-                      style: GoogleFonts.openSans(
+                      style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               fontSize: 14.0,
                               color: themeProvider.isLightTheme
                                   ? clr_black87
-                                  : clr_white70)),
+                                  : clr_white)),
                       decoration: InputDecoration(
                         filled: true,
                         label: Text("Email",
-                            style: GoogleFonts.openSans(
+                            style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                   color: clr_selected_icon, fontSize: 14),
                             )),
@@ -179,7 +179,7 @@ class _RequestPrayerState extends State<RequestPrayer> {
                       controller: _firstnameController,
                       cursorColor: themeProvider.isLightTheme
                           ? clr_black87
-                          : clr_white70,
+                          : clr_white,
                       //   autovalidate: false,
 
                       validator: (text) {
@@ -193,23 +193,23 @@ class _RequestPrayerState extends State<RequestPrayer> {
                       },
                       //validator: emailValidator,
                       autofocus: false,
-                      style: GoogleFonts.openSans(
+                      style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               fontSize: 14.0,
                               color: themeProvider.isLightTheme
                                   ? clr_black87
-                                  : clr_white70)),
+                                  : clr_white)),
                       decoration: InputDecoration(
                         hintText: "john",
-                        hintStyle: GoogleFonts.openSans(
+                        hintStyle: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontSize: 14.0,
                                 color: themeProvider.isLightTheme
-                                    ? clr_black45
-                                    : clr_white54)),
+                                    ? clr_black
+                                    : clr_white)),
                         filled: true,
                         label: Text("First Name",
-                            style: GoogleFonts.openSans(
+                            style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                   color: clr_selected_icon, fontSize: 14),
                             )),
@@ -248,7 +248,7 @@ class _RequestPrayerState extends State<RequestPrayer> {
                       controller: _lastnameController,
                       cursorColor: themeProvider.isLightTheme
                           ? clr_black87
-                          : clr_white70,
+                          : clr_white,
                       //   autovalidate: false,
 
                       validator: (text) {
@@ -262,23 +262,23 @@ class _RequestPrayerState extends State<RequestPrayer> {
                       },
                       //validator: emailValidator,
                       autofocus: false,
-                      style: GoogleFonts.openSans(
+                      style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               fontSize: 14.0,
                               color: themeProvider.isLightTheme
                                   ? clr_black87
-                                  : clr_white70)),
+                                  : clr_white)),
                       decoration: InputDecoration(
                         hintText: "Wick",
-                        hintStyle: GoogleFonts.openSans(
+                        hintStyle: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontSize: 14.0,
                                 color: themeProvider.isLightTheme
-                                    ? clr_black45
-                                    : clr_white54)),
+                                    ? clr_black
+                                    : clr_white)),
                         filled: true,
                         label: Text("Last Name",
-                            style: GoogleFonts.openSans(
+                            style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                   color: clr_selected_icon, fontSize: 14),
                             )),
@@ -318,7 +318,7 @@ class _RequestPrayerState extends State<RequestPrayer> {
                       controller: _prayerRequestController,textAlignVertical: TextAlignVertical.top,
                       cursorColor: themeProvider.isLightTheme
                           ? clr_black87
-                          : clr_white70,
+                          : clr_white,
                       //   autovalidate: false,
 
                       validator: (text) {
@@ -330,23 +330,23 @@ class _RequestPrayerState extends State<RequestPrayer> {
                       },
                       //validator: emailValidator,
                       autofocus: false,minLines: 10,maxLines: 20,
-                      style: GoogleFonts.openSans(
+                      style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               fontSize: 14.0,
                               color: themeProvider.isLightTheme
                                   ? clr_black87
-                                  : clr_white70)),
+                                  : clr_white)),
                       decoration: InputDecoration(
                         hintText: "",
-                        hintStyle: GoogleFonts.openSans(
+                        hintStyle: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontSize: 14.0,
                                 color: themeProvider.isLightTheme
-                                    ? clr_black45
-                                    : clr_white54)),
+                                    ? clr_black
+                                    : clr_white)),
                         filled: true,
                         label: Text("Prayer Request",
-                            style: GoogleFonts.openSans(
+                            style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                   color: clr_selected_icon, fontSize: 14),
                             )),
@@ -355,7 +355,7 @@ class _RequestPrayerState extends State<RequestPrayer> {
                         //  errorText: _email! =='' ? 'Phone number/Email is required' : _email!.contains('@')?null:'Invalid email',
 
                         contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 12.0, top: 0.0, right: 2.0),
+                            left: 14.0, bottom: 12.0, top: 12.0, right: 2.0),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: clr_selected_icon),
                           borderRadius: BorderRadius.circular(6),
@@ -386,7 +386,7 @@ class _RequestPrayerState extends State<RequestPrayer> {
 
                       decoration: InputDecoration(
                           labelStyle:
-                           GoogleFonts.openSans(
+                           GoogleFonts.poppins(
                       textStyle: TextStyle(
                       color: clr_selected_icon, fontSize: 14),
                     ),
@@ -422,7 +422,7 @@ class _RequestPrayerState extends State<RequestPrayer> {
                           items: _prayercategories.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style:   GoogleFonts.openSans(
+                              child: Text(value, style:   GoogleFonts.poppins(
                               textStyle: TextStyle(
                               color: clr_selected_icon, fontSize: 14),
                             ),),
@@ -512,7 +512,7 @@ class _RequestPrayerState extends State<RequestPrayer> {
                           borderRadius: BorderRadius.circular(6)),
                     ),
                     child: Text('Submit',
-                        style: GoogleFonts.openSans(
+                        style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,

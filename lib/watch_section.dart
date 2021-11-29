@@ -118,11 +118,11 @@ class _WatchSectionState extends State<WatchSection> {
                    children: [
                      Text(
                        "Live Streaming",
-                       style: GoogleFonts.openSans(
+                       style: GoogleFonts.poppins(
                            textStyle: TextStyle(
                                color: themeProvider.isLightTheme
                                    ? clr_black87
-                                   : clr_white70,
+                                   : clr_white,
                               // color: ,
                                fontWeight: FontWeight.w700,
                                fontSize: 20)),
@@ -201,9 +201,9 @@ class _WatchSectionState extends State<WatchSection> {
                                       children: [
                                         Text(
                                           category.name,
-                                          style: GoogleFonts.openSans(
+                                          style: GoogleFonts.poppins(
                                               textStyle: TextStyle(
-                                                  color: themeProvider.isLightTheme?clr_black87:clr_white70,
+                                                  color: themeProvider.isLightTheme?clr_black87:clr_white,
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 20)),
                                         ),
@@ -393,9 +393,9 @@ class _CustomCardState extends State<CustomCard> {
                   const EdgeInsets.only(left: 10, right: 10),
                   child: Text(
                     widget.title,
-                    style: GoogleFonts.openSans(
+                    style: GoogleFonts.poppins(
                       textStyle: TextStyle(
-                        color: themeProvider.isLightTheme?clr_black87:clr_white70,
+                        color: themeProvider.isLightTheme?clr_black:clr_white,
                         fontWeight: FontWeight.w500,
                         fontSize: 12
                       ),
@@ -453,6 +453,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
     ]);
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
+
 
       autoPlay: false,
       looping: true,
@@ -581,9 +582,9 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
                 const EdgeInsets.only(left: 10, right: 10,top: 10.0,bottom: 0),
                 child: Text(
                   widget.title,
-                  style: GoogleFonts.openSans(
+                  style: GoogleFonts.poppins(
                     textStyle: TextStyle(
-                        color: themeProvider.isLightTheme?clr_black87:clr_white70,
+                        color: themeProvider.isLightTheme?clr_black:clr_white,
                         fontWeight: FontWeight.w700,
                         fontSize: 13
                     ),

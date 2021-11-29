@@ -42,7 +42,7 @@ class ThemeProvider with ChangeNotifier {
   // Global theme data we are always check if the light theme is enabled #isLightTheme
   ThemeData themeData() {
     return ThemeData(
-        textTheme: GoogleFonts.openSansTextTheme(),
+        textTheme: GoogleFonts.poppinsTextTheme(),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       primarySwatch: isLightTheme ? Colors.grey : Colors.grey,
       primaryColor: isLightTheme ? Colors.white : Color(0xFF1E1F28),

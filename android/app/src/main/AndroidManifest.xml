@@ -10,7 +10,7 @@
 
 
    <application
-        android:label="fpg_family_app"
+        android:label="FPG Family"
         android:icon="@mipmap/ic_launcher"
        android:requestLegacyExternalStorage="true"
        >
@@ -33,6 +33,9 @@
        </activity>
        <activity
            android:name="com.ryanheise.audioservice.AudioServiceActivity"
+
+           android:resizeableActivity="true"
+           android:supportsPictureInPicture="true"
            android:launchMode="singleTop"
            android:theme="@style/LaunchTheme"
            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

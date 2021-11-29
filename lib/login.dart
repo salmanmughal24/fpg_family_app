@@ -92,13 +92,13 @@ class _LoginState extends State<Login> {
                                 controller: _emailController,
                                 cursorColor: themeProvider.isLightTheme?clr_black87:clr_white70,
                                 autofocus: false,
-                                style: GoogleFonts.openSans(
+                                style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
                                         fontSize: 14.0, color: themeProvider.isLightTheme?clr_black87:clr_white70,)),
                                 decoration: InputDecoration(
                                   filled: true,
                                   label: Text("Email",
-                                      style: GoogleFonts.openSans(
+                                      style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
                                             color: clr_selected_icon,
                                             fontSize: 14),
@@ -138,7 +138,7 @@ class _LoginState extends State<Login> {
                                 cursorColor: themeProvider.isLightTheme?clr_black87:clr_white70,
                                 autofocus: false,
                                 obscureText: _obscure,
-                                style: GoogleFonts.openSans(
+                                style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
                                         fontSize: 14.0, color: themeProvider.isLightTheme?clr_black87:clr_white70)),
                                 decoration: InputDecoration(
@@ -163,7 +163,7 @@ class _LoginState extends State<Login> {
                                   filled: true,
                                   label: Text(
                                     "Password",
-                                    style: GoogleFonts.openSans(
+                                    style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
                                             color: clr_selected_icon,
                                             fontSize: 14)),
@@ -259,7 +259,7 @@ class _LoginState extends State<Login> {
                                 borderRadius: BorderRadius.circular(6)),
                           ),
                           child: Text('Login',
-                              style: GoogleFonts.openSans(
+                              style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
@@ -272,7 +272,7 @@ class _LoginState extends State<Login> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("New in FPG Family?",
-                                  style: GoogleFonts.openSans(
+                                  style: GoogleFonts.poppins(
                                       textStyle: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           color: themeProvider.isLightTheme?clr_black45:Colors.white70))),
@@ -289,7 +289,7 @@ class _LoginState extends State<Login> {
                                             builder: (context) => Register()));
                                   },
                                   child: Text("Register",
-                                      style: GoogleFonts.openSans(
+                                      style: GoogleFonts.poppins(
                                           textStyle: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               color: clr_selected_icon)))),
@@ -336,7 +336,7 @@ class _LoginState extends State<Login> {
                         }
                       },
                       child: Container(
-                          width: _width / 1.9,
+                          width: _width / 1.7,
                           decoration: BoxDecoration(
                               color: themeProvider.isLightTheme?clr_black45:clr_white54,
                               borderRadius:
@@ -356,7 +356,7 @@ class _LoginState extends State<Login> {
                               ),
                               Text(
                                 'Login with Google',
-                                style: GoogleFonts.openSans(
+                                style: GoogleFonts.poppins(
                                     textStyle: TextStyle(color: Colors.white)),
                               ),
                             ],
@@ -398,7 +398,7 @@ class _LoginState extends State<Login> {
                         }
                       },
                       child: Container(
-                          width: _width / 1.9,
+                          width: _width / 1.7,
                           decoration: BoxDecoration(
                               color: Color(0XFF45619D),
                               borderRadius:
@@ -418,7 +418,7 @@ class _LoginState extends State<Login> {
                               ),
                               Text(
                                 'Login with Facebook',
-                                style: GoogleFonts.openSans(
+                                style: GoogleFonts.poppins(
                                     textStyle: TextStyle(color: Colors.white)),
                               ),
                             ],

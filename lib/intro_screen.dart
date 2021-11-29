@@ -41,7 +41,7 @@ class IntroScreen extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 20.0, bottom: 40.0),
-                child: Center(child: Text("Welcome to FPG Family", style: GoogleFonts.openSans(textStyle: TextStyle(fontSize: 22, color: themeProvider.isLightTheme
+                child: Center(child: Text("Welcome to FPG Family", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 22, color: themeProvider.isLightTheme
                     ? clr_black87
                     : clr_white, fontWeight: FontWeight.bold)))),
               ),
@@ -61,7 +61,7 @@ class IntroScreen extends StatelessWidget {
                   //  Navigator.pushNamed(context, 'login');
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> Login()));
                   },
-                  child: Text('Login', style: GoogleFonts.openSans(textStyle: TextStyle(
+                  child: Text('Login', style: GoogleFonts.poppins(textStyle: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       fontWeight: FontWeight.bold) ),)),
@@ -82,7 +82,7 @@ class IntroScreen extends StatelessWidget {
 
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> Register()));
                   },
-                  child: Text('Register',style: GoogleFonts.openSans(textStyle: TextStyle(
+                  child: Text('Register',style: GoogleFonts.poppins(textStyle: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       fontWeight: FontWeight.bold) ))),

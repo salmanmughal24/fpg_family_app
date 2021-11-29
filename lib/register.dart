@@ -106,12 +106,12 @@ class _RegisterState extends State<Register> {
                                 },
                                 //validator: emailValidator,
                                 autofocus: false,
-                                style: GoogleFonts.openSans(textStyle: TextStyle(fontSize: 14.0, color: themeProvider.isLightTheme?clr_black87:clr_white70)),
+                                style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14.0, color: themeProvider.isLightTheme?clr_black87:clr_white70)),
                                 decoration: InputDecoration(
                                   filled: true,
                                   label: Text(
                                       "Email",
-                                      style: GoogleFonts.openSans(textStyle: TextStyle(
+                                      style: GoogleFonts.poppins(textStyle: TextStyle(
                                           color: clr_selected_icon, fontSize: 14),)
                                   ),
                                   fillColor: Colors.transparent,
@@ -168,14 +168,14 @@ class _RegisterState extends State<Register> {
                                 },
                                 //validator: emailValidator,
                                 autofocus: false,
-                                style: GoogleFonts.openSans(textStyle: TextStyle(fontSize: 14.0, color:themeProvider.isLightTheme?clr_black87:clr_white70)),
+                                style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14.0, color:themeProvider.isLightTheme?clr_black87:clr_white70)),
                                 decoration: InputDecoration(
                                   hintText: "john",
-                                  hintStyle: GoogleFonts.openSans(textStyle: TextStyle(fontSize: 14.0, color: themeProvider.isLightTheme?clr_black45:clr_white54)),
+                                  hintStyle: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14.0, color: themeProvider.isLightTheme?clr_black45:clr_white54)),
                                   filled: true,
                                   label: Text(
                                       "Username",
-                                      style: GoogleFonts.openSans(textStyle: TextStyle(
+                                      style: GoogleFonts.poppins(textStyle: TextStyle(
                                           color: clr_selected_icon, fontSize: 14),)
                                   ),
                                   fillColor: Colors.transparent,
@@ -225,7 +225,7 @@ class _RegisterState extends State<Register> {
                                   _password = value;
                                 },
                                 obscureText: _obscure,
-                                style: GoogleFonts.openSans(textStyle: TextStyle(fontSize: 14.0, color: themeProvider.isLightTheme?clr_black87:clr_white70)),
+                                style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14.0, color: themeProvider.isLightTheme?clr_black87:clr_white70)),
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
                                     icon: Icon(
@@ -248,7 +248,7 @@ class _RegisterState extends State<Register> {
                                   filled: true,
                                   label: Text(
                                       "Password",
-                                      style: GoogleFonts.openSans(textStyle: TextStyle(
+                                      style: GoogleFonts.poppins(textStyle: TextStyle(
                                           color: clr_selected_icon, fontSize: 14),)
                                   ),
                                   fillColor: Colors.transparent,
@@ -354,7 +354,7 @@ class _RegisterState extends State<Register> {
                                   // side: BorderSide(color: Color(0xffEE95A7), width: 2),
                                     borderRadius: BorderRadius.circular(6)),
                               ),
-                              child: Text('Register',style: GoogleFonts.openSans(textStyle: TextStyle(
+                              child: Text('Register',style: GoogleFonts.poppins(textStyle: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold) ))),
@@ -365,7 +365,7 @@ class _RegisterState extends State<Register> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("Already have an account?",
-                                    style: GoogleFonts.openSans(textStyle: TextStyle(
+                                    style: GoogleFonts.poppins(textStyle: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: themeProvider.isLightTheme?clr_black45:Colors.white70))),
                                 SizedBox(
@@ -379,7 +379,7 @@ class _RegisterState extends State<Register> {
                                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Login()));
                                     },
                                     child: Text("Login",
-                                        style: GoogleFonts.openSans(textStyle: TextStyle(
+                                        style: GoogleFonts.poppins(textStyle: TextStyle(
                                             fontWeight: FontWeight.w500,
                                             color: clr_selected_icon)))),
                               ],

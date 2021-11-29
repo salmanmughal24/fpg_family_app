@@ -41,7 +41,6 @@ Future<void> main() async {
   FeedsRepository feedsRepository = FeedsRepository();
   PodcastRepository podcastsRepository = PodcastRepository();
   await podcastsRepository.getFeeds();
-
   final appDocumentDirectory =
   await pathProvider.getApplicationDocumentsDirectory();
 
@@ -98,7 +97,7 @@ class _MyAppState extends State<MyApp> {
         "read": (_) => ReadSection(feedsRepository),
         "foryou": (_) => ForYouSection(),
       },
-      home: MultiBlocProvider(
+      home: SplashScreen()/*MultiBlocProvider(
         providers: [
           BlocProvider<ListenBloc>(
             create: (context) {
@@ -106,8 +105,8 @@ class _MyAppState extends State<MyApp> {
             },
           )
         ],
-        child: SplashScreen()/*HomePageScreen()*/,
-      ),
+        child: SplashScreen()*//*HomePageScreen()*//*,
+      ),*/
     );
   }
 }

@@ -168,8 +168,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
         showUnselectedLabels: true,
         selectedItemColor: clr_selected_icon,
         unselectedItemColor: themeProvider.isLightTheme
-            ? Colors.black54
-            : Colors.white54,
+            ? Colors.black
+            : Colors.white,
         type: BottomNavigationBarType.fixed,
         backgroundColor: themeProvider.isLightTheme
             ? Colors.white
