@@ -1,4 +1,3 @@
-
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
@@ -8,17 +7,28 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'helper/colors.dart';
 
-
+GlobalKey _betterPlayerKey = GlobalKey();
+BetterPlayerController? _betterPlayerController;
 class LiveStreamingPlayer extends StatefulWidget {
   String videoUrl;
-  LiveStreamingPlayer({Key? key, required this.videoUrl}) : super(key: key);
+  String title;
+  String thumbnail;
+  String author;
+
+  LiveStreamingPlayer(
+      {Key? key,
+      required this.videoUrl,
+      required this.title,
+      required this.thumbnail,
+      required this.author})
+      : super(key: key);
+
   @override
   _LiveStreamingPlayerState createState() => _LiveStreamingPlayerState();
 }
 
 class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
-
- /* late VideoPlayerController videoPlayerController;
+  /* late VideoPlayerController videoPlayerController;
    ChewieController? chewieController;
 
   @override
@@ -93,30 +103,44 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
           ));
     }*/
 
-  late BetterPlayerController _betterPlayerController;
-  GlobalKey _betterPlayerKey = GlobalKey();
 
   @override
   void initState() {
+    load();
+    super.initState();
+  }
+
+  load() async {
+
+    if(_betterPlayerController!=null){
+      _betterPlayerController!.dispose(forceDispose: true);
+    }
     BetterPlayerConfiguration betterPlayerConfiguration =
-    BetterPlayerConfiguration(
+    const BetterPlayerConfiguration(
       aspectRatio: 16 / 9,
       fit: BoxFit.contain,
+      handleLifecycle: false,
       autoPlay: true,
-      autoDispose: true,
+      autoDispose: false,
       autoDetectFullscreenDeviceOrientation: true,
       fullScreenByDefault: false,
-
     );
     BetterPlayerDataSource dataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
       widget.videoUrl,
+      notificationConfiguration: BetterPlayerNotificationConfiguration(
+        showNotification: true,
+        title: widget.title,
+        author: widget.author,
+        imageUrl: widget.thumbnail,notificationChannelName: "chachu",
+        activityName: "MainActivity",
+      ),
     );
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
-    _betterPlayerController.setupDataSource(dataSource);
-    _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
-    super.initState();
+    _betterPlayerController!.setupDataSource(dataSource);
+    _betterPlayerController!.setBetterPlayerGlobalKey(_betterPlayerKey);
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -128,9 +152,7 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      backgroundColor: themeProvider.isLightTheme
-          ? clr_white
-          : clr_black,
+      backgroundColor: themeProvider.isLightTheme ? clr_white : clr_black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -138,7 +160,7 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
           AspectRatio(
             aspectRatio: 16 / 8,
             child: BetterPlayer(
-              controller: _betterPlayerController,
+              controller: _betterPlayerController!,
               key: _betterPlayerKey,
             ),
           ),
@@ -151,7 +173,7 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
               _betterPlayerController.enablePictureInPicture(_betterPlayerKey);
             },
           ),*/
-         /* ElevatedButton(
+          /* ElevatedButton(
             child: Text("Disable PiP"),
             onPressed: () async {
               _betterPlayerController.disablePictureInPicture();
@@ -161,6 +183,4 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
       ),
     );
   }
-
-  }
-
+}

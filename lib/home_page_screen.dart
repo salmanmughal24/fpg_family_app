@@ -49,7 +49,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       if(message != null){
         if(message.data["route"] != null){
           if(message.data["route"].contains(".m3u8")){
-            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: message.data["route"])));
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: message.data["route"], title: '', author: '', thumbnail: '',)));
           }
           else if(message.data["route"].contains("https://www.youtube.com/watch?v=")){
             Navigator.push(this.context, MaterialPageRoute(builder: (context)=> VideoPlayerr(videooUrl:message.data["route"])));
@@ -81,7 +81,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       if(message != null){
         if(message.data["route"] != null){
           if(message.data["route"].contains(".m3u8")){
-            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: message.data["route"])));
+            Navigator.push(this.context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: message.data["route"], title: '', author: '', thumbnail: '',)));
           }
           else if(message.data["route"].contains("https://www.youtube.com/watch?v=")){
             Navigator.push(this.context, MaterialPageRoute(builder: (context)=> VideoPlayerr(videooUrl:message.data["route"])));
@@ -160,7 +160,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             setState(() {
               _currentIndex = value;
             });
-          },
+          },physics: NeverScrollableScrollPhysics(),
           itemCount: 5,
         ),
       ),
