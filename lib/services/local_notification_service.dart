@@ -18,7 +18,7 @@ class LocalNotificationService {
     _notificationsPlugin.initialize(initializationSettings,onSelectNotification: (String? route) async{
       if(route != null){
         if(route.contains(".m3u8")){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: route)));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl: route, author: '', thumbnail: '', title: '',)));
         }
         else if(route.contains("https://www.youtube.com/watch?v=")){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> VideoPlayerr(videooUrl:route)));

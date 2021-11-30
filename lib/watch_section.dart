@@ -503,7 +503,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
       },
       child: GestureDetector(
         onTap:(){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl:widget.videoUrl)));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> LiveStreamingPlayer(videoUrl:widget.videoUrl,title: widget.title,author:"",thumbnail: widget.thumbnail,)));
 
         },
         child: Container(
@@ -556,7 +556,7 @@ class _CustomLiveStreamingCardState extends State<CustomLiveStreamingCard> {
                           topRight: Radius.circular(10),
                           topLeft: Radius.circular(10),
                         ),
-                        child: Image.asset(
+                        child: Image.network(
                           widget.thumbnail,
                           fit: BoxFit.fill,errorBuilder: ( context,  exception,  stackTrace) {
                           return Image.asset(
