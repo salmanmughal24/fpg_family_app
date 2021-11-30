@@ -124,17 +124,10 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
       autoDispose: false,
       autoDetectFullscreenDeviceOrientation: true,
       fullScreenByDefault: false,
-<<<<<<< HEAD
-      handleLifecycle: true,
-=======
->>>>>>> e9a276800695418c491f8e1c58f5717681f43c02
     );
     BetterPlayerDataSource dataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
       widget.videoUrl,
-<<<<<<< HEAD
-
-=======
       notificationConfiguration: BetterPlayerNotificationConfiguration(
         showNotification: true,
         title: widget.title,
@@ -142,7 +135,6 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
         imageUrl: widget.thumbnail,notificationChannelName: "chachu",
         activityName: "MainActivity",
       ),
->>>>>>> e9a276800695418c491f8e1c58f5717681f43c02
     );
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     _betterPlayerController!.setupDataSource(dataSource);
