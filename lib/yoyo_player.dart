@@ -106,11 +106,12 @@ class _LiveStreamingPlayerState extends State<LiveStreamingPlayer> {
       autoDispose: true,
       autoDetectFullscreenDeviceOrientation: true,
       fullScreenByDefault: false,
-
+      handleLifecycle: true,
     );
     BetterPlayerDataSource dataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
       widget.videoUrl,
+
     );
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     _betterPlayerController.setupDataSource(dataSource);
