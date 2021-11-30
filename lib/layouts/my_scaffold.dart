@@ -34,7 +34,12 @@ class _MainBodyState extends State<MainBody> {
         child: Stack(
           children: [
             SizedBox.expand(
-              child: widget.body,
+              child: Column(
+                children: [
+                  Expanded(child: widget.body),
+                  Global.isPlaying == true?Container(height: 160.0, color: themeProvider.isLightTheme?clr_white:clr_black):Container(),
+                ],
+              ),
             ),
             Global.isPlaying == true? SizedBox.expand(
                     child: Column(

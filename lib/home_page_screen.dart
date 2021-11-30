@@ -99,7 +99,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   askPermission() async {
     final status =
-        await Permission
+    await Permission
         .storage
         .request();
     if (status
@@ -118,9 +118,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     print(themeProvider.isLightTheme);
     return Scaffold(
-        backgroundColor: themeProvider.isLightTheme
-            ? Colors.white
-            : Color(0xFF26242e),
+      backgroundColor: themeProvider.isLightTheme
+          ? Colors.white
+          : Color(0xFF26242e),
       /*backgroundColor: clr_black,
       appBar: AppBar(
         backgroundColor: clr_black,

@@ -122,8 +122,9 @@ class _ListenSectionState extends State<ListenSection>
                 Global.albumImage = image;
                 Global.albumName=items[index].title!;
                 print(Global.albumImage);
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyAudioPlayer(index:  index,items:items)));
-
+               // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyAudioPlayer(index:  index,items:items)));
+                Navigator.of(context, rootNavigator: false).push(MaterialPageRoute(
+                    builder: (context) => MyAudioPlayer(index:  index,items:items), maintainState: true));
                 /* Navigator.of(context)
                           .push(ChannelDetails.route(items[index]));*/
               },

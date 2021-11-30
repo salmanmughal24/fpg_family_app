@@ -289,6 +289,7 @@ class _WatchSectionState extends State<WatchSection> {
                       stream: getCategoryData(),
                     )
                ),
+
              ],
            ),
          )
